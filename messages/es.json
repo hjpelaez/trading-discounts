@@ -70,13 +70,14 @@
         "noPosts": "No se encontraron artículos con esos criterios."
     },
     "Newsletter": {
-        "title": "Únete a la Lista Alpha",
-        "subtitle": "Recibe descuentos exclusivos, noticias y estrategias directamente en tu bandeja de entrada.",
-        "placeholder": "Tu email de trader...",
+        "title": "Mantente Actualizado",
+        "subtitle": "Recibe descuentos exclusivos y estrategias de trading.",
+        "placeholder": "Ingresa tu email",
+        "namePlaceholder": "Tu nombre",
         "button": "Suscribirse",
-        "privacy": "Cero spam. Solo valor para el trader.",
-        "successTitle": "¡Ya estás en la lista!",
-        "successMessage": "Revisa tu inbox para confirmar y recibir tu primera oferta exclusiva."
+        "privacy": "Respetamos tu privacidad. Cancela en cualquier momento.",
+        "successTitle": "¡Listo!",
+        "successMessage": "Revisa tu bandeja de entrada para ofertas exclusivas."
     },
     "Contact": {
         "title": "Ponte en <span class='text-primary'>Contacto</span>",

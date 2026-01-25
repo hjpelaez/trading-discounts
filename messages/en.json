@@ -70,13 +70,14 @@
         "noPosts": "No articles found matching your criteria."
     },
     "Newsletter": {
-        "title": "Join the Alpha List",
-        "subtitle": "Get weekly exclusive prop firm discounts, news and strategies directly in your inbox.",
-        "placeholder": "Enter your trading email...",
+        "title": "Stay Updated",
+        "subtitle": "Get exclusive prop firm discounts and trading insights.",
+        "placeholder": "Enter your email",
+        "namePlaceholder": "Your name",
         "button": "Subscribe",
-        "privacy": "We promise zero spam. Only value for traders.",
-        "successTitle": "You're on the list!",
-        "successMessage": "Check your inbox for a confirmation and your first exclusive deal."
+        "successTitle": "You're In!",
+        "successMessage": "Check your inbox for exclusive deals.",
+        "privacy": "We respect your privacy. Unsubscribe anytime."
     },
     "Contact": {
         "title": "Get in <span class='text-primary'>Touch</span>",
