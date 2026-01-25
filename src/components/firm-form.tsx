@@ -116,44 +116,45 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
             </div>
 
             {/* AI Auto-Fill Section */}
-            {!firm && (
-                <div className="rounded-lg border-2 border-dashed border-primary/30 bg-primary/5 p-6">
-                    <div className="flex items-start gap-4">
-                        <Sparkles className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
-                        <div className="flex-1">
-                            <h3 className="font-semibold text-lg mb-2">✨ AI Auto-Fill (Powered by Gemini)</h3>
-                            <p className="text-sm text-muted-foreground mb-4">
-                                Paste the firm's website URL and let AI extract all the information automatically.
-                            </p>
-                            <div className="flex gap-3">
-                                <input
-                                    type="url"
-                                    value={autoFillUrl}
-                                    onChange={(e) => setAutoFillUrl(e.target.value)}
-                                    placeholder="https://propfirmtrader.com/prop-firm/blueberry-funded"
-                                    className="flex-1 rounded-md border bg-background px-4 py-2"
-                                    disabled={isExtracting}
-                                />
-                                <button
-                                    type="button"
-                                    onClick={handleAutoFill}
-                                    disabled={isExtracting}
-                                    className="inline-flex items-center justify-center rounded-md bg-primary px-6 py-2 text-sm font-bold text-primary-foreground shadow transition-colors hover:bg-primary/90 disabled:opacity-50"
-                                >
-                                    {isExtracting ? (
-                                        <>Extracting...</>
-                                    ) : (
-                                        <>
-                                            <Sparkles className="mr-2 h-4 w-4" />
-                                            Auto-Fill
-                                        </>
-                                    )}
-                                </button>
-                            </div>
+            <div className="rounded-lg border-2 border-dashed border-primary/30 bg-primary/5 p-6">
+                <div className="flex items-start gap-4">
+                    <Sparkles className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
+                    <div className="flex-1">
+                        <h3 className="font-semibold text-lg mb-2">✨ AI Auto-Fill (Powered by Gemini)</h3>
+                        <p className="text-sm text-muted-foreground mb-4">
+                            {firm
+                                ? "Update this firm's data by pasting their website URL and letting AI extract the latest information."
+                                : "Paste the firm's website URL and let AI extract all the information automatically."
+                            }
+                        </p>
+                        <div className="flex gap-3">
+                            <input
+                                type="url"
+                                value={autoFillUrl}
+                                onChange={(e) => setAutoFillUrl(e.target.value)}
+                                placeholder="https://propfirmtrader.com/prop-firm/blueberry-funded"
+                                className="flex-1 rounded-md border bg-background px-4 py-2"
+                                disabled={isExtracting}
+                            />
+                            <button
+                                type="button"
+                                onClick={handleAutoFill}
+                                disabled={isExtracting}
+                                className="inline-flex items-center justify-center rounded-md bg-primary px-6 py-2 text-sm font-bold text-primary-foreground shadow transition-colors hover:bg-primary/90 disabled:opacity-50"
+                            >
+                                {isExtracting ? (
+                                    <>Extracting...</>
+                                ) : (
+                                    <>
+                                        <Sparkles className="mr-2 h-4 w-4" />
+                                        {firm ? "Update Data" : "Auto-Fill"}
+                                    </>
+                                )}
+                            </button>
                         </div>
                     </div>
                 </div>
-            )}
+            </div>
 
             {/* Tabs */}
             <div className="border-b">
