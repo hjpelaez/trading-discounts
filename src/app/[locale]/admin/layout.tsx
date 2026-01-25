@@ -1,12 +1,20 @@
-import { UserButton } from "@clerk/nextjs";
-import { LayoutDashboard, PlusCircle, Globe, FileText, Users } from "lucide-react";
+import { LayoutDashboard, PlusCircle, Globe, FileText, Users, LogOut } from "lucide-react";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
 
-export default function AdminLayout({
+export default async function AdminLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+        redirect('/auth/login');
+    }
+
     return (
         <div className="flex min-h-screen bg-muted/20">
             {/* Sidebar */}
@@ -56,8 +64,20 @@ export default function AdminLayout({
                 </nav>
 
                 <div className="p-4 border-t">
-                    <div className="flex items-center gap-3 px-4 py-2">
-                        <UserButton showName />
+                    <div className="flex items-center justify-between px-4 py-2">
+                        <div className="flex flex-col">
+                            <span className="text-sm font-medium">{user.email}</span>
+                            <span className="text-xs text-muted-foreground">Admin</span>
+                        </div>
+                        <form action="/auth/signout" method="post">
+                            <button
+                                type="submit"
+                                className="p-2 hover:bg-accent rounded-lg transition-colors"
+                                title="Cerrar sesión"
+                            >
+                                <LogOut className="h-4 w-4" />
+                            </button>
+                        </form>
                     </div>
                 </div>
             </aside>
