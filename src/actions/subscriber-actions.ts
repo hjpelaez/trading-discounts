@@ -38,10 +38,3 @@ export async function subscribeAction(email: string) {
         return { success: false, error: "Failed to subscribe" };
     }
 }
-
-return { success: true };
-    } catch (error) {
-    console.error("Error subscribing:", error);
-    return { success: false, error: "Failed to subscribe" };
-}
-}
