@@ -1,14 +1,18 @@
-"use server";
+'use server'
 
-import { saveSubscriber } from "@/lib/db";
 import { revalidatePath } from "next/cache";
+import prisma from "@/lib/prisma";
 
-export async function subscribeAction(email: string) {
+export async function deleteSubscriberAction(id: string) {
     try {
-        await saveSubscriber(email);
+        await prisma.subscriber.delete({
+            where: { id }
+        });
+
+        revalidatePath('/admin/subscribers');
         return { success: true };
     } catch (error) {
-        console.error("Subscription error:", error);
-        return { success: false, error: "Failed to subscribe" };
+        console.error("Error deleting subscriber:", error);
+        return { success: false, error: "Failed to delete subscriber" };
     }
 }

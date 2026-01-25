@@ -1,6 +1,7 @@
 import { getSubscribers } from "@/lib/db";
+import { deleteSubscriberAction } from "@/actions/subscriber-actions";
 import { FadeIn } from "@/components/animations";
-import { Users, Mail, Calendar, Download } from "lucide-react";
+import { Users, Mail, Calendar, Download, Trash2 } from "lucide-react";
 import Link from "next/link";
 
 export default async function SubscribersPage() {
@@ -54,6 +55,7 @@ export default async function SubscribersPage() {
                                 <th className="px-6 py-4">Nombre</th>
                                 <th className="px-6 py-4">Email</th>
                                 <th className="px-6 py-4">Fecha Registro</th>
+                                <th className="px-6 py-4 text-right">Acciones</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-border">
@@ -73,6 +75,17 @@ export default async function SubscribersPage() {
                                             <Calendar className="h-3 w-3" />
                                             {formatDate(sub.createdAt)}
                                         </div>
+                                    </td>
+                                    <td className="px-6 py-4 text-right">
+                                        <form action={deleteSubscriberAction.bind(null, sub.id)}>
+                                            <button
+                                                type="submit"
+                                                className="p-2 hover:bg-red-500/10 hover:text-red-500 rounded-lg transition-colors"
+                                                title="Eliminar Suscriptor"
+                                            >
+                                                <Trash2 className="h-4 w-4" />
+                                            </button>
+                                        </form>
                                     </td>
                                 </tr>
                             ))}
