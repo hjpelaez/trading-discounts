@@ -9,7 +9,10 @@ const intlMiddleware = createMiddleware({
 
 export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl
-    const locale = pathname.split('/')[1] || 'en'
+
+    const locales = ['en', 'es'];
+    const segment = pathname.split('/')[1];
+    const locale = locales.includes(segment) ? segment : 'en';
 
     // Check if maintenance mode is enabled
     const isMaintenanceMode = process.env.MAINTENANCE_MODE === 'true'
