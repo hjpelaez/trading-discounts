@@ -17,7 +17,7 @@ export async function deleteSubscriberAction(id: string) {
     }
 }
 
-export async function subscribeAction(email: string) {
+export async function subscribeAction(email: string, name?: string) {
     try {
         const supabase = await createClient();
 
@@ -31,7 +31,7 @@ export async function subscribeAction(email: string) {
         if (!existing) {
             await supabase
                 .from('Subscriber')
-                .insert([{ email }]);
+                .insert([{ email, name: name || null }]);
         }
 
         return { success: true };

@@ -9,17 +9,19 @@ import { subscribeAction } from "@/actions/subscriber-actions";
 export function Newsletter() {
     const t = useTranslations("Newsletter");
     const [email, setEmail] = useState("");
+    const [name, setName] = useState("");
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setStatus("loading");
 
-        const result = await subscribeAction(email);
+        const result = await subscribeAction(email, name);
 
         if (result.success) {
             setStatus("success");
             setEmail("");
+            setName("");
         } else {
             setStatus("error");
             setTimeout(() => setStatus("idle"), 3000);
@@ -53,21 +55,33 @@ export function Newsletter() {
                                 {t("subtitle")}
                             </p>
                             <form onSubmit={handleSubmit} className="relative max-w-md mx-auto">
-                                <input
-                                    type="email"
-                                    required
-                                    placeholder={t("placeholder")}
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full h-14 pl-6 pr-32 rounded-2xl border-2 border-primary/20 bg-background shadow-xl focus:border-primary focus:outline-none transition-all"
-                                />
-                                <button
-                                    type="submit"
-                                    disabled={status === "loading"}
-                                    className="absolute right-2 top-2 h-10 px-6 rounded-xl bg-primary text-primary-foreground font-bold flex items-center gap-2 hover:bg-primary/90 transition-all disabled:opacity-50"
-                                >
-                                    {status === "loading" ? "..." : t("button")} <Send className={"h-4 w-4 " + (status === "error" ? "text-red-500" : "")} />
-                                </button>
+                                <div className="flex flex-col gap-3 mb-3">
+                                    <input
+                                        type="text"
+                                        required
+                                        placeholder={t("namePlaceholder")}
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                        className="w-full h-14 px-6 rounded-2xl border-2 border-primary/20 bg-background shadow-xl focus:border-primary focus:outline-none transition-all"
+                                    />
+                                </div>
+                                <div className="relative">
+                                    <input
+                                        type="email"
+                                        required
+                                        placeholder={t("placeholder")}
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        className="w-full h-14 pl-6 pr-32 rounded-2xl border-2 border-primary/20 bg-background shadow-xl focus:border-primary focus:outline-none transition-all"
+                                    />
+                                    <button
+                                        type="submit"
+                                        disabled={status === "loading"}
+                                        className="absolute right-2 top-2 h-10 px-6 rounded-xl bg-primary text-primary-foreground font-bold flex items-center gap-2 hover:bg-primary/90 transition-all disabled:opacity-50"
+                                    >
+                                        {status === "loading" ? "..." : t("button")} <Send className={"h-4 w-4 " + (status === "error" ? "text-red-500" : "")} />
+                                    </button>
+                                </div>
                             </form>
                             {status === "error" && (
                                 <motion.p
