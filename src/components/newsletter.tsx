@@ -10,18 +10,20 @@ export function Newsletter() {
     const t = useTranslations("Newsletter");
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
+    const [honeypot, setHoneypot] = useState("");
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setStatus("loading");
 
-        const result = await subscribeAction(email, name);
+        const result = await subscribeAction(email, name, honeypot);
 
         if (result.success) {
             setStatus("success");
             setEmail("");
             setName("");
+            setHoneypot("");
         } else {
             setStatus("error");
             setTimeout(() => setStatus("idle"), 3000);
@@ -65,6 +67,17 @@ export function Newsletter() {
                                         className="w-full h-14 px-6 rounded-2xl border-2 border-primary/20 bg-background shadow-xl focus:border-primary focus:outline-none transition-all"
                                     />
                                 </div>
+                                {/* Honeypot field - hidden from humans, visible to bots */}
+                                <input
+                                    type="text"
+                                    name="website"
+                                    value={honeypot}
+                                    onChange={(e) => setHoneypot(e.target.value)}
+                                    className="absolute opacity-0 pointer-events-none"
+                                    tabIndex={-1}
+                                    autoComplete="off"
+                                    aria-hidden="true"
+                                />
                                 <div className="relative">
                                     <input
                                         type="email"

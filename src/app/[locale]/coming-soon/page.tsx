@@ -8,6 +8,7 @@ import { useTranslations } from 'next-intl'
 export default function ComingSoonPage() {
     const [email, setEmail] = useState('')
     const [name, setName] = useState('')
+    const [honeypot, setHoneypot] = useState('')
     const [success, setSuccess] = useState(false)
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
@@ -20,6 +21,17 @@ export default function ComingSoonPage() {
         setLoading(true)
 
         try {
+            // Honeypot check
+            if (honeypot) {
+                console.log('Bot detected via honeypot')
+                setSuccess(true) // Pretend success
+                setEmail('')
+                setName('')
+                setHoneypot('')
+                setLoading(false)
+                return
+            }
+
             // Save email to Supabase
             const { error: dbError } = await supabase
                 .from('Subscriber')
@@ -35,6 +47,7 @@ export default function ComingSoonPage() {
             setSuccess(true)
             setEmail('')
             setName('')
+            setHoneypot('')
         } catch (err: any) {
             setError(t('error'))
         } finally {
@@ -90,6 +103,17 @@ export default function ComingSoonPage() {
                                     />
                                 </div>
                             </div>
+                            {/* Honeypot field - hidden from humans */}
+                            <input
+                                type="text"
+                                name="website"
+                                value={honeypot}
+                                onChange={(e) => setHoneypot(e.target.value)}
+                                className="absolute opacity-0 pointer-events-none"
+                                tabIndex={-1}
+                                autoComplete="off"
+                                aria-hidden="true"
+                            />
                             <div className="flex flex-col sm:flex-row gap-3">
                                 <div className="flex-1 relative">
                                     <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />

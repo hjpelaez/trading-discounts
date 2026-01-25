@@ -17,8 +17,14 @@ export async function deleteSubscriberAction(id: string) {
     }
 }
 
-export async function subscribeAction(email: string, name?: string) {
+export async function subscribeAction(email: string, name?: string, honeypot?: string) {
     try {
+        // Honeypot check - if filled, it's a bot
+        if (honeypot) {
+            console.log('Bot detected via honeypot');
+            return { success: true }; // Pretend success to fool bots
+        }
+
         const supabase = await createClient();
 
         // Check if already exists
