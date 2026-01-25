@@ -23,7 +23,7 @@ export default function ComingSoonPage() {
             // Save email to Supabase (you'll need to create a subscribers table)
             const { error: dbError } = await supabase
                 .from('subscribers')
-                .insert([{ name, email, source: 'coming_soon' }])
+                .insert([{ name, email }])
 
             if (dbError) {
                 // If table doesn't exist yet, just show success anyway
