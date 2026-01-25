@@ -20,14 +20,16 @@ export default function ComingSoonPage() {
         setLoading(true)
 
         try {
-            // Save email to Supabase (you'll need to create a subscribers table)
+            // Save email to Supabase
             const { error: dbError } = await supabase
-                .from('subscribers')
+                .from('Subscriber')
                 .insert([{ name, email }])
 
             if (dbError) {
-                // If table doesn't exist yet, just show success anyway
                 console.error('DB Error:', dbError)
+                setError(t('error'))
+                setLoading(false)
+                return
             }
 
             setSuccess(true)
