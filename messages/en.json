@@ -139,7 +139,7 @@
             "verifiedDesc": "Only legit props",
             "instantTitle": "Instant Access",
             "instantDesc": "No manual waiting",
-            "exclusiveTitle": "Exclusives",
+            "exclusiveTitle": "Exclusivas",
             "exclusiveDesc": "Deals you can't find elsewhere",
             "guideTitle": "Premium Guide",
             "guideDesc": "AI-powered recommendations"
@@ -149,5 +149,35 @@
         "title": "We use cookies 🍪",
         "description": "We use cookies to ensure you get the best experience on our website. By continuing, you verify that you are happy with this.",
         "accept": "Accept & Continue"
-    }
+    },
+    "auth": {
+        "login": {
+            "title": "Sign In",
+            "subtitle": "Access the admin panel"
+        },
+        "signup": {
+            "title": "Sign Up",
+            "subtitle": "Create an account"
+        }
+    },
+    "ComingSoon": {
+        "title": "Trading",
+        "titleHighlight": "Discounts",
+        "subtitle": "Something amazing is coming",
+        "description": "We are preparing the best platform to find exclusive discounts on prop firms. Be the first to know when we launch.",
+        "namePlaceholder": "Your Name",
+        "emailPlaceholder": "you@email.com",
+        "notifyButton": "Notify Me",
+        "sending": "Sending...",
+        "successMessage": "Thanks! We'll notify you when we launch.",
+        "error": "Error saving email. Please try again.",
+        "feature1Title": "Exclusive Discounts",
+        "feature1Desc": "Save up to 50% on top prop firms",
+        "feature2Title": "Easy Comparison",
+        "feature2Desc": "Compare firms and find the best fit for you",
+        "feature3Title": "Verified Deals",
+        "feature3Desc": "All codes verified daily",
+        "footer": "© 2025 Trading Discounts. All rights reserved."
+    },
+    "_revision": "final_fix_en_v1"
 }
