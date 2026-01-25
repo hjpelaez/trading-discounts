@@ -8,6 +8,27 @@ const intlMiddleware = createMiddleware({
 });
 
 export async function middleware(request: NextRequest) {
+    const { pathname } = request.nextUrl
+    const locale = pathname.split('/')[1] || 'en'
+
+    // Check if maintenance mode is enabled
+    const isMaintenanceMode = process.env.MAINTENANCE_MODE === 'true'
+
+    // Allow access to admin, auth, api, and coming-soon routes even in maintenance mode
+    const isAllowedPath =
+        pathname.includes('/admin') ||
+        pathname.includes('/auth') ||
+        pathname.includes('/api') ||
+        pathname.includes('/coming-soon') ||
+        pathname.includes('/_next') ||
+        pathname.includes('/_vercel') ||
+        pathname.match(/\.(png|jpg|jpeg|gif|svg|ico|css|js|woff|woff2|ttf)$/)
+
+    // Redirect to coming soon if in maintenance mode and not an allowed path
+    if (isMaintenanceMode && !isAllowedPath) {
+        return NextResponse.redirect(new URL(`/${locale}/coming-soon`, request.url))
+    }
+
     let response = intlMiddleware(request);
 
     const supabase = createServerClient(
@@ -42,7 +63,6 @@ export async function middleware(request: NextRequest) {
         })
 
         if (!user || error) {
-            const locale = request.nextUrl.pathname.split('/')[1] || 'en'
             const loginUrl = new URL(`/${locale}/auth/login`, request.url)
             console.log('Redirecting to:', loginUrl.toString())
             return NextResponse.redirect(loginUrl)
