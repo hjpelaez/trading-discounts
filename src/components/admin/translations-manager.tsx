@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { Save, Search, AlertCircle, ChevronDown, ChevronRight, Trash2, Wand2, RotateCcw, X } from "lucide-react";
 import { saveTranslationAction, deleteTranslationAction } from "@/actions/translation-actions";
 import { FadeIn } from "@/components/animations";
@@ -217,17 +217,17 @@ function TranslationRow({ itemKey, data }: TranslationRowProps) {
                         <input type="hidden" name="key" value={itemKey} />
                         <input type="hidden" name="es" value={override?.es || defaultEs} /> {/* Preserve other lang */}
                         <div className="relative">
-                            <input
+                            <AutoResizeTextarea
                                 name="en"
                                 defaultValue={override?.en || defaultEn}
                                 onChange={() => setIsModified(true)}
                                 className={cn(
-                                    "w-full text-sm px-3 py-2 rounded-md border bg-background focus:ring-2 focus:ring-primary/20 outline-none transition-all pr-8",
+                                    "w-full text-sm px-3 py-2 rounded-md border bg-background focus:ring-2 focus:ring-primary/20 outline-none transition-all pr-8 resize-none overflow-hidden",
                                     override?.en ? "border-primary/40 font-medium" : "border-border"
                                 )}
                             />
                             {/* Actions overlay */}
-                            <div className="absolute right-1 top-1 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div className="absolute right-1 top-1 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
                                 <button type="submit" className="p-1 hover:bg-primary hover:text-primary-foreground rounded">
                                     <Save className="h-3 w-3" />
                                 </button>
@@ -254,17 +254,17 @@ function TranslationRow({ itemKey, data }: TranslationRowProps) {
                         <input type="hidden" name="en" value={override?.en || defaultEn} /> {/* Preserve other lang */}
 
                         <div className="relative">
-                            <input
+                            <AutoResizeTextarea
                                 name="es"
                                 defaultValue={override?.es || defaultEs}
                                 onChange={() => setIsModified(true)}
                                 className={cn(
-                                    "w-full text-sm px-3 py-2 rounded-md border bg-background focus:ring-2 focus:ring-primary/20 outline-none transition-all pr-8",
+                                    "w-full text-sm px-3 py-2 rounded-md border bg-background focus:ring-2 focus:ring-primary/20 outline-none transition-all pr-8 resize-none overflow-hidden",
                                     override?.es ? "border-primary/40 font-medium" : "border-border"
                                 )}
                             />
                             {/* Actions overlay */}
-                            <div className="absolute right-1 top-1  opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-1">
+                            <div className="absolute right-1 top-1  opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-1 z-10">
                                 <button type="submit" className="p-1 hover:bg-primary hover:text-primary-foreground rounded" title="Save">
                                     <Save className="h-3 w-3" />
                                 </button>
@@ -287,5 +287,38 @@ function TranslationRow({ itemKey, data }: TranslationRowProps) {
                 </div>
             </div>
         </div>
+    );
+}
+
+function AutoResizeTextarea({ ...props }: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+    const adjustHeight = () => {
+        const textarea = textareaRef.current;
+        if (textarea) {
+            textarea.style.height = "auto";
+            textarea.style.height = `${textarea.scrollHeight}px`;
+        }
+    };
+
+    useEffect(() => {
+        adjustHeight();
+        // Also adjust on window resize
+        window.addEventListener('resize', adjustHeight);
+        return () => window.removeEventListener('resize', adjustHeight);
+    }, []);
+
+    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        adjustHeight();
+        if (props.onChange) props.onChange(e);
+    };
+
+    return (
+        <textarea
+            {...props}
+            ref={textareaRef}
+            rows={1}
+            onChange={handleChange}
+        />
     );
 }
