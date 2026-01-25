@@ -236,7 +236,7 @@ export function BlogForm({ post, categories = ["Education", "Proptrading", "Stra
 
                             <div className="space-y-2">
                                 <label className="text-[10px] font-black uppercase tracking-tighter text-muted-foreground flex items-center gap-1.5 ml-1">
-                                    <Calendar className="h-3 w-3" /> Fecha de Publicación
+                                    <Calendar className="h-3 w-3 text-primary" /> Fecha de Publicación
                                 </label>
                                 <input
                                     name="date"

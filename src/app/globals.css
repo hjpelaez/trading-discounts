@@ -97,3 +97,10 @@ input[type=number] {
   appearance: textfield;
   -moz-appearance: textfield;
 }
+
+/* Fix Date Picker Icon in Dark Mode */
+::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 0.6;
+  cursor: pointer;
+}

@@ -40,7 +40,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
                                 </div>
                                 <span className="font-semibold text-foreground">{post.author}</span>
                             </div>
-                            <span className="flex items-center gap-2"><Calendar className="h-4 w-4" /> {post.date}</span>
+                            <span className="flex items-center gap-2"><Calendar className="h-4 w-4 text-primary" /> {post.date}</span>
                         </div>
                     </FadeIn>
                 </div>
