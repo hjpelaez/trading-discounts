@@ -1,7 +1,8 @@
 import { getSubscribers } from "@/lib/db";
 import { deleteSubscriberAction } from "@/actions/subscriber-actions";
 import { FadeIn } from "@/components/animations";
-import { Users, Mail, Calendar, Download, Trash2 } from "lucide-react";
+import { Users, Mail, Calendar, Trash2 } from "lucide-react";
+import { ExportCSVButton } from "@/components/ExportCSVButton";
 import Link from "next/link";
 
 export default async function SubscribersPage() {
@@ -30,12 +31,7 @@ export default async function SubscribersPage() {
                         Gestiona los leads capturados desde la landing page.
                     </p>
                 </div>
-                <button
-                    className="inline-flex items-center justify-center rounded-xl bg-secondary px-5 py-2.5 text-sm font-bold text-secondary-foreground shadow-sm hover:bg-secondary/80 transition-all opacity-50 cursor-not-allowed"
-                    title="Próximamente"
-                >
-                    <Download className="mr-2 h-4 w-4" /> Exportar CSV
-                </button>
+                <ExportCSVButton />
             </div>
 
             <FadeIn>
