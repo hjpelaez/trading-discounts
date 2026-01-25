@@ -1,23 +1,44 @@
 export interface PropFirm {
+    // Basic Info
     id: string;
     name: string;
     description: string;
     discount: string;
     code: string;
     link: string;
-    categories: ("crypto" | "forex" | "futures")[];
+    imageUrl?: string | null;
     featured?: boolean;
     rating: number; // 1-5
+    trustpilotScore?: number | null;
+
+    // Firm Details
+    country?: string | null;
+    activeYears?: number | null;
+    maxAllocation?: string | null;
+    broker?: string | null;
+
+    // Categories & Platforms
+    categories: (string | "crypto" | "forex" | "futures" | "stocks")[];
     platforms: string[];
+    instruments?: string[] | null;
+    assets?: string[] | null;
+
+    // Trading Info
     minPrice: number;
-    // New detailed fields
+    maxLeverage: string;
+    drawdownType: "Trailing" | "Static" | "Balance-based" | "Step-based";
+
+    // Features & Rules
     features: string[];
     rules: string[];
-    maxLeverage: string;
+    consistencyRules?: string | null;
+    prohibitedPractices?: string[] | null;
+
+    // Payout Info
     paymentMethods: string[];
-    trustpilotScore: number;
-    imageUrl?: string;
-    drawdownType: "Trailing" | "Static" | "Balance-based" | "Step-based";
+    payoutMethods?: string[] | null;
+    payoutFrequency?: string | null;
+    minPayout?: string | null;
 }
 
 export const PROP_FIRMS: PropFirm[] = [
