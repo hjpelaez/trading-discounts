@@ -1,13 +1,15 @@
 'use server'
 
 import { revalidatePath } from "next/cache";
-import prisma from "@/lib/prisma";
+import { createClient } from "@/lib/supabase/server";
 
 export async function deleteSubscriberAction(id: string) {
     try {
-        await prisma.subscriber.delete({
-            where: { id }
-        });
+        const supabase = await createClient();
+        await supabase
+            .from('Subscriber')
+            .delete()
+            .eq('id', id);
 
         revalidatePath('/admin/subscribers');
     } catch (error) {
@@ -17,19 +19,19 @@ export async function deleteSubscriberAction(id: string) {
 
 export async function subscribeAction(email: string) {
     try {
-        // Upsert to handle existing emails gracefully (or just create and catch error)
-        // Since we want to be idempotent for newsletter:
-        const existing = await prisma.subscriber.findUnique({
-            where: { email }
-        });
+        const supabase = await createClient();
+
+        // Check if already exists
+        const { data: existing } = await supabase
+            .from('Subscriber')
+            .select('id')
+            .eq('email', email)
+            .single();
 
         if (!existing) {
-            await prisma.subscriber.create({
-                data: {
-                    email,
-                    // source removed from schema
-                }
-            });
+            await supabase
+                .from('Subscriber')
+                .insert([{ email }]);
         }
 
         return { success: true };

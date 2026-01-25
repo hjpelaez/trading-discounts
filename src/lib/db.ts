@@ -140,7 +140,7 @@ export async function deleteBlogPost(id: string) {
 
 // --- SUBSCRIBERS ---
 
-import prisma from "@/lib/prisma";
+import { createClient } from "@/lib/supabase/server";
 
 export interface Subscriber {
     id: string;
@@ -151,12 +151,14 @@ export interface Subscriber {
 
 export const getSubscribers = cache(async (): Promise<Subscriber[]> => {
     try {
-        const subscribers = await prisma.subscriber.findMany({
-            orderBy: {
-                createdAt: 'desc'
-            }
-        });
-        return subscribers;
+        const supabase = await createClient();
+        const { data, error } = await supabase
+            .from('Subscriber')
+            .select('*')
+            .order('createdAt', { ascending: false });
+
+        if (error) throw error;
+        return data || [];
     } catch (error) {
         console.error("Error fetching subscribers from DB:", error);
         return [];
