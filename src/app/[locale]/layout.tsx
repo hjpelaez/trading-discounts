@@ -2,14 +2,6 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
-import { Navbar } from "@/components/navbar";
-import { Footer } from "@/components/footer";
-import { ComparisonBar } from "@/components/comparison-bar";
-import { AIAssistant } from "@/components/ai-assistant";
-import { ScrollToTop } from "@/components/scroll-to-top";
-import { PreFooter } from "@/components/pre-footer";
-import { getSettings } from "@/lib/db";
-import { CookieConsent } from "@/components/cookie-consent";
 import "../globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -23,7 +15,6 @@ export default async function LocaleLayout({
 }) {
   const { locale } = await params;
   const messages = await getMessages();
-  const settings = await getSettings();
 
   return (
     <html lang={locale} className="dark" suppressHydrationWarning>
@@ -32,16 +23,7 @@ export default async function LocaleLayout({
         suppressHydrationWarning
       >
         <NextIntlClientProvider messages={messages}>
-          <Navbar />
-          <main className="flex-1">
-            {children}
-          </main>
-          <PreFooter />
-          <Footer settings={settings} />
-          <ComparisonBar />
-          <AIAssistant />
-          <CookieConsent />
-          <ScrollToTop />
+          {children}
         </NextIntlClientProvider>
       </body>
     </html>
