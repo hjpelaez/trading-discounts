@@ -52,13 +52,12 @@ export async function exportSubscribersToCSV() {
         if (error) throw error;
 
         // Create CSV header
-        const headers = ['Name', 'Email', 'Registration Date'];
+        const headers = ['Name', 'Email'];
 
         // Create CSV rows
         const rows = subscribers?.map(sub => [
             sub.name || 'N/A',
-            sub.email,
-            new Date(sub.createdAt).toLocaleString('es-ES')
+            sub.email
         ]) || [];
 
         // Combine headers and rows
