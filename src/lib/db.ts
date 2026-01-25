@@ -27,31 +27,56 @@ async function readJson(filePath: string) {
 // --- FIRMS ---
 
 export const getFirms = cache(async (): Promise<PropFirm[]> => {
-    return (await readJson(FIRMS_DB_PATH)) || [];
+    try {
+        const supabase = await createClient();
+        const { data, error } = await supabase
+            .from('Firm')
+            .select('*')
+            .order('featured', { ascending: false })
+            .order('rating', { ascending: false });
+
+        if (error) throw error;
+        return data || [];
+    } catch (error) {
+        console.error("Error fetching firms from DB:", error);
+        return [];
+    }
 });
 
 export async function getFirmById(id: string): Promise<PropFirm | undefined> {
-    const firms = await getFirms();
-    return firms.find((f) => f.id === id);
+    try {
+        const supabase = await createClient();
+        const { data, error } = await supabase
+            .from('Firm')
+            .select('*')
+            .eq('id', id)
+            .single();
+
+        if (error) throw error;
+        return data || undefined;
+    } catch (error) {
+        console.error("Error fetching firm:", error);
+        return undefined;
+    }
 }
 
 export async function saveFirm(firm: PropFirm) {
-    const firms = await getFirms();
-    const index = firms.findIndex((f) => f.id === firm.id);
+    const supabase = await createClient();
+    const { error } = await supabase
+        .from('Firm')
+        .upsert(firm);
 
-    if (index >= 0) {
-        firms[index] = firm;
-    } else {
-        firms.push(firm);
-    }
-
-    await fs.writeFile(FIRMS_DB_PATH, JSON.stringify(firms, null, 4));
+    if (error) throw error;
 }
 
 export async function deleteFirm(id: string) {
-    const firms = await getFirms();
-    const newFirms = firms.filter(f => f.id !== id);
-    await fs.writeFile(FIRMS_DB_PATH, JSON.stringify(newFirms, null, 4));
+    const supabase = await createClient();
+    const { error } = await supabase
+        .from('Firm')
+        .delete()
+        .eq('id', id);
+
+    if (error) throw error;
 }
 
 // --- PAGES ---
@@ -99,43 +124,89 @@ export interface BlogPost {
     title: { en: string; es: string; };
     excerpt: { en: string; es: string; };
     content: { en: string; es: string; };
-    date: string;
+    date: string; // For compatibility, mapped from publishedAt
+    publishedAt?: string;
     author: string;
     imageUrl: string;
     category: string;
 }
 
 export const getBlogPosts = cache(async (): Promise<BlogPost[]> => {
-    return (await readJson(BLOG_DB_PATH)) || [];
+    try {
+        const supabase = await createClient();
+        const { data, error } = await supabase
+            .from('BlogPost')
+            .select('*')
+            .order('publishedAt', { ascending: false });
+
+        if (error) throw error;
+
+        // Map publishedAt to date for compatibility
+        return (data || []).map(post => ({
+            ...post,
+            date: post.publishedAt
+        }));
+    } catch (error) {
+        console.error("Error fetching blog posts from DB:", error);
+        return [];
+    }
 });
 
 export async function getBlogPostById(id: string): Promise<BlogPost | undefined> {
-    const posts = await getBlogPosts();
-    return posts.find(p => p.id === id);
+    try {
+        const supabase = await createClient();
+        const { data, error } = await supabase
+            .from('BlogPost')
+            .select('*')
+            .eq('id', id)
+            .single();
+
+        if (error) throw error;
+        return data ? { ...data, date: data.publishedAt } : undefined;
+    } catch (error) {
+        console.error("Error fetching blog post:", error);
+        return undefined;
+    }
 }
 
 export async function getBlogPostBySlug(slug: string): Promise<BlogPost | undefined> {
-    const posts = await getBlogPosts();
-    return posts.find(p => p.slug === slug);
+    try {
+        const supabase = await createClient();
+        const { data, error } = await supabase
+            .from('BlogPost')
+            .select('*')
+            .eq('slug', slug)
+            .single();
+
+        if (error) throw error;
+        return data ? { ...data, date: data.publishedAt } : undefined;
+    } catch (error) {
+        console.error("Error fetching blog post:", error);
+        return undefined;
+    }
 }
 
 export async function saveBlogPost(post: BlogPost) {
-    const posts = await getBlogPosts();
-    const index = posts.findIndex(p => p.id === post.id);
+    const supabase = await createClient();
+    const { date, ...postData } = post;
+    const { error } = await supabase
+        .from('BlogPost')
+        .upsert({
+            ...postData,
+            publishedAt: post.publishedAt || post.date
+        });
 
-    if (index >= 0) {
-        posts[index] = post;
-    } else {
-        posts.push(post);
-    }
-
-    await fs.writeFile(BLOG_DB_PATH, JSON.stringify(posts, null, 4));
+    if (error) throw error;
 }
 
 export async function deleteBlogPost(id: string) {
-    const posts = await getBlogPosts();
-    const newPosts = posts.filter(p => p.id !== id);
-    await fs.writeFile(BLOG_DB_PATH, JSON.stringify(newPosts, null, 4));
+    const supabase = await createClient();
+    const { error } = await supabase
+        .from('BlogPost')
+        .delete()
+        .eq('id', id);
+
+    if (error) throw error;
 }
 
 // --- SUBSCRIBERS ---
