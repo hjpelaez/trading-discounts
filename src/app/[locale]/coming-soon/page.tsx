@@ -9,6 +9,7 @@ export default function ComingSoonPage() {
     const [success, setSuccess] = useState(false)
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
+    const t = useTranslations('ComingSoon')
     const supabase = createClient()
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -30,7 +31,7 @@ export default function ComingSoonPage() {
             setSuccess(true)
             setEmail('')
         } catch (err: any) {
-            setError('Error al guardar el email. Inténtalo de nuevo.')
+            setError(t('error'))
         } finally {
             setLoading(false)
         }
@@ -57,16 +58,15 @@ export default function ComingSoonPage() {
 
                 {/* Main heading */}
                 <h1 className="text-5xl md:text-7xl font-extrabold text-white mb-6 leading-tight">
-                    Trading <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Discounts</span>
+                    {t('title')} <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">{t('titleHighlight')}</span>
                 </h1>
 
                 <p className="text-xl md:text-2xl text-gray-300 mb-4">
-                    Algo increíble está por llegar
+                    {t('subtitle')}
                 </p>
 
                 <p className="text-lg text-gray-400 mb-12 max-w-2xl mx-auto">
-                    Estamos preparando la mejor plataforma para encontrar descuentos exclusivos en prop firms.
-                    Sé el primero en enterarte cuando lancemos.
+                    {t('description')}
                 </p>
 
                 {/* Email capture form */}
@@ -78,7 +78,7 @@ export default function ComingSoonPage() {
                                 <input
                                     type="email"
                                     required
-                                    placeholder="tu@email.com"
+                                    placeholder={t('emailPlaceholder')}
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     className="w-full pl-12 pr-4 py-4 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent backdrop-blur-sm"
@@ -89,7 +89,7 @@ export default function ComingSoonPage() {
                                 disabled={loading}
                                 className="px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-purple-500/50"
                             >
-                                {loading ? 'Enviando...' : 'Notificarme'}
+                                {loading ? t('sending') : t('notifyButton')}
                             </button>
                         </div>
                         {error && (
@@ -100,7 +100,7 @@ export default function ComingSoonPage() {
                     <div className="max-w-md mx-auto mb-12 bg-green-500/20 border border-green-500 rounded-lg p-6 backdrop-blur-sm">
                         <div className="flex items-center justify-center gap-3 text-green-200">
                             <CheckCircle2 className="h-6 w-6" />
-                            <p className="font-semibold">¡Gracias! Te avisaremos cuando lancemos.</p>
+                            <p className="font-semibold">{t('successMessage')}</p>
                         </div>
                     </div>
                 )}
@@ -109,24 +109,24 @@ export default function ComingSoonPage() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
                     <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-all">
                         <div className="text-3xl mb-3">💰</div>
-                        <h3 className="text-white font-semibold mb-2">Descuentos Exclusivos</h3>
-                        <p className="text-gray-400 text-sm">Ahorra hasta 50% en las mejores prop firms</p>
+                        <h3 className="text-white font-semibold mb-2">{t('feature1Title')}</h3>
+                        <p className="text-gray-400 text-sm">{t('feature1Desc')}</p>
                     </div>
                     <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-all">
                         <div className="text-3xl mb-3">🔍</div>
-                        <h3 className="text-white font-semibold mb-2">Comparación Fácil</h3>
-                        <p className="text-gray-400 text-sm">Compara firmas y encuentra la mejor para ti</p>
+                        <h3 className="text-white font-semibold mb-2">{t('feature2Title')}</h3>
+                        <p className="text-gray-400 text-sm">{t('feature2Desc')}</p>
                     </div>
                     <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-all">
                         <div className="text-3xl mb-3">✅</div>
-                        <h3 className="text-white font-semibold mb-2">Ofertas Verificadas</h3>
-                        <p className="text-gray-400 text-sm">Todos los códigos verificados diariamente</p>
+                        <h3 className="text-white font-semibold mb-2">{t('feature3Title')}</h3>
+                        <p className="text-gray-400 text-sm">{t('feature3Desc')}</p>
                     </div>
                 </div>
 
                 {/* Footer */}
                 <div className="mt-16 text-gray-500 text-sm">
-                    <p>© 2025 Trading Discounts. Todos los derechos reservados.</p>
+                    <p>{t('footer')}</p>
                 </div>
             </div>
         </div>
