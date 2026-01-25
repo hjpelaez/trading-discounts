@@ -149,5 +149,15 @@
         "title": "Usamos cookies 🍪",
         "description": "Utilizamos cookies para asegurar que tengas la mejor experiencia en nuestro sitio. Al continuar, aceptas su uso.",
         "accept": "Aceptar y Continuar"
+    },
+    "auth": {
+        "login": {
+            "title": "Iniciar Sesión",
+            "subtitle": "Accede al panel de administración"
+        },
+        "signup": {
+            "title": "Crear Cuenta",
+            "subtitle": "Regístrate para acceder al panel"
+        }
     }
 }
