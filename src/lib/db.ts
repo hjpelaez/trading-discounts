@@ -140,30 +140,33 @@ export async function deleteBlogPost(id: string) {
 
 // --- SUBSCRIBERS ---
 
+import prisma from "@/lib/prisma";
+
 export interface Subscriber {
+    id: string;
     email: string;
-    subscribedAt: string;
+    name: string | null;
+    createdAt: Date;
 }
 
 export const getSubscribers = cache(async (): Promise<Subscriber[]> => {
-    return (await readJson(SUBSCRIBERS_DB_PATH)) || [];
+    try {
+        const subscribers = await prisma.subscriber.findMany({
+            orderBy: {
+                createdAt: 'desc'
+            }
+        });
+        return subscribers;
+    } catch (error) {
+        console.error("Error fetching subscribers from DB:", error);
+        return [];
+    }
 });
 
-export async function saveSubscriber(email: string) {
-    const subscribers = await getSubscribers();
-
-    // Avoid duplicates
-    if (subscribers.some(s => s.email === email)) {
-        return;
-    }
-
-    subscribers.push({
-        email,
-        subscribedAt: new Date().toISOString()
-    });
-
-    await fs.writeFile(SUBSCRIBERS_DB_PATH, JSON.stringify(subscribers, null, 4));
-}
+// We don't save subscribers via this file anymore, it's done directly in the form action or API
+// But keeping a compatible signature if needed, or just removing it.
+// The previous saveSubscriber used to write to JSON. We can remove it or update it.
+// For now, let's remove the file-based save logic as it is not used by the new form.
 
 // --- CATEGORIES ---
 
