@@ -36,5 +36,6 @@ model Subscriber {
   id        String   @id @default(uuid())
   email     String   @unique
   source    String   @default("coming_soon")
+  name      String?
   createdAt DateTime @default(now())
 }
