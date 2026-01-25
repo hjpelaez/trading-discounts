@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Rocket, Mail, CheckCircle2 } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 export default function ComingSoonPage() {
     const [email, setEmail] = useState('')
