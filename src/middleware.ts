@@ -27,8 +27,30 @@ export async function middleware(request: NextRequest) {
         pathname.includes('/_vercel') ||
         pathname.match(/\.(png|jpg|jpeg|gif|svg|ico|css|js|woff|woff2|ttf)$/)
 
-    // Redirect to coming soon if in maintenance mode and not an allowed path
+    // Check if user is authenticated (for preview access)
+    let isAuthenticated = false
     if (isMaintenanceMode && !isAllowedPath) {
+        const supabase = createServerClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+            {
+                cookies: {
+                    getAll() {
+                        return request.cookies.getAll()
+                    },
+                    setAll(cookiesToSet) {
+                        cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
+                    },
+                },
+            }
+        )
+
+        const { data: { user } } = await supabase.auth.getUser()
+        isAuthenticated = !!user
+    }
+
+    // Redirect to coming soon if in maintenance mode, not an allowed path, and not authenticated
+    if (isMaintenanceMode && !isAllowedPath && !isAuthenticated) {
         return NextResponse.redirect(new URL(`/${locale}/coming-soon`, request.url))
     }
 
