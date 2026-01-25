@@ -1,28 +1,9 @@
-import fs from "fs/promises";
-import path from "path";
+import { createClient } from "@/lib/supabase/server";
 import { PropFirm } from "@/lib/data";
 import { cache } from "react";
 
 // Force dynamic execution for data fetching to ensure fresh data
 export const dynamic = 'force-dynamic';
-
-const FIRMS_DB_PATH = path.join(process.cwd(), "src/lib/firms.json");
-const PAGES_DB_PATH = path.join(process.cwd(), "src/lib/pages.json");
-const BLOG_DB_PATH = path.join(process.cwd(), "src/lib/blog.json");
-const SUBSCRIBERS_DB_PATH = path.join(process.cwd(), "src/lib/subscribers.json");
-const CATEGORIES_DB_PATH = path.join(process.cwd(), "src/lib/categories.json");
-const SETTINGS_DB_PATH = path.join(process.cwd(), "src/lib/settings.json");
-
-// --- UTILS ---
-async function readJson(filePath: string) {
-    try {
-        const data = await fs.readFile(filePath, "utf-8");
-        return JSON.parse(data);
-    } catch (error) {
-        console.error(`Error reading ${filePath}:`, error);
-        return null;
-    }
-}
 
 // --- FIRMS ---
 
@@ -89,31 +70,70 @@ export interface Page {
 }
 
 export const getPages = cache(async (): Promise<Page[]> => {
-    return (await readJson(PAGES_DB_PATH)) || [];
+    try {
+        const supabase = await createClient();
+        const { data, error } = await supabase
+            .from('Page')
+            .select('*');
+
+        if (error) throw error;
+        return (data || []).map(p => ({
+            slug: p.slugMap,
+            title: p.title,
+            content: p.content,
+            lastUpdated: p.lastUpdated
+        }));
+    } catch (error) {
+        console.error("Error fetching pages from DB:", error);
+        return [];
+    }
 });
 
 export async function getPageBySlug(slug: string): Promise<Page | undefined> {
-    const pages = await getPages();
-    return pages.find(p => p.slug.en === slug || p.slug.es === slug);
+    try {
+        const supabase = await createClient();
+        const { data, error } = await supabase
+            .from('Page')
+            .select('*')
+            .or(`slugMap->>en.eq.${slug},slugMap->>es.eq.${slug}`)
+            .single();
+
+        if (error) throw error;
+        return data ? {
+            slug: data.slugMap,
+            title: data.title,
+            content: data.content,
+            lastUpdated: data.lastUpdated
+        } : undefined;
+    } catch (error) {
+        console.error("Error fetching page:", error);
+        return undefined;
+    }
 }
 
 export async function savePage(page: Page) {
-    const pages = await getPages();
-    const index = pages.findIndex(p => p.slug.en === page.slug.en);
+    const supabase = await createClient();
+    const { error } = await supabase
+        .from('Page')
+        .upsert({
+            slug: page.slug.en,
+            slugMap: page.slug,
+            title: page.title,
+            content: page.content,
+            lastUpdated: new Date().toISOString()
+        });
 
-    if (index >= 0) {
-        pages[index] = page;
-    } else {
-        pages.push(page);
-    }
-
-    await fs.writeFile(PAGES_DB_PATH, JSON.stringify(pages, null, 4));
+    if (error) throw error;
 }
 
 export async function deletePage(slug: string) {
-    const pages = await getPages();
-    const newPages = pages.filter(p => p.slug.en !== slug && p.slug.es !== slug);
-    await fs.writeFile(PAGES_DB_PATH, JSON.stringify(newPages, null, 4));
+    const supabase = await createClient();
+    const { error } = await supabase
+        .from('Page')
+        .delete()
+        .eq('slug', slug);
+
+    if (error) throw error;
 }
 
 // --- BLOG ---
@@ -211,8 +231,6 @@ export async function deleteBlogPost(id: string) {
 
 // --- SUBSCRIBERS ---
 
-import { createClient } from "@/lib/supabase/server";
-
 export interface Subscriber {
     id: string;
     email: string;
@@ -244,21 +262,37 @@ export const getSubscribers = cache(async (): Promise<Subscriber[]> => {
 // --- CATEGORIES ---
 
 export const getBlogCategories = cache(async (): Promise<string[]> => {
-    return (await readJson(CATEGORIES_DB_PATH)) || [];
+    try {
+        const supabase = await createClient();
+        const { data, error } = await supabase
+            .from('BlogCategory')
+            .select('name');
+
+        if (error) throw error;
+        return (data || []).map(c => c.name);
+    } catch (error) {
+        console.error("Error fetching blog categories:", error);
+        return [];
+    }
 });
 
 export async function saveBlogCategory(category: string) {
-    const categories = await getBlogCategories();
-    if (categories.includes(category)) return;
+    const supabase = await createClient();
+    const { error } = await supabase
+        .from('BlogCategory')
+        .upsert({ name: category });
 
-    categories.push(category);
-    await fs.writeFile(CATEGORIES_DB_PATH, JSON.stringify(categories.sort(), null, 4));
+    if (error) throw error;
 }
 
 export async function deleteBlogCategory(category: string) {
-    const categories = await getBlogCategories();
-    const newCategories = categories.filter(c => c !== category);
-    await fs.writeFile(CATEGORIES_DB_PATH, JSON.stringify(newCategories, null, 4));
+    const supabase = await createClient();
+    const { error } = await supabase
+        .from('BlogCategory')
+        .delete()
+        .eq('name', category);
+
+    if (error) throw error;
 }
 
 // --- TRANSLATIONS (Dynamic) ---
@@ -270,24 +304,43 @@ export interface TranslationsDB {
     }
 }
 
-const TRANSLATIONS_DB_PATH = path.join(process.cwd(), "src/lib/translations.json");
-
 export const getDynamicTranslations = cache(async (): Promise<TranslationsDB> => {
-    return (await readJson(TRANSLATIONS_DB_PATH)) || {};
+    try {
+        const supabase = await createClient();
+        const { data, error } = await supabase
+            .from('DynamicTranslation')
+            .select('*');
+
+        if (error) throw error;
+
+        const translations: TranslationsDB = {};
+        (data || []).forEach(row => {
+            translations[row.key] = { en: row.en, es: row.es };
+        });
+        return translations;
+    } catch (error) {
+        console.error("Error fetching dynamic translations:", error);
+        return {};
+    }
 });
 
 export async function saveDynamicTranslation(key: string, en: string, es: string) {
-    const translations = await getDynamicTranslations();
-    translations[key] = { en, es };
-    await fs.writeFile(TRANSLATIONS_DB_PATH, JSON.stringify(translations, null, 4));
+    const supabase = await createClient();
+    const { error } = await supabase
+        .from('DynamicTranslation')
+        .upsert({ key, en, es, updatedAt: new Date().toISOString() });
+
+    if (error) throw error;
 }
 
 export async function deleteDynamicTranslation(key: string) {
-    const translations = await getDynamicTranslations();
-    if (translations[key]) {
-        delete translations[key];
-        await fs.writeFile(TRANSLATIONS_DB_PATH, JSON.stringify(translations, null, 4));
-    }
+    const supabase = await createClient();
+    const { error } = await supabase
+        .from('DynamicTranslation')
+        .delete()
+        .eq('key', key);
+
+    if (error) throw error;
 }
 
 // --- SETTINGS ---
@@ -309,9 +362,27 @@ const DEFAULT_SETTINGS: Settings = {
 };
 
 export const getSettings = cache(async (): Promise<Settings> => {
-    return (await readJson(SETTINGS_DB_PATH)) || DEFAULT_SETTINGS;
+    try {
+        const supabase = await createClient();
+        const { data, error } = await supabase
+            .from('Setting')
+            .select('*')
+            .eq('id', 'default')
+            .single();
+
+        if (error && error.code !== 'PGRST116') throw error; // PGRST116 is "no rows returned"
+        return data ? { socials: data.socials } : DEFAULT_SETTINGS;
+    } catch (error) {
+        console.error("Error fetching settings:", error);
+        return DEFAULT_SETTINGS;
+    }
 });
 
 export async function saveSettings(settings: Settings) {
-    await fs.writeFile(SETTINGS_DB_PATH, JSON.stringify(settings, null, 4));
+    const supabase = await createClient();
+    const { error } = await supabase
+        .from('Setting')
+        .upsert({ id: 'default', socials: settings.socials, updatedAt: new Date().toISOString() });
+
+    if (error) throw error;
 }
