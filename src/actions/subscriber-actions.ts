@@ -10,10 +10,8 @@ export async function deleteSubscriberAction(id: string) {
         });
 
         revalidatePath('/admin/subscribers');
-        return { success: true };
     } catch (error) {
         console.error("Error deleting subscriber:", error);
-        return { success: false, error: "Failed to delete subscriber" };
     }
 }
 
@@ -29,8 +27,7 @@ export async function subscribeAction(email: string) {
             await prisma.subscriber.create({
                 data: {
                     email,
-                    source: "newsletter_component" // Wait, schema doesn't have source anymore!
-                    // source removed! So just email.
+                    // source removed from schema
                 }
             });
         }
@@ -40,4 +37,11 @@ export async function subscribeAction(email: string) {
         console.error("Error subscribing:", error);
         return { success: false, error: "Failed to subscribe" };
     }
+}
+
+return { success: true };
+    } catch (error) {
+    console.error("Error subscribing:", error);
+    return { success: false, error: "Failed to subscribe" };
+}
 }
