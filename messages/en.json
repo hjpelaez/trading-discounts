@@ -1,0 +1,153 @@
+{
+    "Navbar": {
+        "home": "Home",
+        "forex": "Forex",
+        "futures": "Futures",
+        "crypto": "Crypto",
+        "getListed": "Get Listed",
+        "blog": "Blog",
+        "contact": "Contact",
+        "ai": "Ask Tidi"
+    },
+    "Hero": {
+        "pill": "🚀 The #1 Prop Firm Discount Aggregator",
+        "title": "Unlock Exclusive <highlight>Prop Firm</highlight> Deals",
+        "subtitle": "Compare huge discounts on top Crypto, Forex, and Futures prop firms. Stop paying full price for your funding challenges.",
+        "exploreCrypto": "Explore Crypto Firms",
+        "exploreForex": "View Forex Firms",
+        "futuresDeals": "Futures Deals",
+        "trustBadge": "Deals Verified: {date}"
+    },
+    "Home": {
+        "topDeals": "Top Deals Right Now",
+        "noFirms": "No firms found matching your criteria.",
+        "clearFilters": "Clear Filters",
+        "recentArticles": "Latest from our Blog",
+        "viewAll": "View all posts"
+    },
+    "Footer": {
+        "markets": "Markets",
+        "company": "Company",
+        "terms": "Terms",
+        "rights": "All rights reserved.",
+        "advice": "Trading involves significant risk. This website is for informational purposes only. Always perform your own due diligence before investing in any prop firm.",
+        "socials": "Join our Community"
+    },
+    "Common": {
+        "details": "Details",
+        "visit": "Visit",
+        "discount": "Discount",
+        "code": "Code",
+        "featured": "Featured",
+        "all": "All",
+        "verified": "Verified Deal"
+    },
+    "Compare": {
+        "title": "Compare Prop <highlight>Firms</highlight>",
+        "subtitle": "Real-time comparison of the world's best prop trading deals.",
+        "back": "Back to explore",
+        "noFirms": "No firms selected for comparison",
+        "noFirmsDesc": "Add up to 4 firms to compare their rules, pricing, and features side-by-side.",
+        "explore": "Explore Firms",
+        "metrics": {
+            "rating": "Rating",
+            "price": "Starting Price",
+            "drawdown": "Drawdown",
+            "leverage": "Max Leverage",
+            "platforms": "Platforms",
+            "features": "Top Features"
+        },
+        "selected": "firms selected",
+        "clear": "Clear all",
+        "now": "Compare Now",
+        "getDeal": "Get {discount}"
+    },
+    "Blog": {
+        "title": "Prop Trading <span class='text-primary'>Blog</span>",
+        "subtitle": "Expert guides, reviews, and industry news to help you become a funded trader.",
+        "readMore": "Read Full Article",
+        "backToList": "Back to listing",
+        "noPosts": "No articles found matching your criteria."
+    },
+    "Newsletter": {
+        "title": "Join the Alpha List",
+        "subtitle": "Get weekly exclusive prop firm discounts, news and strategies directly in your inbox.",
+        "placeholder": "Enter your trading email...",
+        "button": "Subscribe",
+        "privacy": "We promise zero spam. Only value for traders.",
+        "successTitle": "You're on the list!",
+        "successMessage": "Check your inbox for a confirmation and your first exclusive deal."
+    },
+    "Contact": {
+        "title": "Get in <span class='text-primary'>Touch</span>",
+        "subtitle": "Have questions about a prop firm or need help with a discount? Our team is here to help.",
+        "infoTitle": "Contact Information",
+        "email": "Email Us",
+        "support": "Global Support",
+        "privacyNote": "We typically respond within 12-24 hours. Your data is protected under our privacy policy.",
+        "nameLabel": "Your Name",
+        "emailLabel": "Email Address",
+        "subjectLabel": "Subject",
+        "messageLabel": "Your Message",
+        "messagePlaceholder": "Tell us how we can help...",
+        "submitButton": "Send Message",
+        "successTitle": "Message Sent!",
+        "successMessage": "Thank you for reaching out. We've received your inquiry and will get back to you shortly.",
+        "sendAnother": "Send another message"
+    },
+    "AIPromo": {
+        "title": "Unsure which firm to choose?",
+        "subtitle": "Tidi, our AI expert, can help you find the perfect match based on your trading style, budget, and goals.",
+        "button": "Ask our AI Expert"
+    },
+    "FAQ": {
+        "title": "Frequently Asked Questions",
+        "subtitle": "Everything you need to know about getting funded and managing your account.",
+        "q1": "What is a Prop Firm?",
+        "a1": "A Proprietary Trading Firm (Prop Firm) provides capital to traders who can prove their skills. You trade their money, and keep up to 90% of the profits.",
+        "q2": "How do I get funded?",
+        "a2": "Most firms require you to pass an evaluation (Challenge). Once you hit the profit target without violating drawdown rules, you get a funded account.",
+        "q3": "Are these discounts legit?",
+        "a3": "Yes! We partner directly with top firms to bring you exclusive coupon codes. All codes are verified daily.",
+        "q4": "Which firm is best for me?",
+        "a4": "Use our filters! If you trade Futures, look at Apex or Topstep. For Forex, FTMO and Blueberry are industry leaders."
+    },
+    "AI": {
+        "title": "Tidi Assistant",
+        "status": "Online & Ready",
+        "welcomeTitle": "Welcome to Trading Discounts!",
+        "welcomeText": "I'm Tidi. Ask me anything about our firms, discounts, or rules. I'm here to help you get funded.",
+        "placeholder": "Ask Tidi a question...",
+        "suggestions": {
+            "q1": "Best discount today?",
+            "q2": "Apex vs Topstep?",
+            "q3": "Firms that accept crypto?"
+        },
+        "disclaimer": "Tidi may make mistakes. Verify important info.",
+        "tooltip": "Ask Tidi Expert"
+    },
+    "PreFooter": {
+        "pill": "Join the Alpha Community",
+        "titlePart1": "Ready to get",
+        "titleHighlight": "Funded",
+        "titlePart2": "?",
+        "description": "Don't waste another dollar on full-price challenges. Join +5,000 traders getting exclusive deals daily.",
+        "explore": "Explore Deals",
+        "askAi": "Ask the AI Expert",
+        "features": {
+            "verifiedTitle": "Verified Firms",
+            "verifiedDesc": "Only legit props",
+            "instantTitle": "Instant Access",
+            "instantDesc": "No manual waiting",
+            "exclusiveTitle": "Exclusives",
+            "exclusiveDesc": "Deals you can't find elsewhere",
+            "guideTitle": "Premium Guide",
+            "guideDesc": "AI-powered recommendations"
+        }
+    },
+    "Cookies": {
+        "title": "We use cookies 🍪",
+        "description": "We use cookies to ensure you get the best experience on our website. By continuing, you verify that you are happy with this.",
+        "accept": "Accept & Continue"
+    }
+}

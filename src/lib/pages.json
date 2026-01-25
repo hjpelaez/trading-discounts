@@ -1,0 +1,77 @@
+[
+    {
+        "slug": {
+            "en": "privacy-policy",
+            "es": "politica-de-privacidad"
+        },
+        "title": {
+            "en": "Privacy Policy",
+            "es": "Política de Privacidad"
+        },
+        "content": {
+            "en": "This is the privacy policy. It currently contains placeholder text.\n\nWe value your privacy and are committed to protecting your personal data.",
+            "es": "Esta es la política de privacidad. Actualmente contiene texto de relleno.\n\nValoramos su privacidad y estamos comprometidos a proteger sus datos personales."
+        },
+        "lastUpdated": "2024-01-24T00:00:00.000Z"
+    },
+    {
+        "slug": {
+            "en": "terms-of-service",
+            "es": "terminos-de-servicio"
+        },
+        "title": {
+            "en": "Terms of Service",
+            "es": "Términos de Servicio"
+        },
+        "content": {
+            "en": "Terms of Service placeholder.\n\nBy using this website, you agree to these terms.",
+            "es": "Marcador de posición de los Términos de servicio.\n\nAl utilizar este sitio web, usted acepta estos términos."
+        },
+        "lastUpdated": "2024-01-24T00:00:00.000Z"
+    },
+    {
+        "slug": {
+            "en": "about-us",
+            "es": "sobre-nosotros"
+        },
+        "title": {
+            "en": "About Us",
+            "es": "Sobre Nosotros"
+        },
+        "content": {
+            "en": "We are the leading aggregator of Prop Firm discounts.\n\nOur mission is to help traders save money on their funding challenges.",
+            "es": "Somos el agregador líder de descuentos para Firmas de Fondeo.\n\nNuestra misión es ayudar a los traders a ahorrar dinero en sus retos de fondeo."
+        },
+        "lastUpdated": "2024-01-24T00:00:00.000Z"
+    },
+    {
+        "slug": {
+            "en": "disclaimer",
+            "es": "aviso-legal"
+        },
+        "title": {
+            "en": "Disclaimer",
+            "es": "Aviso Legal"
+        },
+        "content": {
+            "en": "Trading involves significant risk. This website is for informational purposes only.\n\nAlways perform your own due diligence before investing in any prop firm.",
+            "es": "El trading conlleva un riesgo significativo. Este sitio web es solo para fines informativos.\n\nRealice siempre su propia debida diligencia antes de invertir en cualquier firma de fondeo."
+        },
+        "lastUpdated": "2024-01-24T16:15:00.000Z"
+    },
+    {
+        "slug": {
+            "en": "contact",
+            "es": "contacto"
+        },
+        "title": {
+            "en": "Contact Us",
+            "es": "Contacto"
+        },
+        "content": {
+            "en": "Have questions about a prop firm or need help with a discount? Our team is here to help and will typically respond within 12-24 hours.",
+            "es": "¿Tiene preguntas sobre una firma de fondeo o necesita ayuda con un descuento? Nuestro equipo está aquí para ayudarle y normalmente responderá en un plazo de 12 a 24 horas."
+        },
+        "lastUpdated": "2024-01-24T16:15:00.000Z"
+    }
+]

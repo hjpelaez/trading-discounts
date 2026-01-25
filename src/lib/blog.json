@@ -1,0 +1,122 @@
+[
+    {
+        "id": "1",
+        "slug": "how-to-choose-prop-firm",
+        "title": {
+            "en": "How to Choose the Best <span class='text-primary'>Prop Firm</span> in 2026",
+            "es": "Cómo Elegir la Mejor <span class='text-primary'>Prop Firm</span> en 2026"
+        },
+        "excerpt": {
+            "en": "Stop losing money on bad firms. Learn the top 5 criteria you must check before buying any challenge.",
+            "es": "Deja de perder dinero en malas firmas. Conoce los 5 criterios clave que debes revisar antes de comprar un reto."
+        },
+        "content": {
+            "en": "<p>Choosing a prop firm is the most important decision for a funded trader...</p>",
+            "es": "<p>Elegir una firma de fondeo es la decisión más importante para un trader...</p>"
+        },
+        "date": "2026-01-15",
+        "author": "Marco Trading",
+        "imageUrl": "/images/blog/how-to-choose-prop-firm-1769297189265.png",
+        "category": "Education"
+    },
+    {
+        "id": "2",
+        "slug": "futures-vs-forex-props",
+        "title": {
+            "en": "Futures vs Forex: Which <span class='text-primary'>Funding</span> is Right for You?",
+            "es": "Futures vs Forex: ¿Qué <span class='text-primary'>Fondeo</span> es mejor para ti?"
+        },
+        "excerpt": {
+            "en": "Detailed comparison of payout structures, rules, and market hours between Futures and Forex props.",
+            "es": "Comparativa detallada de estructuras de pago, reglas y horarios entre props de Futuros y Forex."
+        },
+        "content": {
+            "en": "<p>The great debate continues. Futures offers exchange execution while Forex...</p>",
+            "es": "<p>El gran debate continúa. Los futuros ofrecen ejecución en bolsa mientras que forex...</p>"
+        },
+        "date": "2026-01-18",
+        "author": "Elena Expert",
+        "imageUrl": "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&q=80&w=800",
+        "category": "Proptrading"
+    },
+    {
+        "id": "3",
+        "slug": "mastering-drawdown-limits",
+        "title": {
+            "en": "Mastering <span class='text-primary'>Drawdown</span>: Surviving the Challenge",
+            "es": "Dominando el <span class='text-primary'>Drawdown</span>: Sobreviviendo al Reto"
+        },
+        "excerpt": {
+            "en": "Psychological strategies and risk management tips to keep your equity above the red line.",
+            "es": "Estrategias psicológicas y consejos de gestión de riesgo para mantener tu equidad por encima del límite."
+        },
+        "content": {
+            "en": "<p>Drawdown is the silent killer of funded accounts...</p>",
+            "es": "<p>El drawdown es el asesino silencioso de las cuentas fondeadas...</p>"
+        },
+        "date": "2026-01-20",
+        "author": "Alex Risk",
+        "imageUrl": "/images/blog/mastering-drawdown-limits-1769297253847.jpeg",
+        "category": "Strategy"
+    },
+    {
+        "id": "4",
+        "slug": "crypto-prop-firms-rising",
+        "title": {
+            "en": "The Rise of <span class='text-primary'>Crypto</span> Prop Trading",
+            "es": "El Auge del <span class='text-primary'>Prop Trading</span> de Cripto"
+        },
+        "excerpt": {
+            "en": "Why 2026 is the year of crypto-native prop firms. 100% USDT payouts and no KYC requirements.",
+            "es": "¿Por qué 2026 es el año de las firmas cripto? Pagos en USDT y sin requisitos de KYC."
+        },
+        "content": {
+            "en": "<p>Crypto prop firms are changing the game with leverage and high volatility...</p>",
+            "es": "<p>Las firmas cripto están cambiando el juego con apalancamiento y alta volatilidad...</p>"
+        },
+        "date": "2026-01-22",
+        "author": "Satoshi Trader",
+        "imageUrl": "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&q=80&w=800",
+        "category": "News"
+    },
+    {
+        "id": "5",
+        "slug": "trading-psychology-funding",
+        "title": {
+            "en": "The Psychology of <span class='text-primary'>Funded</span> Capital",
+            "es": "La Psicología del Capital <span class='text-primary'>Fondeado</span>"
+        },
+        "excerpt": {
+            "en": "Trading someone else's money feels different. Learn how to manage the pressure of $100k+ accounts.",
+            "es": "Operar con dinero de otros se siente diferente. Aprende a gestionar la presión de cuentas de $100k+."
+        },
+        "content": {
+            "en": "<p>Your mindset decides 90% of your performance after being funded...</p>",
+            "es": "<p>Tu mentalidad decide el 90% de tu rendimiento tras ser fondeado...</p>"
+        },
+        "date": "2026-01-23",
+        "author": "Dr. Pips",
+        "imageUrl": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800",
+        "category": "Education"
+    },
+    {
+        "id": "6",
+        "slug": "top-5-payout-methods",
+        "title": {
+            "en": "Top 5 <span class='text-primary'>Payout</span> Methods for Traders",
+            "es": "Top 5 Métodos de <span class='text-primary'>Pago</span> para Traders"
+        },
+        "excerpt": {
+            "en": "From Deel to Wise and Direct Crypto. Discover which withdrawal method saves you the most in fees.",
+            "es": "Desde Deel hasta Wise y Cripto Directo. Descubre qué método de retiro te ahorra más comisiones."
+        },
+        "content": {
+            "en": "<p>Getting paid is why we do this. But high fees can eat 10% of your profits...</p>",
+            "es": "<p>Cobrar es el objetivo. Pero las altas comisiones pueden comerse el 10% de tus beneficios...</p>"
+        },
+        "date": "2026-01-24",
+        "author": "Financial Frank",
+        "imageUrl": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80&w=800",
+        "category": "Proptrading"
+    }
+]

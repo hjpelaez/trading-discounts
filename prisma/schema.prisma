@@ -1,0 +1,33 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Firm {
+  id              String   @id @default(uuid())
+  slug            String   @unique
+  name            String
+  description     String
+  discount        String
+  code            String
+  link            String
+  categories      String   // Stored as JSON string
+  featured        Boolean  @default(false)
+  rating          Float    @default(0)
+  platforms       String   // JSON string
+  minPrice        Float
+  features        String   // JSON string
+  rules           String   // JSON string
+  maxLeverage     String
+  paymentMethods  String   // JSON string
+  trustpilotScore Float
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
