@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useFormStatus } from "react-dom";
 import { RichTextEditor } from "./rich-text-editor";
 import { useState } from "react";
-import { cn } from "@/lib/utils";
+import { cn, slugify } from "@/lib/utils";
 
 function SubmitButton() {
     const { pending } = useFormStatus();
@@ -26,6 +26,32 @@ export function PageForm({ page }: { page?: Page }) {
     const [contentEn, setContentEn] = useState(page?.content?.en || "");
     const [contentEs, setContentEs] = useState(page?.content?.es || "");
     const [activeTab, setActiveTab] = useState<"en" | "es">("en");
+
+    const [slugEn, setSlugEn] = useState(page?.slug?.en || "");
+    const [slugEs, setSlugEs] = useState(page?.slug?.es || "");
+
+    const handleTitleChangeEn = (e: React.ChangeEvent<HTMLInputElement>) => {
+        // If slug is empty or matches slugified version of previous input (heuristic), auto-update
+        // Simplest UX: Only auto-update if user hasn't manually edited slug (hard to track without extra state)
+        // OR: Only auto-update if slug is empty. 
+        // User Request: "que los slug sean los titulos..." implies strong correlation.
+        // Let's strict sync ONLY if slug is empty OR we are creating a new page?
+        // Let's just update `slug` if it's not locked.
+        // Better UX: Update slug as you type title, but stop if user edits slug field.
+        // Implementation: We'll simplisticly update slug if it was empty.
+
+        const val = e.target.value;
+        if (!slugEn || !page) {
+            setSlugEn(slugify(val));
+        }
+    };
+
+    const handleTitleChangeEs = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const val = e.target.value;
+        if (!slugEs || !page) {
+            setSlugEs(slugify(val));
+        }
+    };
 
     return (
         <form action={savePageAction} className="space-y-8 max-w-5xl mx-auto pb-20">
@@ -83,6 +109,7 @@ export function PageForm({ page }: { page?: Page }) {
                                     <input
                                         name="title_en"
                                         defaultValue={page?.title?.en}
+                                        onChange={handleTitleChangeEn}
                                         required
                                         placeholder="e.g. Terms of Service"
                                         className="w-full rounded-xl border bg-background px-4 py-3 text-lg font-bold focus:ring-2 focus:ring-primary/20 outline-none transition-all border-border/50"
@@ -92,12 +119,13 @@ export function PageForm({ page }: { page?: Page }) {
                                     <label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">URL Slug (English)</label>
                                     <input
                                         name="slug_en"
-                                        defaultValue={page?.slug?.en}
+                                        value={slugEn}
+                                        onChange={(e) => setSlugEn(e.target.value)}
                                         required
                                         placeholder="e.g. terms-of-service"
                                         className="w-full rounded-xl border bg-background px-4 py-3 font-mono text-sm focus:ring-2 focus:ring-primary/20 outline-none transition-all border-border/50"
                                     />
-                                    <p className="text-[10px] text-muted-foreground px-1">Link: tradingdiscounts.com/en/<b>slug</b></p>
+                                    <p className="text-[10px] text-muted-foreground px-1">Link: tradingdiscounts.com/en/<b>{slugEn}</b></p>
                                 </div>
                                 <div className="space-y-2">
                                     <label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Content (English)</label>
@@ -118,6 +146,7 @@ export function PageForm({ page }: { page?: Page }) {
                                     <input
                                         name="title_es"
                                         defaultValue={page?.title?.es}
+                                        onChange={handleTitleChangeEs}
                                         required
                                         placeholder="ej. Términos de Servicio"
                                         className="w-full rounded-xl border bg-background px-4 py-3 text-lg font-bold focus:ring-2 focus:ring-primary/20 outline-none transition-all border-border/50"
@@ -127,12 +156,13 @@ export function PageForm({ page }: { page?: Page }) {
                                     <label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">URL Slug (Spanish)</label>
                                     <input
                                         name="slug_es"
-                                        defaultValue={page?.slug?.es}
+                                        value={slugEs}
+                                        onChange={(e) => setSlugEs(e.target.value)}
                                         required
                                         placeholder="ej. terminos-de-servicio"
                                         className="w-full rounded-xl border bg-background px-4 py-3 font-mono text-sm focus:ring-2 focus:ring-primary/20 outline-none transition-all border-border/50"
                                     />
-                                    <p className="text-[10px] text-muted-foreground px-1">Enlace: tradingdiscounts.com/es/<b>slug</b></p>
+                                    <p className="text-[10px] text-muted-foreground px-1">Enlace: tradingdiscounts.com/es/<b>{slugEs}</b></p>
                                 </div>
                                 <div className="space-y-2">
                                     <label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Content (Spanish)</label>

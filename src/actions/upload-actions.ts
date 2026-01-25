@@ -1,54 +1,54 @@
 "use server";
 
-import fs from "fs/promises";
+import { createClient } from "@/lib/supabase/server";
 import path from "path";
-import { revalidatePath } from "next/cache";
 
 export async function uploadImageAction(formData: FormData) {
     try {
-        console.log("Upload action started");
+        console.log("Upload action started (Supabase)");
         const file = formData.get("file") as File;
         const slug = formData.get("slug") as string;
-
-        console.log(`File: ${file?.name}, Size: ${file?.size}, Slug: ${slug}`);
 
         if (!file || !slug) {
             console.error("Missing file or slug");
             return { error: "Missing file or slug" };
         }
 
-        const buffer = Buffer.from(await file.arrayBuffer());
+        const supabase = await createClient();
 
         // Clean slug and filename
         const cleanSlug = slug.toLowerCase().replace(/[^a-z0-9-]/g, "-");
-        // Get extension (default to jpg if missing, though typically present)
         const ext = path.extname(file.name) || ".jpg";
-
-        // Timestamp to prevent caching issues if replaced
         const timestamp = Date.now();
-        const filename = `${cleanSlug}-${timestamp}${ext}`;
+        const filename = `${cleanSlug}-${timestamp}${ext}`; // e.g. my-post-123456789.jpg
 
-        const uploadDir = path.join(process.cwd(), "public/images/blog");
-        const filePath = path.join(uploadDir, filename);
-        console.log(`Target path: ${filePath}`);
+        const buffer = await file.arrayBuffer();
 
-        // Ensure dir exists (redundant if mkdir run, but safe)
-        try {
-            await fs.access(uploadDir);
-        } catch {
-            console.log("Creating directory...");
-            await fs.mkdir(uploadDir, { recursive: true });
+        // Upload to 'blog-images' bucket
+        const { data, error } = await supabase
+            .storage
+            .from('blog-images')
+            .upload(filename, buffer, {
+                contentType: file.type,
+                upsert: false // Default to false, unique names preferred
+            });
+
+        if (error) {
+            console.error("Supabase Storage Error:", error);
+            return { error: "Storage upload failed: " + error.message };
         }
 
-        console.log("Writing file...");
-        await fs.writeFile(filePath, buffer);
-        console.log("File written successfully");
+        // Get Public URL
+        const { data: { publicUrl } } = supabase
+            .storage
+            .from('blog-images')
+            .getPublicUrl(filename);
 
-        const publicUrl = `/images/blog/${filename}`;
+        console.log(`File uploaded to: ${publicUrl}`);
 
         return { success: true, url: publicUrl };
     } catch (error) {
-        console.error("Upload error:", error);
+        console.error("Upload handler error:", error);
         return { error: "Failed to upload image: " + (error as Error).message };
     }
 }

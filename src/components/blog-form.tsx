@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useFormStatus } from "react-dom";
 import { RichTextEditor } from "./rich-text-editor";
 import { useState, useEffect } from "react";
-import { cn } from "@/lib/utils";
+import { cn, slugify } from "@/lib/utils";
 import { ImageUploader } from "@/components/admin/image-uploader";
 
 function SubmitButton() {
@@ -35,10 +35,14 @@ export function BlogForm({ post, categories = ["Education", "Proptrading", "Stra
     // Auto-generate slug from English title if empty
     const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!currentSlug && !post) {
-            const slug = e.target.value.toLowerCase()
-                .replace(/[^a-z0-9]+/g, '-')
-                .replace(/(^-|-$)+/g, '');
-            setCurrentSlug(slug);
+            setCurrentSlug(slugify(e.target.value));
+        }
+    };
+
+    // Also try to generate from Spanish title if English is empty and no slug exists
+    const handleTitleChangeEs = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (!currentSlug && !post) {
+            setCurrentSlug(slugify(e.target.value));
         }
     };
 
@@ -97,6 +101,7 @@ export function BlogForm({ post, categories = ["Education", "Proptrading", "Stra
                                 <input
                                     name="title_es"
                                     defaultValue={post?.title.es}
+                                    onChange={handleTitleChangeEs}
                                     required
                                     placeholder="e.g. Cómo elegir la mejor Prop Firm"
                                     className="w-full rounded-xl border bg-background px-5 py-4 text-xl font-bold focus:ring-2 focus:ring-primary/20 outline-none transition-all border-border/50"
