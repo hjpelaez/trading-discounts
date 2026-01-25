@@ -1,11 +1,12 @@
 "use client";
 
 import { saveFirmAction } from "@/actions/firm-actions";
+import { extractFirmDataFromURL } from "@/actions/ai-actions";
 import { PropFirm } from "@/lib/data";
-import { ChevronLeft, Save } from "lucide-react";
+import { ChevronLeft, Save, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { useFormStatus } from "react-dom";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 function SubmitButton() {
     const { pending } = useFormStatus();
@@ -22,6 +23,75 @@ function SubmitButton() {
 
 export function FirmForm({ firm }: { firm?: PropFirm }) {
     const [activeTab, setActiveTab] = useState("basic");
+    const [autoFillUrl, setAutoFillUrl] = useState("");
+    const [isExtracting, setIsExtracting] = useState(false);
+    const formRef = useRef<HTMLFormElement>(null);
+
+    const handleAutoFill = async () => {
+        if (!autoFillUrl.trim()) {
+            alert("Please enter a URL");
+            return;
+        }
+
+        setIsExtracting(true);
+        try {
+            const result = await extractFirmDataFromURL(autoFillUrl);
+
+            if (!result.success || !result.data) {
+                alert(`Error: ${result.error || "Failed to extract data"}`);
+                return;
+            }
+
+            const data = result.data;
+            const form = formRef.current;
+            if (!form) return;
+
+            // Helper to set form values
+            const setValue = (name: string, value: any) => {
+                const input = form.elements.namedItem(name) as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
+                if (input) {
+                    if (input.type === 'checkbox') {
+                        (input as HTMLInputElement).checked = !!value;
+                    } else if (Array.isArray(value)) {
+                        input.value = value.join(", ");
+                    } else if (value !== null && value !== undefined) {
+                        input.value = value.toString();
+                    }
+                }
+            };
+
+            // Fill all fields
+            if (data.name) setValue("name", data.name);
+            if (data.description) setValue("description", data.description);
+            if (data.rating) setValue("rating", data.rating);
+            if (data.trustpilotScore) setValue("trustpilotScore", data.trustpilotScore);
+            if (data.country) setValue("country", data.country);
+            if (data.activeYears) setValue("activeYears", data.activeYears);
+            if (data.maxAllocation) setValue("maxAllocation", data.maxAllocation);
+            if (data.broker) setValue("broker", data.broker);
+            if (data.categories) setValue("categories", data.categories);
+            if (data.platforms) setValue("platforms", data.platforms);
+            if (data.instruments) setValue("instruments", data.instruments);
+            if (data.assets) setValue("assets", data.assets);
+            if (data.minPrice) setValue("minPrice", data.minPrice);
+            if (data.maxLeverage) setValue("maxLeverage", data.maxLeverage);
+            if (data.drawdownType) setValue("drawdownType", data.drawdownType);
+            if (data.features) setValue("features", data.features);
+            if (data.rules) setValue("rules", data.rules);
+            if (data.consistencyRules) setValue("consistencyRules", data.consistencyRules);
+            if (data.prohibitedPractices) setValue("prohibitedPractices", data.prohibitedPractices);
+            if (data.paymentMethods) setValue("paymentMethods", data.paymentMethods);
+            if (data.payoutMethods) setValue("payoutMethods", data.payoutMethods);
+            if (data.payoutFrequency) setValue("payoutFrequency", data.payoutFrequency);
+            if (data.minPayout) setValue("minPayout", data.minPayout);
+
+            alert("✨ Form auto-filled successfully! Please review and adjust as needed.");
+        } catch (error: any) {
+            alert(`Error: ${error.message}`);
+        } finally {
+            setIsExtracting(false);
+        }
+    };
 
     const tabs = [
         { id: "basic", label: "Basic Info" },
@@ -31,7 +101,7 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
     ];
 
     return (
-        <form action={saveFirmAction} className="space-y-6 max-w-6xl">
+        <form ref={formRef} action={saveFirmAction} className="space-y-6 max-w-6xl">
             <input type="hidden" name="id" value={firm?.id || ""} />
 
             {/* Header */}
@@ -44,6 +114,46 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                 </div>
                 <SubmitButton />
             </div>
+
+            {/* AI Auto-Fill Section */}
+            {!firm && (
+                <div className="rounded-lg border-2 border-dashed border-primary/30 bg-primary/5 p-6">
+                    <div className="flex items-start gap-4">
+                        <Sparkles className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
+                        <div className="flex-1">
+                            <h3 className="font-semibold text-lg mb-2">✨ AI Auto-Fill (Powered by Gemini)</h3>
+                            <p className="text-sm text-muted-foreground mb-4">
+                                Paste the firm's website URL and let AI extract all the information automatically.
+                            </p>
+                            <div className="flex gap-3">
+                                <input
+                                    type="url"
+                                    value={autoFillUrl}
+                                    onChange={(e) => setAutoFillUrl(e.target.value)}
+                                    placeholder="https://propfirmtrader.com/prop-firm/blueberry-funded"
+                                    className="flex-1 rounded-md border bg-background px-4 py-2"
+                                    disabled={isExtracting}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={handleAutoFill}
+                                    disabled={isExtracting}
+                                    className="inline-flex items-center justify-center rounded-md bg-primary px-6 py-2 text-sm font-bold text-primary-foreground shadow transition-colors hover:bg-primary/90 disabled:opacity-50"
+                                >
+                                    {isExtracting ? (
+                                        <>Extracting...</>
+                                    ) : (
+                                        <>
+                                            <Sparkles className="mr-2 h-4 w-4" />
+                                            Auto-Fill
+                                        </>
+                                    )}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Tabs */}
             <div className="border-b">
