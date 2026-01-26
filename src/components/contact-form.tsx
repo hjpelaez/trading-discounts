@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import { Mail, Send, CheckCircle2, MessageSquare } from "lucide-react";
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { FadeIn } from "@/components/animations";
 import { sendContactEmailAction } from "@/actions/contact-actions";
 
@@ -61,7 +61,7 @@ export function ContactForm({ privacyNote }: { privacyNote: string }) {
                     <div className="bg-card border border-border p-8 md:p-12 rounded-3xl shadow-2xl relative overflow-hidden">
                         <AnimatePresence mode="wait">
                             {status === "success" ? (
-                                <motion.div
+                                <m.div
                                     key="success"
                                     initial={{ opacity: 0, scale: 0.9 }}
                                     animate={{ opacity: 1, scale: 1 }}
@@ -80,9 +80,9 @@ export function ContactForm({ privacyNote }: { privacyNote: string }) {
                                     >
                                         {t("sendAnother")}
                                     </button>
-                                </motion.div>
+                                </m.div>
                             ) : (
-                                <motion.form
+                                <m.form
                                     key="form"
                                     exit={{ opacity: 0, y: 20 }}
                                     onSubmit={handleSubmit}
@@ -142,7 +142,7 @@ export function ContactForm({ privacyNote }: { privacyNote: string }) {
                                     >
                                         {status === "loading" ? "..." : t("submitButton")} <Send className="h-6 w-6" />
                                     </button>
-                                </motion.form>
+                                </m.form>
                             )}
                         </AnimatePresence>
                     </div>

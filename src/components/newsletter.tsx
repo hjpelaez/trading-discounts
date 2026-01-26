@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Send, CheckCircle2, AlertCircle } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { subscribeAction } from "@/actions/subscriber-actions";
 
 export function Newsletter() {
@@ -36,7 +36,7 @@ export function Newsletter() {
             <div className="container mx-auto px-4 text-center max-w-3xl">
                 <AnimatePresence mode="wait">
                     {status === "success" ? (
-                        <motion.div
+                        <m.div
                             key="success"
                             initial={{ scale: 0.8, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
@@ -47,9 +47,9 @@ export function Newsletter() {
                             </div>
                             <h2 className="text-3xl font-bold mb-4">{t("successTitle")}</h2>
                             <p className="text-muted-foreground">{t("successMessage")}</p>
-                        </motion.div>
+                        </m.div>
                     ) : (
-                        <motion.div key="form" exit={{ opacity: 0, y: -20 }}>
+                        <m.div key="form" exit={{ opacity: 0, y: -20 }}>
                             <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight mb-6">
                                 {t("title")}
                             </h2>
@@ -95,18 +95,18 @@ export function Newsletter() {
                                 </div>
                             </form>
                             {status === "error" && (
-                                <motion.p
+                                <m.p
                                     initial={{ opacity: 0, y: -10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     className="mt-2 text-sm text-red-500 font-bold flex items-center justify-center gap-1"
                                 >
                                     <AlertCircle className="h-4 w-4" /> Error processing subscription.
-                                </motion.p>
+                                </m.p>
                             )}
                             <p className="mt-6 text-xs text-muted-foreground">
                                 {t("privacy")}
                             </p>
-                        </motion.div>
+                        </m.div>
                     )}
                 </AnimatePresence>
             </div>

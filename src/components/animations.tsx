@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import React from "react";
 
@@ -14,14 +14,14 @@ export function FadeIn({
     className?: string;
 }) {
     return (
-        <motion.div
+        <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay, ease: "easeOut" }}
             className={className}
         >
             {children}
-        </motion.div>
+        </m.div>
     );
 }
 
@@ -33,7 +33,7 @@ export function StaggerContainer({
     className?: string;
 }) {
     return (
-        <motion.div
+        <m.div
             initial="hidden"
             animate="show"
             variants={{
@@ -50,14 +50,13 @@ export function StaggerContainer({
             <AnimatePresence mode="popLayout" initial={false}>
                 {children}
             </AnimatePresence>
-        </motion.div>
+        </m.div>
     );
 }
 
 export function StaggerItem({ children, className }: { children: React.ReactNode; className?: string }) {
     return (
-        <motion.div
-            layout
+        <m.div
             variants={{
                 hidden: { opacity: 0, scale: 0.9, y: 20 },
                 show: { opacity: 1, scale: 1, y: 0 },
@@ -67,9 +66,9 @@ export function StaggerItem({ children, className }: { children: React.ReactNode
                 layout: { type: "spring", stiffness: 350, damping: 30 },
                 opacity: { duration: 0.3 }
             }}
-            className={cn("flex flex-col h-full", className)}
+            className={cn("flex flex-col", className)}
         >
             {children}
-        </motion.div>
+        </m.div>
     )
 }

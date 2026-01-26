@@ -21,6 +21,7 @@ export function Navbar() {
         { href: `/forex`, label: t('forex') },
         { href: `/futures`, label: t('futures') },
         { href: `/crypto`, label: t('crypto') },
+        { href: `/courses`, label: t('courses') },
         { href: `/blog`, label: t('blog') },
         { href: `/contact`, label: t('contact') },
     ];

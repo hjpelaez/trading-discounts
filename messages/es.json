@@ -7,6 +7,7 @@
         "getListed": "Añadir Firma",
         "blog": "Blog",
         "contact": "Contacto",
+        "courses": "Cursos",
         "ai": "Preguntar a Tidi"
     },
     "Hero": {
@@ -109,7 +110,29 @@
         "code": "Código",
         "featured": "Destacado",
         "all": "Todos",
-        "verified": "Oferta Verificada"
+        "verified": "Oferta Verificada",
+        "searchPlaceholder": "Buscar firmas...",
+        "searchCoursesPlaceholder": "Buscar cursos...",
+        "viewCourse": "Ver Curso",
+        "Levels": {
+            "Beginner": "Principiante",
+            "Intermediate": "Intermedio",
+            "Advanced": "Avanzado",
+            "All Levels": "Todos los Niveles"
+        },
+        "Categories": {
+            "General": "General",
+            "Forex": "Forex",
+            "Crypto": "Cripto",
+            "Futures": "Futuros",
+            "Options": "Opciones",
+            "Stocks": "Acciones"
+        },
+        "Languages": {
+            "English": "Inglés",
+            "Spanish": "Español",
+            "Mixed": "Mixto"
+        }
     },
     "Compare": {
         "title": "Comparar <highlight>Firmas</highlight> de Fondeo",
@@ -204,5 +227,45 @@
         "feature3Title": "Ofertas Verificadas",
         "feature3Desc": "Todos los códigos verificados diariamente",
         "footer": "© 2025 Trading Discounts. Todos los derechos reservados."
+    },
+    "AdminCourses": {
+        "createTitle": "Crear Nuevo Curso",
+        "editTitle": "Editar Curso",
+        "subtitle": "Rellena los detalles abajo. Usa el selector de idioma para traducir el contenido.",
+        "aiAutoFill": "Auto-Rellenar con IA",
+        "save": "Guardar Curso",
+        "titleLabel": "Título del Curso",
+        "descriptionLabel": "Descripción",
+        "pointsLabel": "Puntos Clave / Highlights",
+        "addPoint": "Añadir Punto",
+        "metadata": "Metadatos",
+        "idLabel": "ID (Slug)",
+        "instructorLabel": "Instructor",
+        "categoryLabel": "Categoría",
+        "audioLanguageLabel": "Idioma (Audio)",
+        "linkLabel": "Enlace del Curso",
+        "imageLabel": "Imagen del Curso",
+        "imageUploadHint": "Ingresa un ID (Slug) arriba para habilitar la subida.",
+        "featuredLabel": "Curso Destacado",
+        "pricingTitle": "Precios y Detalles",
+        "minPriceLabel": "Precio Mín ($)",
+        "ratingLabel": "Puntuación",
+        "priceLabelLabel": "Etiqueta de Precio (ej. $497, Gratis)",
+        "durationLabel": "Duración",
+        "levelLabel": "Nivel",
+        "errorSaving": "Error al guardar el curso"
+    },
+    "Admin": {
+        "dashboard": "Panel de Control",
+        "pages": "Páginas",
+        "courses": "Cursos",
+        "blog": "Blog",
+        "subscribers": "Suscriptores",
+        "translations": "Traducciones",
+        "settings": "Configuración",
+        "quickActions": "Acciones Rápidas",
+        "addFirm": "Añadir Firma",
+        "viewSite": "Ver Sitio Web",
+        "logout": "Cerrar Sesión"
     }
 }

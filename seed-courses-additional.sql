@@ -1,0 +1,125 @@
+-- Seeding 6 Additional Courses
+
+INSERT INTO "Course" (
+    id, title, description, instructor, link, "imageUrl", platform, rating, duration, featured, level, language, category, "priceLabel", "priceMin", "priceMax", "learningPoints"
+) VALUES 
+-- 10. Options Income Generation (English)
+(
+    'options-income-pro',
+    'Monthly Income with Options',
+    'Learn how to generate consistent monthly income using conservative option selling strategies. Wheel Strategy explained.',
+    'Options Alpha Style',
+    'https://example.com/options2',
+    'https://images.unsplash.com/photo-1611974765270-ca1258634369?w=800&q=80',
+    'Teachable',
+    4.7,
+    '8h',
+    false,
+    'Intermediate',
+    'English',
+    'Options',
+    '$197',
+    197,
+    null,
+    '["The Wheel Strategy", "Selling Covered Calls", "Cash Secured Puts"]'::jsonb
+),
+-- 11. Criptomonedas 101 (Spanish, Beginner)
+(
+    'cripto-basico',
+    'Criptomonedas para Principiantes',
+    'Entiende bitcoin, blockchain y cómo comprar tu primera cripto de forma segura sin caer en estafas.',
+    'Hola Cripto',
+    'https://example.com/crypto2',
+    'https://images.unsplash.com/photo-1518546305927-5a440bbabb91?w=800&q=80',
+    'Udemy',
+    4.8,
+    '5h',
+    false,
+    'Beginner',
+    'Spanish',
+    'Crypto',
+    '$19',
+    19,
+    null,
+    '["Qué es Bitcoin", "Wallets Frías vs Calientes", "Evitar Scams"]'::jsonb
+),
+-- 12. Volume Profile Mastery (English, Advanced)
+(
+    'vol-profile-master',
+    'Volume Profile & Order Flow',
+    'See where the big money is hiding. Use Volume Profile (VPVR) to find key support and resistance levels.',
+    'Trader Dale',
+    'https://example.com/volprofile',
+    'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=800&q=80',
+    'Private',
+    4.9,
+    '15h',
+    true,
+    'Advanced',
+    'English',
+    'Futures',
+    '$299',
+    299,
+    null,
+    '["Volume Profile Shapes", "VWAP Strategies", "Footprint Charts"]'::jsonb
+),
+-- 13. Trading Institucional (Spanish, Advanced)
+(
+    'institucional-latam',
+    'Trading Institucional Avanzado',
+    'Descubre cómo operan los bancos centrales y los fondos de cobertura. Deja de operar como un minorista.',
+    'Forex Latam',
+    'https://example.com/insti',
+    'https://images.unsplash.com/photo-1642543492481-44e81e3914a7?w=800&q=80',
+    'Hotmart',
+    4.6,
+    '20h',
+    true,
+    'Advanced',
+    'Spanish',
+    'Forex',
+    '$497',
+    497,
+    null,
+    '["Manipulación de Mercado", "Niveles Institucionales", "Correlaciones"]'::jsonb
+),
+-- 14. Stock Market Investing (English, Long Term)
+(
+    'value-investing-101',
+    'Value Investing Fundamentals',
+    'Warren Buffett style investing. How to read balance sheets and find undervalued companies.',
+    'Investing Academy',
+    'https://example.com/value',
+    'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=800&q=80',
+    'Coursera',
+    4.5,
+    '10h',
+    false,
+    'Beginner',
+    'English',
+    'Stocks',
+    'Free',
+    0,
+    null,
+    '["Financial Statement Analysis", "Moat & Competitive Advantage", "Intrinsic Value Calculation"]'::jsonb
+),
+-- 15. Bot de Trading en 1 Hora (Spanish, Algo)
+(
+    'bot-trading-express',
+    'Crea tu primer Bot de Trading',
+    'Taller práctico para programar un bot sencillo en TradingView (Pine Script) y automatizar alertas.',
+    'PrograTrading',
+    'https://example.com/botap',
+    'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=800&q=80',
+    'YouTube',
+    4.7,
+    '2h',
+    false,
+    'Intermediate',
+    'Spanish',
+    'General',
+    'Gratis',
+    0,
+    null,
+    '["Intro a Pine Script", "Backtesting Básico", "Conectar Alertas"]'::jsonb
+);

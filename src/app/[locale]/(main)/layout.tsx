@@ -24,7 +24,7 @@ export default async function MainLayout({
                 {children}
 
                 {/* Newsletter Section */}
-                <section className="container mx-auto px-4 md:px-6 mt-24 mb-24">
+                <section className="container mx-auto px-4 md:px-6 mb-24">
                     <Newsletter />
                 </section>
 

@@ -339,6 +339,110 @@ export async function deleteDynamicTranslation(key: string) {
     if (error) throw error;
 }
 
+// --- COURSES ---
+
+export interface CourseDB {
+    id: string;
+    title: { en: string; es: string };
+    description: { en: string; es: string };
+    instructor: string;
+    link: string;
+    imageUrl?: string | null;
+    platform: string;
+    rating: number;
+    duration?: string;
+    featured?: boolean;
+    level: string;
+    language: string;
+    category: string;
+    priceLabel: string;
+    priceMin?: number;
+    priceMax?: number;
+    learningPoints?: { en: string[]; es: string[] };
+    curriculum?: any[]; // JSON
+}
+
+export const getCourses = cache(async (filters?: { category?: string; language?: string; minPrice?: number; maxPrice?: number; page?: number; pageSize?: number }): Promise<CourseDB[]> => {
+    try {
+        const supabase = createStaticClient();
+        let query = supabase
+            .from('Course')
+            .select('*')
+            .order('featured', { ascending: false })
+            .order('rating', { ascending: false });
+
+        if (filters?.category && filters.category !== 'All') {
+            query = query.ilike('category', filters.category);
+        }
+
+        if (filters?.language && filters.language !== 'All') {
+            query = query.eq('language', filters.language);
+        }
+
+        if (filters?.minPrice !== undefined) {
+            query = query.gte('priceMin', filters.minPrice);
+        }
+
+        if (filters?.maxPrice !== undefined) {
+            query = query.lte('priceMin', filters.maxPrice);
+        }
+
+        const page = filters?.page || 1;
+        const pageSize = filters?.pageSize || 12;
+        const from = (page - 1) * pageSize;
+        const to = from + pageSize - 1;
+
+        query = query.range(from, to);
+
+        const { data, error } = await query;
+
+        if (error) throw error;
+        return data || [];
+    } catch (error) {
+        console.error("Error fetching courses from DB:", error);
+        return [];
+    }
+});
+
+export async function getCourseById(id: string): Promise<CourseDB | undefined> {
+    try {
+        const supabase = createStaticClient();
+        const { data, error } = await supabase
+            .from('Course')
+            .select('*')
+            .eq('id', id)
+            .single();
+
+        if (error) throw error;
+        return data || undefined;
+    } catch (error) {
+        console.error("Error fetching course:", error);
+        return undefined;
+    }
+}
+
+export async function saveCourse(course: CourseDB) {
+    const supabase = await createClient();
+    const { error } = await supabase
+        .from('Course')
+        .upsert({
+            ...course,
+            updatedAt: new Date().toISOString()
+        });
+
+    if (error) throw error;
+}
+
+export async function deleteCourse(id: string) {
+    const supabase = await createClient();
+    const { error } = await supabase
+        .from('Course')
+        .delete()
+        .eq('id', id);
+
+    if (error) throw error;
+}
+
 // --- SETTINGS ---
 
 export interface Settings {

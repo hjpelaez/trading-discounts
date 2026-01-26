@@ -7,6 +7,7 @@
         "getListed": "Get Listed",
         "blog": "Blog",
         "contact": "Contact",
+        "courses": "Courses",
         "ai": "Ask Tidi"
     },
     "Hero": {
@@ -109,7 +110,29 @@
         "code": "Code",
         "featured": "Featured",
         "all": "All",
-        "verified": "Verified Deal"
+        "verified": "Verified Deal",
+        "searchPlaceholder": "Search firms...",
+        "searchCoursesPlaceholder": "Search courses...",
+        "viewCourse": "View Course",
+        "Levels": {
+            "Beginner": "Beginner",
+            "Intermediate": "Intermediate",
+            "Advanced": "Advanced",
+            "All Levels": "All Levels"
+        },
+        "Categories": {
+            "General": "General",
+            "Forex": "Forex",
+            "Crypto": "Crypto",
+            "Futures": "Futures",
+            "Options": "Options",
+            "Stocks": "Stocks"
+        },
+        "Languages": {
+            "English": "English",
+            "Spanish": "Spanish",
+            "Mixed": "Mixed"
+        }
     },
     "Compare": {
         "title": "Compare Prop <highlight>Firms</highlight>",
@@ -204,5 +227,45 @@
         "feature3Title": "Verified Deals",
         "feature3Desc": "All codes verified daily",
         "footer": "© 2025 Trading Discounts. All rights reserved."
+    },
+    "AdminCourses": {
+        "createTitle": "Create New Course",
+        "editTitle": "Edit Course",
+        "subtitle": "Fill in the details below. Use the language switcher to translate content.",
+        "aiAutoFill": "AI Auto-Fill",
+        "save": "Save Course",
+        "titleLabel": "Course Title",
+        "descriptionLabel": "Description",
+        "pointsLabel": "Learning Points / Highlights",
+        "addPoint": "Add Point",
+        "metadata": "Metadata",
+        "idLabel": "ID (Slug)",
+        "instructorLabel": "Instructor",
+        "categoryLabel": "Category",
+        "audioLanguageLabel": "Language (Audio)",
+        "linkLabel": "Course Link",
+        "imageLabel": "Course Image",
+        "imageUploadHint": "Enter an ID (Slug) above to enable image upload.",
+        "featuredLabel": "Featured Course",
+        "pricingTitle": "Pricing & Details",
+        "minPriceLabel": "Min Price ($)",
+        "ratingLabel": "Review Rating",
+        "priceLabelLabel": "Price Label (e.g. $497, Free)",
+        "durationLabel": "Duration",
+        "levelLabel": "Level",
+        "errorSaving": "Error saving course"
+    },
+    "Admin": {
+        "dashboard": "Dashboard",
+        "pages": "Pages",
+        "courses": "Courses",
+        "blog": "Blog",
+        "subscribers": "Subscribers",
+        "translations": "Translations",
+        "settings": "Settings",
+        "quickActions": "Quick Actions",
+        "addFirm": "Add Firm",
+        "viewSite": "View Website",
+        "logout": "Log Out"
     }
 }

@@ -3,7 +3,7 @@
 import { useComparison } from "@/lib/hooks/use-comparison";
 import { Link as LocalizedLink } from "@/i18n/routing";
 import { X, ArrowRight, BarChart3 } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 
@@ -18,7 +18,7 @@ export function ComparisonBar() {
     return (
         <AnimatePresence>
             {comparisonList.length > 0 && (
-                <motion.div
+                <m.div
                     initial={{ y: 100, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: 100, opacity: 0 }}
@@ -64,7 +64,7 @@ export function ComparisonBar() {
                             </LocalizedLink>
                         </div>
                     </div>
-                </motion.div>
+                </m.div>
             )}
         </AnimatePresence>
     );

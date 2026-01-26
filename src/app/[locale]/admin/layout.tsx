@@ -1,7 +1,8 @@
-import { LayoutDashboard, PlusCircle, Globe, FileText, Users, LogOut } from "lucide-react";
+import { LayoutDashboard, PlusCircle, Globe, FileText, Users, LogOut, GraduationCap } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 
 export default async function AdminLayout({
     children,
@@ -10,6 +11,7 @@ export default async function AdminLayout({
 }) {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
+    const t = await getTranslations("Admin");
 
     if (!user) {
         redirect('/auth/login');
@@ -28,38 +30,42 @@ export default async function AdminLayout({
                 <nav className="flex-1 p-4 space-y-2">
                     <Link href="/admin" className="flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-accent hover:text-accent-foreground transition-all">
                         <LayoutDashboard className="h-4 w-4" />
-                        Panel de Control
+                        {t('dashboard')}
                     </Link>
                     <Link href="/admin/pages" className="flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-accent hover:text-accent-foreground transition-all">
                         <FileText className="h-4 w-4" />
-                        Páginas
+                        {t('pages')}
+                    </Link>
+                    <Link href="/admin/courses" className="flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-accent hover:text-accent-foreground transition-all">
+                        <GraduationCap className="h-4 w-4" />
+                        {t('courses')}
                     </Link>
                     <Link href="/admin/blog" className="flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-accent hover:text-accent-foreground transition-all">
                         <FileText className="h-4 w-4" />
-                        Blog
+                        {t('blog')}
                     </Link>
                     <Link href="/admin/subscribers" className="flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-accent hover:text-accent-foreground transition-all">
                         <Users className="h-4 w-4" />
-                        Suscriptores
+                        {t('subscribers')}
                     </Link>
                     <Link href="/admin/translations" className="flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-accent hover:text-accent-foreground transition-all">
                         <Globe className="h-4 w-4" />
-                        Traducciones
+                        {t('translations')}
                     </Link>
                     <Link href="/admin/settings" className="flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-accent hover:text-accent-foreground transition-all">
                         <Users className="h-4 w-4" />
-                        Configuración
+                        {t('settings')}
                     </Link>
                     <div className="pt-4 pb-2 px-4 text-xs font-black uppercase tracking-widest text-muted-foreground">
-                        Acciones Rápidas
+                        {t('quickActions')}
                     </div>
                     <Link href="/admin/firms/new" className="flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-accent hover:text-accent-foreground transition-all">
                         <PlusCircle className="h-4 w-4" />
-                        Añadir Firma
+                        {t('addFirm')}
                     </Link>
                     <Link href="/" target="_blank" className="flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-accent hover:text-accent-foreground transition-all text-muted-foreground">
                         <Globe className="h-4 w-4" />
-                        Ver Sitio Web
+                        {t('viewSite')}
                     </Link>
                 </nav>
 
@@ -73,7 +79,7 @@ export default async function AdminLayout({
                             <button
                                 type="submit"
                                 className="p-2 hover:bg-accent rounded-lg transition-colors"
-                                title="Cerrar sesión"
+                                title={t('logout')}
                             >
                                 <LogOut className="h-4 w-4" />
                             </button>

@@ -2,6 +2,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { LazyMotionProvider } from "@/components/providers/lazy-motion-provider";
 import "../globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -23,7 +24,9 @@ export default async function LocaleLayout({
         suppressHydrationWarning
       >
         <NextIntlClientProvider messages={messages}>
-          {children}
+          <LazyMotionProvider>
+            {children}
+          </LazyMotionProvider>
         </NextIntlClientProvider>
       </body>
     </html>

@@ -5,7 +5,7 @@ import { Save, Search, AlertCircle, ChevronDown, ChevronRight, Trash2, Wand2, Ro
 import { saveTranslationAction, deleteTranslationAction } from "@/actions/translation-actions";
 import { FadeIn } from "@/components/animations";
 import { cn } from "@/lib/utils";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 
 interface TranslationsManagerProps {
     allKeys: string[];
@@ -174,7 +174,7 @@ function TranslationGroup({ group, keys, isExpanded, onToggle, data }: Translati
 
             <AnimatePresence>
                 {isExpanded && (
-                    <motion.div
+                    <m.div
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
@@ -189,7 +189,7 @@ function TranslationGroup({ group, keys, isExpanded, onToggle, data }: Translati
                                 />
                             ))}
                         </div>
-                    </motion.div>
+                    </m.div>
                 )}
             </AnimatePresence>
         </div>

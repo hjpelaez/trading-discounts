@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Sparkles, ArrowRight, ShieldCheck, Zap, Star } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

@@ -1,7 +1,7 @@
 import { getFirms, getBlogPosts, getSubscribers } from "@/lib/db";
 import { deleteFirmAction } from "@/actions/firm-actions";
 import Link from "next/link";
-import { Edit, Trash2, Plus, Building2, FileText, Users, TrendingUp } from "lucide-react";
+import { Pencil, Trash2, PlusCircle, Building2, FileText, Users, TrendingUp, ExternalLink } from "lucide-react";
 import { FadeIn } from "@/components/animations";
 import { GrowthChart } from "@/components/admin/growth-chart";
 
@@ -20,14 +20,14 @@ export default async function AdminDashboard() {
         <div className="space-y-10">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-black tracking-tight">Panel de Control</h1>
+                    <h1 className="text-3xl font-bold tracking-tight">Panel de Control</h1>
                     <p className="text-muted-foreground text-sm">Bienvenido de nuevo. Aquí tienes un resumen de tu sitio.</p>
                 </div>
                 <Link
                     href="/admin/firms/new"
-                    className="inline-flex items-center justify-center rounded-xl bg-primary px-5 py-2.5 text-sm font-black text-primary-foreground shadow-lg shadow-primary/20 hover:scale-105 transition-all active:scale-95"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground font-bold text-sm hover:bg-primary/90 transition-colors"
                 >
-                    <Plus className="mr-2 h-4 w-4" /> Añadir Firma
+                    <PlusCircle className="h-4 w-4" /> Añadir Firma
                 </Link>
             </div>
 
@@ -65,39 +65,47 @@ export default async function AdminDashboard() {
                         <h2 className="text-xl font-bold tracking-tight">Gestionar Firmas</h2>
                         <p className="text-xs text-muted-foreground font-mono">{firms.length} entradas</p>
                     </div>
-                    <div className="rounded-2xl border bg-card overflow-hidden shadow-sm">
-                        <table className="w-full text-sm text-left border-collapse">
-                            <thead className="bg-muted/50 text-muted-foreground uppercase font-black tracking-wider text-[10px] border-b">
+                    <div className="rounded-xl border bg-card shadow-sm overflow-hidden">
+                        <table className="w-full text-sm text-left">
+                            <thead className="bg-muted/50 border-b">
                                 <tr>
-                                    <th className="px-6 py-4">Nombre</th>
-                                    <th className="px-6 py-4">Código</th>
-                                    <th className="px-6 py-4">Descuento</th>
-                                    <th className="px-6 py-4">Puntuación</th>
-                                    <th className="px-6 py-4 text-right">Acciones</th>
+                                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Nombre</th>
+                                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Código</th>
+                                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Descuento</th>
+                                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Puntuación</th>
+                                    <th className="h-12 px-4 text-right align-middle font-medium text-muted-foreground">Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-border">
+                            <tbody>
                                 {firms.map((firm) => (
-                                    <tr key={firm.id} className="hover:bg-muted/20 transition-colors">
-                                        <td className="px-6 py-4 font-bold">{firm.name}</td>
-                                        <td className="px-6 py-4"><span className="bg-muted px-2 py-1 rounded font-mono text-xs text-muted-foreground">{firm.code}</span></td>
-                                        <td className="px-6 py-4 text-primary font-black">{firm.discount}</td>
-                                        <td className="px-6 py-4">
+                                    <tr key={firm.id} className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                                        <td className="p-4 align-middle font-bold">{firm.name}</td>
+                                        <td className="p-4 align-middle"><span className="bg-muted px-2 py-1 rounded font-mono text-xs text-muted-foreground">{firm.code}</span></td>
+                                        <td className="p-4 align-middle text-primary font-black">{firm.discount}</td>
+                                        <td className="p-4 align-middle">
                                             <div className="flex items-center text-yellow-500 font-bold">★ {firm.rating}</div>
                                         </td>
-                                        <td className="px-6 py-4 text-right">
-                                            <div className="flex items-center justify-end gap-1">
+                                        <td className="p-4 align-middle text-right">
+                                            <div className="flex items-center justify-end gap-2">
+                                                <Link
+                                                    href={firm.link}
+                                                    target="_blank"
+                                                    title="Visitar Web"
+                                                    className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+                                                >
+                                                    <ExternalLink className="h-4 w-4" />
+                                                </Link>
                                                 <Link
                                                     href={`/admin/firms/${firm.id}`}
-                                                    className="p-2 hover:bg-muted hover:text-primary rounded-lg transition-colors"
+                                                    className="p-2 text-blue-500 hover:bg-blue-50 rounded-md transition-colors"
                                                     title="Editar"
                                                 >
-                                                    <Edit className="h-4 w-4" />
+                                                    <Pencil className="h-4 w-4" />
                                                 </Link>
                                                 <form action={deleteFirmAction.bind(null, firm.id)}>
                                                     <button
                                                         type="submit"
-                                                        className="p-2 hover:bg-red-500/10 hover:text-red-500 rounded-lg transition-colors"
+                                                        className="p-2 text-red-500 hover:bg-red-50 rounded-md transition-colors"
                                                         title="Eliminar"
                                                     >
                                                         <Trash2 className="h-4 w-4" />

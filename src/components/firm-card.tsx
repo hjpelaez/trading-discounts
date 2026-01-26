@@ -10,7 +10,7 @@ import { useFavorites } from "@/lib/hooks/use-favorites";
 import { useComparison } from "@/lib/hooks/use-comparison";
 import { useTranslations } from "next-intl";
 import confetti from "canvas-confetti";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { m, useMotionValue, useSpring, useTransform } from "framer-motion";
 
 interface FirmCardProps {
     firm: PropFirm;
@@ -62,7 +62,7 @@ export function FirmCard({ firm, className }: FirmCardProps) {
     };
 
     return (
-        <motion.div
+        <m.div
             layout
             onMouseMove={handleMouseMove}
             className={cn(
@@ -72,7 +72,7 @@ export function FirmCard({ firm, className }: FirmCardProps) {
             )}
         >
             {/* Cursor Tracking Glow */}
-            <motion.div
+            <m.div
                 className="pointer-events-none absolute -inset-px opacity-0 transition-opacity group-hover:opacity-100"
                 style={{
                     background: useTransform(
@@ -198,6 +198,6 @@ export function FirmCard({ firm, className }: FirmCardProps) {
                     </div>
                 </div>
             </div>
-        </motion.div>
+        </m.div>
     );
 }

@@ -81,15 +81,8 @@ export async function middleware(request: NextRequest) {
     if (request.nextUrl.pathname.includes('/admin')) {
         const { data: { user }, error } = await supabase.auth.getUser()
 
-        console.log('Middleware - Admin route check:', {
-            path: request.nextUrl.pathname,
-            hasUser: !!user,
-            error: error?.message
-        })
-
         if (!user || error) {
             const loginUrl = new URL(`/${locale}/auth/login`, request.url)
-            console.log('Redirecting to:', loginUrl.toString())
             return NextResponse.redirect(loginUrl)
         }
     }

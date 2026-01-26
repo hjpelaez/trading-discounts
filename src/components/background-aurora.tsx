@@ -1,12 +1,12 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 export function BackgroundAurora() {
     return (
         <div className="absolute inset-0 overflow-hidden -z-10 pointer-events-none select-none">
             {/* Main Aurora Blobs */}
-            <motion.div
+            <m.div
                 animate={{
                     x: [0, 40, 0],
                     y: [0, 60, 0],
@@ -20,7 +20,7 @@ export function BackgroundAurora() {
                 }}
                 className="absolute -top-[20%] -left-[10%] w-[60%] h-[60%] rounded-full bg-primary/20 blur-[120px]"
             />
-            <motion.div
+            <m.div
                 animate={{
                     x: [0, -30, 0],
                     y: [0, -50, 0],
@@ -34,7 +34,7 @@ export function BackgroundAurora() {
                 }}
                 className="absolute -bottom-[20%] -right-[10%] w-[50%] h-[50%] rounded-full bg-blue-500/20 blur-[120px]"
             />
-            <motion.div
+            <m.div
                 animate={{
                     x: [0, 50, 0],
                     y: [0, -30, 0],

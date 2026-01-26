@@ -2,7 +2,7 @@ import { getFirms } from "@/lib/db";
 import { FirmCard } from "@/components/firm-card";
 import { SearchInput } from "@/components/search-input";
 import { FilterBar } from "@/components/filter-bar";
-import { StaggerContainer, StaggerItem } from "@/components/animations";
+import { StaggerContainer, StaggerItem, FadeIn } from "@/components/animations";
 import { AIPromo } from "@/components/ai-promo";
 import { BackgroundAurora } from "@/components/background-aurora";
 import { getTranslations } from "next-intl/server";
@@ -52,9 +52,10 @@ export default async function CryptoPage({ searchParams }: { searchParams: Promi
                 </div>
             </div>
 
-            <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
+            <FadeIn className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
+                <h2 className="text-3xl font-bold tracking-tight">{tHome('topDeals')}</h2>
                 <SearchInput />
-            </div>
+            </FadeIn>
 
             <div className="mb-12">
                 <FilterBar allFirms={allFirms} />
