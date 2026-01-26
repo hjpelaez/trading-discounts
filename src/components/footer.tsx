@@ -76,7 +76,7 @@ export function Footer({ settings }: { settings: Settings }) {
                         </div>
                     </div>
 
-                    <div className="max-w-4xl mx-auto space-y-4">
+                    <div className="w-full space-y-4">
                         <p className="text-[10px] md:text-sm text-muted-foreground/60 text-center leading-relaxed font-medium">
                             {t('advice')}
                         </p>
