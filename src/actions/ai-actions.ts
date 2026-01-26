@@ -60,10 +60,17 @@ Return ONLY the JSON object, no markdown, no explanation.`
             }
         );
 
+        if (!geminiResponse.ok) {
+            const errorText = await geminiResponse.text();
+            console.error("Gemini API Error:", geminiResponse.status, errorText);
+            throw new Error(`Gemini API Error: ${geminiResponse.statusText} (${geminiResponse.status})`);
+        }
+
         const data = await geminiResponse.json();
 
         if (!data.candidates || !data.candidates[0]?.content?.parts?.[0]?.text) {
-            throw new Error("Invalid response from Gemini API");
+            console.error("Gemini Invalid Response:", JSON.stringify(data, null, 2));
+            throw new Error("Invalid response from Gemini API: No candidates returned");
         }
 
         const extractedText = data.candidates[0].content.parts[0].text;
@@ -141,10 +148,17 @@ Return ONLY the JSON object, no markdown.`
             }
         );
 
+        if (!geminiResponse.ok) {
+            const errorText = await geminiResponse.text();
+            console.error("Gemini API Error:", geminiResponse.status, errorText);
+            throw new Error(`Gemini API Error: ${geminiResponse.statusText} (${geminiResponse.status})`);
+        }
+
         const data = await geminiResponse.json();
 
         if (!data.candidates || !data.candidates[0]?.content?.parts?.[0]?.text) {
-            throw new Error("Invalid response from Gemini API");
+            console.error("Gemini Invalid Response:", JSON.stringify(data, null, 2));
+            throw new Error("Invalid response from Gemini API: No candidates returned");
         }
 
         const extractedText = data.candidates[0].content.parts[0].text;
