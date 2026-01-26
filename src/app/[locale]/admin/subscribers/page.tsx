@@ -20,20 +20,20 @@ export default async function SubscribersPage() {
     };
 
     return (
-        <div className="space-y-6">
-            <div className="flex items-center justify-between">
-                <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Suscriptores</h1>
-                    <p className="text-muted-foreground text-sm">
-                        Gestiona los leads capturados desde la landing page.
-                    </p>
+        <FadeIn>
+            <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h1 className="text-3xl font-bold tracking-tight">Suscriptores</h1>
+                        <p className="text-muted-foreground text-sm">
+                            Gestiona los leads capturados desde la landing page.
+                        </p>
+                    </div>
+                    <div className="flex gap-2">
+                        <ExportCSVButton />
+                    </div>
                 </div>
-                <div className="flex gap-2">
-                    <ExportCSVButton />
-                </div>
-            </div>
 
-            <FadeIn>
                 <div className="rounded-xl border bg-card shadow-sm overflow-hidden">
                     <div className="p-4 border-b flex items-center justify-between bg-muted/50">
                         <div className="flex items-center gap-2">
@@ -98,7 +98,7 @@ export default async function SubscribersPage() {
                         </tbody>
                     </table>
                 </div>
-            </FadeIn>
-        </div>
+            </div>
+        </FadeIn>
     );
 }

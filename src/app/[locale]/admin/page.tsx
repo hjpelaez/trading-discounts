@@ -1,7 +1,7 @@
-import { getFirms, getBlogPosts, getSubscribers } from "@/lib/db";
+import { getFirms, getBlogPosts, getSubscribers, getCourses } from "@/lib/db";
 import { deleteFirmAction } from "@/actions/firm-actions";
 import Link from "next/link";
-import { Pencil, Trash2, PlusCircle, Building2, FileText, Users, TrendingUp, ExternalLink } from "lucide-react";
+import { Pencil, Trash2, PlusCircle, Building2, FileText, Users, TrendingUp, ExternalLink, GraduationCap } from "lucide-react";
 import { FadeIn } from "@/components/animations";
 import { GrowthChart } from "@/components/admin/growth-chart";
 
@@ -9,9 +9,11 @@ export default async function AdminDashboard() {
     const firms = await getFirms();
     const posts = await getBlogPosts();
     const subscribers = await getSubscribers();
+    const courses = await getCourses();
 
     const stats = [
         { label: "Firmas Totales", value: firms.length, icon: Building2, color: "text-blue-500", bg: "bg-blue-500/10" },
+        { label: "Cursos", value: courses.length, icon: GraduationCap, color: "text-violet-500", bg: "bg-violet-500/10" },
         { label: "Artículos Blog", value: posts.length, icon: FileText, color: "text-indigo-500", bg: "bg-indigo-500/10" },
         { label: "Suscriptores", value: subscribers.length, icon: Users, color: "text-green-500", bg: "bg-green-500/10" },
     ];
@@ -33,7 +35,7 @@ export default async function AdminDashboard() {
 
             {/* Stats Grid */}
             <FadeIn>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     {stats.map((stat) => (
                         <div key={stat.label} className="bg-card border rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
                             <div className="flex items-center justify-between relative z-10">
