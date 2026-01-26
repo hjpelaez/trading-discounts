@@ -3,6 +3,7 @@ import { deleteFirmAction } from "@/actions/firm-actions";
 import Link from "next/link";
 import { Edit, Trash2, Plus, Building2, FileText, Users, TrendingUp } from "lucide-react";
 import { FadeIn } from "@/components/animations";
+import { GrowthChart } from "@/components/admin/growth-chart";
 
 export default async function AdminDashboard() {
     const firms = await getFirms();
@@ -44,9 +45,15 @@ export default async function AdminDashboard() {
                                     <stat.icon className="h-6 w-6" />
                                 </div>
                             </div>
-                            <div className="mt-4 flex items-center gap-2 text-[10px] font-bold text-green-500 uppercase tracking-tighter">
-                                <TrendingUp className="h-3 w-3" /> Datos en Vivo
-                            </div>
+
+                            {/* Render Chart only for Subscribers card */}
+                            {stat.label === "Suscriptores" ? (
+                                <GrowthChart data={subscribers} />
+                            ) : (
+                                <div className="mt-4 flex items-center gap-2 text-[10px] font-bold text-green-500 uppercase tracking-tighter">
+                                    <TrendingUp className="h-3 w-3" /> Datos en Vivo
+                                </div>
+                            )}
                         </div>
                     ))}
                 </div>
