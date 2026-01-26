@@ -23,7 +23,76 @@
         "noFirms": "No se encontraron firmas con esos filtros.",
         "clearFilters": "Limpiar Filtros",
         "recentArticles": "Último en el Blog",
-        "viewAll": "Leer artículo completo"
+        "viewAll": "Ver todos los artículos",
+        "readArticle": "Leer artículo",
+        "testimonialsTitle": "Lo Que Dicen Nuestros Traders",
+        "testimonialsSubtitle": "Únete a miles de traders que encontraron su oferta perfecta"
+    },
+    "AIPromo": {
+        "title": "¿No sabes qué empresa elegir?",
+        "subtitle": "Tidi, nuestro experto en IA, puede ayudarte a encontrar la opción perfecta según tu estilo de trading, presupuesto y metas.",
+        "button": "Preguntar al Experto IA"
+    },
+    "Testimonials": {
+        "testimonial1Name": "Marcus Chen",
+        "testimonial1Role": "Trader de Futuros",
+        "testimonial1Text": "Encontré un increíble descuento del 40% en mi desafío FTMO. Pasé en mi primer intento y ahora opero una cuenta de $100k. ¡Este sitio literalmente se pagó solo!",
+        "testimonial2Name": "Sarah Williams",
+        "testimonial2Role": "Scalper de Forex",
+        "testimonial2Text": "Al principio era escéptica, ¡pero los códigos realmente funcionan! Ahorré más de $500 en mi evaluación de Blueberry Markets. La herramienta de comparación me ayudó a elegir la firma perfecta.",
+        "testimonial3Name": "Diego Ramírez",
+        "testimonial3Role": "Trader de Cripto",
+        "testimonial3Text": "El mejor agregador de prop firms que existe. Interfaz limpia, ofertas verificadas, y el asistente IA me ayudó a entender qué firma se adapta a mi estilo. ¡Muy recomendado!",
+        "testimonial4Name": "Emma Thompson",
+        "testimonial4Role": "Day Trader",
+        "testimonial4Text": "Solo el newsletter vale la pena suscribirse. Recibo ofertas exclusivas antes de que sean públicas. Me fondearon con Apex Trader Funding con 35% de descuento gracias a sus códigos de acceso anticipado.",
+        "testimonial5Name": "Alex Kumar",
+        "testimonial5Role": "Swing Trader",
+        "testimonial5Text": "Comparé 4 firmas lado a lado y encontré la que tiene las mejores reglas de drawdown para mi estrategia. Los detalles me ahorraron horas de investigación. ¡Ahora opero una cuenta fondeada!",
+        "testimonial6Name": "Olivia Martinez",
+        "testimonial6Role": "Trader de Opciones",
+        "testimonial6Text": "Finalmente, un sitio que realmente verifica las prop firms. No hay empresas sospechosas aquí. Usé un código de descuento del 50% para TopstepX y no podría estar más feliz con mi decisión."
+    },
+    "Newsletter": {
+        "title": "Mantente Actualizado",
+        "subtitle": "Recibe descuentos exclusivos y estrategias de trading.",
+        "placeholder": "Ingresa tu email",
+        "namePlaceholder": "Tu nombre",
+        "button": "Suscribirse",
+        "privacy": "Respetamos tu privacidad. Cancela en cualquier momento.",
+        "successTitle": "¡Listo!",
+        "successMessage": "Revisa tu bandeja de entrada para ofertas exclusivas."
+    },
+    "FAQ": {
+        "title": "Preguntas Frecuentes",
+        "subtitle": "Todo lo que necesitas saber sobre financiamiento y gestión de cuentas.",
+        "q1": "¿Qué es una Firma de Fondeo?",
+        "a1": "Una Firma de Trading Propietario (Prop Firm) ofrece capital a traders que demuestran sus habilidades. Operas su dinero y conservas hasta el 90% de las ganancias.",
+        "q2": "¿Cómo obtengo financiamiento?",
+        "a2": "La mayoría de las firmas requieren que pases una evaluación (Challenge). Si alcanzas el objetivo de ganancias sin violar las reglas de pérdida, obtienes una cuenta financiada.",
+        "q3": "¿Son reales estos descuentos?",
+        "a3": "¡Sí! Nos asociamos directamente con las mejores firmas para traerte códigos exclusivos. Todos los cupones se verifican a diario.",
+        "q4": "¿Qué firma es mejor para mí?",
+        "a4": "¡Usa nuestros filtros! Si operas Futuros, mira Apex o Topstep. Para Forex, FTMO y Blueberry son líderes de la industria."
+    },
+    "PreFooter": {
+        "pill": "Únete a la Comunidad Alpha",
+        "titlePart1": "¿Listo para ser",
+        "titleHighlight": "Fondeado",
+        "titlePart2": "?",
+        "description": "No desperdicies otro dólar en desafíos a precio completo. Únete a +5,000 traders que reciben ofertas exclusivas a diario.",
+        "explore": "Explorar Ofertas",
+        "askAi": "Preguntar al Experto IA",
+        "features": {
+            "verifiedTitle": "Firmas Verificadas",
+            "verifiedDesc": "Solo props legítimas",
+            "instantTitle": "Acceso Instantáneo",
+            "instantDesc": "Sin esperas manuales",
+            "exclusiveTitle": "Exclusivas",
+            "exclusiveDesc": "Ofertas únicas",
+            "guideTitle": "Guía Premium",
+            "guideDesc": "Recomendaciones por IA"
+        }
     },
     "Footer": {
         "markets": "Mercados",
@@ -67,17 +136,9 @@
         "subtitle": "Guías, reseñas y noticias del sector para ayudarte a ser un trader fondeado.",
         "readMore": "Leer artículo completo",
         "backToList": "Volver al listado",
-        "noPosts": "No se encontraron artículos con esos criterios."
-    },
-    "Newsletter": {
-        "title": "Mantente Actualizado",
-        "subtitle": "Recibe descuentos exclusivos y estrategias de trading.",
-        "placeholder": "Ingresa tu email",
-        "namePlaceholder": "Tu nombre",
-        "button": "Suscribirse",
-        "privacy": "Respetamos tu privacidad. Cancela en cualquier momento.",
-        "successTitle": "¡Listo!",
-        "successMessage": "Revisa tu bandeja de entrada para ofertas exclusivas."
+        "noPosts": "No se encontraron artículos con esos criterios.",
+        "relatedPostsTitle": "Artículos Relacionados",
+        "relatedPostsSubtitle": "Continúa leyendo"
     },
     "Contact": {
         "title": "Ponte en <span class='text-primary'>Contacto</span>",
@@ -96,23 +157,6 @@
         "successMessage": "Gracias por contactarnos. Hemos recibido tu consulta y te responderemos lo antes posible.",
         "sendAnother": "Enviar otro mensaje"
     },
-    "AIPromo": {
-        "title": "¿No sabes qué empresa elegir?",
-        "subtitle": "Tidi, nuestro experto en IA, puede ayudarte a encontrar la opción perfecta según tu estilo de trading, presupuesto y metas.",
-        "button": "Preguntar al Experto IA"
-    },
-    "FAQ": {
-        "title": "Preguntas Frecuentes",
-        "subtitle": "Todo lo que necesitas saber sobre financiamiento y gestión de cuentas.",
-        "q1": "¿Qué es una Firma de Fondeo?",
-        "a1": "Una Firma de Trading Propietario (Prop Firm) ofrece capital a traders que demuestran sus habilidades. Operas su dinero y conservas hasta el 90% de las ganancias.",
-        "q2": "¿Cómo obtengo financiamiento?",
-        "a2": "La mayoría de las firmas requieren que pases una evaluación (Challenge). Si alcanzas el objetivo de ganancias sin violar las reglas de pérdida, obtienes una cuenta financiada.",
-        "q3": "¿Son reales estos descuentos?",
-        "a3": "¡Sí! Nos asociamos directamente con las mejores firmas para traerte códigos exclusivos. Todos los cupones se verifican a diario.",
-        "q4": "¿Qué firma es mejor para mí?",
-        "a4": "¡Usa nuestros filtros! Si operas Futuros, mira Apex o Topstep. Para Forex, FTMO y Blueberry son líderes de la industria."
-    },
     "AI": {
         "title": "Asistente Tidi",
         "status": "En línea",
@@ -126,25 +170,6 @@
         },
         "disclaimer": "Tidi puede cometer errores. Verifica la info.",
         "tooltip": "Preguntar a Tidi"
-    },
-    "PreFooter": {
-        "pill": "Únete a la Comunidad Alpha",
-        "titlePart1": "¿Listo para ser",
-        "titleHighlight": "Fondeado",
-        "titlePart2": "?",
-        "description": "No desperdicies otro dólar en desafíos a precio completo. Únete a +5,000 traders que reciben ofertas exclusivas a diario.",
-        "explore": "Explorar Ofertas",
-        "askAi": "Preguntar al Experto IA",
-        "features": {
-            "verifiedTitle": "Firmas Verificadas",
-            "verifiedDesc": "Solo props legítimas",
-            "instantTitle": "Acceso Instantáneo",
-            "instantDesc": "Sin esperas manuales",
-            "exclusiveTitle": "Exclusivas",
-            "exclusiveDesc": "Ofertas únicas",
-            "guideTitle": "Guía Premium",
-            "guideDesc": "Recomendaciones por IA"
-        }
     },
     "Cookies": {
         "title": "Usamos cookies 🍪",
@@ -179,6 +204,5 @@
         "feature3Title": "Ofertas Verificadas",
         "feature3Desc": "Todos los códigos verificados diariamente",
         "footer": "© 2025 Trading Discounts. Todos los derechos reservados."
-    },
-    "_revision": "clean_deploy_final_v3"
+    }
 }

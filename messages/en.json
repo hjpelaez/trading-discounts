@@ -23,7 +23,76 @@
         "noFirms": "No firms found matching your criteria.",
         "clearFilters": "Clear Filters",
         "recentArticles": "Latest from our Blog",
-        "viewAll": "View all posts"
+        "viewAll": "View all posts",
+        "readArticle": "Read Article",
+        "testimonialsTitle": "What Our Traders Say",
+        "testimonialsSubtitle": "Join thousands of traders who found their perfect prop firm deal"
+    },
+    "AIPromo": {
+        "title": "Unsure which firm to choose?",
+        "subtitle": "Tidi, our AI expert, can help you find the perfect match based on your trading style, budget, and goals.",
+        "button": "Ask our AI Expert"
+    },
+    "Testimonials": {
+        "testimonial1Name": "Marcus Chen",
+        "testimonial1Role": "Futures Trader",
+        "testimonial1Text": "Found an incredible 40% discount on my FTMO challenge. Passed on my first try and now I'm trading a $100k account. This site literally paid for itself!",
+        "testimonial2Name": "Sarah Williams",
+        "testimonial2Role": "Forex Scalper",
+        "testimonial2Text": "I was skeptical at first, but the codes actually work! Saved over $500 on my Blueberry Markets evaluation. The comparison tool helped me choose the perfect firm.",
+        "testimonial3Name": "Diego Ramírez",
+        "testimonial3Role": "Crypto Trader",
+        "testimonial3Text": "Best prop firm aggregator out there. Clean interface, verified deals, and the AI assistant helped me understand which firm fits my trading style. Highly recommend!",
+        "testimonial4Name": "Emma Thompson",
+        "testimonial4Role": "Day Trader",
+        "testimonial4Text": "The newsletter alone is worth subscribing. I get exclusive deals before they're public. Got funded with Apex Trader Funding at 35% off thanks to their early access codes.",
+        "testimonial5Name": "Alex Kumar",
+        "testimonial5Role": "Swing Trader",
+        "testimonial5Text": "Compared 4 firms side-by-side and found the one with the best drawdown rules for my strategy. The detailed breakdowns saved me hours of research. Now trading a funded account!",
+        "testimonial6Name": "Olivia Martinez",
+        "testimonial6Role": "Options Trader",
+        "testimonial6Text": "Finally, a site that actually vets the prop firms. No shady companies here. Used a 50% discount code for TopstepX and couldn't be happier with my decision."
+    },
+    "Newsletter": {
+        "title": "Stay Updated",
+        "subtitle": "Get exclusive prop firm discounts and trading insights.",
+        "placeholder": "Enter your email",
+        "namePlaceholder": "Your name",
+        "button": "Subscribe",
+        "successTitle": "You're In!",
+        "successMessage": "Check your inbox for exclusive deals.",
+        "privacy": "We respect your privacy. Unsubscribe anytime."
+    },
+    "FAQ": {
+        "title": "Frequently Asked Questions",
+        "subtitle": "Everything you need to know about getting funded and managing your account.",
+        "q1": "What is a Prop Firm?",
+        "a1": "A Proprietary Trading Firm (Prop Firm) provides capital to traders who can prove their skills. You trade their money, and keep up to 90% of the profits.",
+        "q2": "How do I get funded?",
+        "a2": "Most firms require you to pass an evaluation (Challenge). Once you hit the profit target without violating drawdown rules, you get a funded account.",
+        "q3": "Are these discounts legit?",
+        "a3": "Yes! We partner directly with top firms to bring you exclusive coupon codes. All codes are verified daily.",
+        "q4": "Which firm is best for me?",
+        "a4": "Use our filters! If you trade Futures, look at Apex or Topstep. For Forex, FTMO and Blueberry are industry leaders."
+    },
+    "PreFooter": {
+        "pill": "Join the Alpha Community",
+        "titlePart1": "Ready to get",
+        "titleHighlight": "Funded",
+        "titlePart2": "?",
+        "description": "Don't waste another dollar on full-price challenges. Join +5,000 traders getting exclusive deals daily.",
+        "explore": "Explore Deals",
+        "askAi": "Ask the AI Expert",
+        "features": {
+            "verifiedTitle": "Verified Firms",
+            "verifiedDesc": "Only legit props",
+            "instantTitle": "Instant Access",
+            "instantDesc": "No manual waiting",
+            "exclusiveTitle": "Exclusivas",
+            "exclusiveDesc": "Deals you can't find elsewhere",
+            "guideTitle": "Premium Guide",
+            "guideDesc": "AI-powered recommendations"
+        }
     },
     "Footer": {
         "markets": "Markets",
@@ -67,17 +136,9 @@
         "subtitle": "Expert guides, reviews, and industry news to help you become a funded trader.",
         "readMore": "Read Full Article",
         "backToList": "Back to listing",
-        "noPosts": "No articles found matching your criteria."
-    },
-    "Newsletter": {
-        "title": "Stay Updated",
-        "subtitle": "Get exclusive prop firm discounts and trading insights.",
-        "placeholder": "Enter your email",
-        "namePlaceholder": "Your name",
-        "button": "Subscribe",
-        "successTitle": "You're In!",
-        "successMessage": "Check your inbox for exclusive deals.",
-        "privacy": "We respect your privacy. Unsubscribe anytime."
+        "noPosts": "No articles found matching your criteria.",
+        "relatedPostsTitle": "Related Articles",
+        "relatedPostsSubtitle": "Continue reading"
     },
     "Contact": {
         "title": "Get in <span class='text-primary'>Touch</span>",
@@ -96,23 +157,6 @@
         "successMessage": "Thank you for reaching out. We've received your inquiry and will get back to you shortly.",
         "sendAnother": "Send another message"
     },
-    "AIPromo": {
-        "title": "Unsure which firm to choose?",
-        "subtitle": "Tidi, our AI expert, can help you find the perfect match based on your trading style, budget, and goals.",
-        "button": "Ask our AI Expert"
-    },
-    "FAQ": {
-        "title": "Frequently Asked Questions",
-        "subtitle": "Everything you need to know about getting funded and managing your account.",
-        "q1": "What is a Prop Firm?",
-        "a1": "A Proprietary Trading Firm (Prop Firm) provides capital to traders who can prove their skills. You trade their money, and keep up to 90% of the profits.",
-        "q2": "How do I get funded?",
-        "a2": "Most firms require you to pass an evaluation (Challenge). Once you hit the profit target without violating drawdown rules, you get a funded account.",
-        "q3": "Are these discounts legit?",
-        "a3": "Yes! We partner directly with top firms to bring you exclusive coupon codes. All codes are verified daily.",
-        "q4": "Which firm is best for me?",
-        "a4": "Use our filters! If you trade Futures, look at Apex or Topstep. For Forex, FTMO and Blueberry are industry leaders."
-    },
     "AI": {
         "title": "Tidi Assistant",
         "status": "Online & Ready",
@@ -126,25 +170,6 @@
         },
         "disclaimer": "Tidi may make mistakes. Verify important info.",
         "tooltip": "Ask Tidi Expert"
-    },
-    "PreFooter": {
-        "pill": "Join the Alpha Community",
-        "titlePart1": "Ready to get",
-        "titleHighlight": "Funded",
-        "titlePart2": "?",
-        "description": "Don't waste another dollar on full-price challenges. Join +5,000 traders getting exclusive deals daily.",
-        "explore": "Explore Deals",
-        "askAi": "Ask the AI Expert",
-        "features": {
-            "verifiedTitle": "Verified Firms",
-            "verifiedDesc": "Only legit props",
-            "instantTitle": "Instant Access",
-            "instantDesc": "No manual waiting",
-            "exclusiveTitle": "Exclusivas",
-            "exclusiveDesc": "Deals you can't find elsewhere",
-            "guideTitle": "Premium Guide",
-            "guideDesc": "AI-powered recommendations"
-        }
     },
     "Cookies": {
         "title": "We use cookies 🍪",
@@ -179,6 +204,5 @@
         "feature3Title": "Verified Deals",
         "feature3Desc": "All codes verified daily",
         "footer": "© 2025 Trading Discounts. All rights reserved."
-    },
-    "_revision": "final_fix_en_v1"
+    }
 }

@@ -386,3 +386,4 @@ export async function saveSettings(settings: Settings) {
 
     if (error) throw error;
 }
+

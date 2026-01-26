@@ -1,12 +1,14 @@
 
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
+import { Newsletter } from "@/components/newsletter";
+import { PreFooter } from "@/components/pre-footer";
+import { CookieConsent } from "@/components/cookie-consent";
 import { ComparisonBar } from "@/components/comparison-bar";
 import { AIAssistant } from "@/components/ai-assistant";
 import { ScrollToTop } from "@/components/scroll-to-top";
-import { PreFooter } from "@/components/pre-footer";
+import { DecorativeSeparator } from "@/components/decorative-separator";
 import { getSettings } from "@/lib/db";
-import { CookieConsent } from "@/components/cookie-consent";
 
 export default async function MainLayout({
     children,
@@ -20,8 +22,15 @@ export default async function MainLayout({
             <Navbar />
             <main className="flex-1">
                 {children}
+
+                {/* Newsletter Section */}
+                <section className="container mx-auto px-4 md:px-6 mt-24 mb-24">
+                    <Newsletter />
+                </section>
+
+                {/* PreFooter Section */}
+                <PreFooter />
             </main>
-            <PreFooter />
             <Footer settings={settings} />
             <ComparisonBar />
             <AIAssistant />

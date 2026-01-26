@@ -31,7 +31,7 @@ export function Newsletter() {
     };
 
     return (
-        <section className="bg-primary/5 py-16 md:py-24 rounded-3xl border border-primary/10 overflow-hidden relative">
+        <section className="bg-primary/5 py-24 rounded-3xl border border-primary/10 overflow-hidden relative">
             <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/3 w-96 h-96 bg-primary/10 rounded-full blur-3xl -z-10" />
             <div className="container mx-auto px-4 text-center max-w-3xl">
                 <AnimatePresence mode="wait">
@@ -56,41 +56,39 @@ export function Newsletter() {
                             <p className="text-muted-foreground text-lg mb-10">
                                 {t("subtitle")}
                             </p>
-                            <form onSubmit={handleSubmit} className="relative max-w-md mx-auto">
-                                <div className="flex flex-col gap-3 mb-3">
+                            <form onSubmit={handleSubmit} className="relative max-w-3xl mx-auto">
+                                <div className="flex flex-col md:flex-row gap-3">
                                     <input
                                         type="text"
                                         required
                                         placeholder={t("namePlaceholder")}
                                         value={name}
                                         onChange={(e) => setName(e.target.value)}
-                                        className="w-full h-14 px-6 rounded-2xl border-2 border-primary/20 bg-background shadow-xl focus:border-primary focus:outline-none transition-all"
+                                        className="flex-1 h-14 px-6 rounded-2xl border-2 border-primary/20 bg-background shadow-xl focus:border-primary focus:outline-none transition-all"
                                     />
-                                </div>
-                                {/* Honeypot field - hidden from humans, visible to bots */}
-                                <input
-                                    type="text"
-                                    name="website"
-                                    value={honeypot}
-                                    onChange={(e) => setHoneypot(e.target.value)}
-                                    className="absolute opacity-0 pointer-events-none"
-                                    tabIndex={-1}
-                                    autoComplete="off"
-                                    aria-hidden="true"
-                                />
-                                <div className="relative">
+                                    {/* Honeypot field - hidden from humans, visible to bots */}
+                                    <input
+                                        type="text"
+                                        name="website"
+                                        value={honeypot}
+                                        onChange={(e) => setHoneypot(e.target.value)}
+                                        className="absolute opacity-0 pointer-events-none"
+                                        tabIndex={-1}
+                                        autoComplete="off"
+                                        aria-hidden="true"
+                                    />
                                     <input
                                         type="email"
                                         required
                                         placeholder={t("placeholder")}
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
-                                        className="w-full h-14 pl-6 pr-32 rounded-2xl border-2 border-primary/20 bg-background shadow-xl focus:border-primary focus:outline-none transition-all"
+                                        className="flex-1 h-14 px-6 rounded-2xl border-2 border-primary/20 bg-background shadow-xl focus:border-primary focus:outline-none transition-all"
                                     />
                                     <button
                                         type="submit"
                                         disabled={status === "loading"}
-                                        className="absolute right-2 top-2 h-10 px-6 rounded-xl bg-primary text-primary-foreground font-bold flex items-center gap-2 hover:bg-primary/90 transition-all disabled:opacity-50"
+                                        className="h-14 px-8 rounded-2xl bg-primary text-primary-foreground font-bold flex items-center justify-center gap-2 hover:bg-primary/90 transition-all disabled:opacity-50 shadow-xl whitespace-nowrap"
                                     >
                                         {status === "loading" ? "..." : t("button")} <Send className={"h-4 w-4 " + (status === "error" ? "text-red-500" : "")} />
                                     </button>

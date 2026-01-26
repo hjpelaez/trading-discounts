@@ -5,7 +5,6 @@ import { FilterBar } from "@/components/filter-bar";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/animations";
 import { PropFirm } from "@/lib/data";
 import { getBlogPosts, BlogPost } from "@/lib/db";
-import { Newsletter } from "@/components/newsletter";
 import { FAQ } from "@/components/faq";
 import Link from "next/link";
 import { ArrowRight, Calendar } from "lucide-react";
@@ -14,6 +13,7 @@ import { DecorativeSeparator } from "@/components/decorative-separator";
 import { AIPromo } from "@/components/ai-promo";
 import { BackgroundAurora } from "@/components/background-aurora";
 import { BlogCard } from "@/components/blog-card";
+import { Testimonials } from "@/components/testimonials";
 
 interface SearchParams {
   q?: string;
@@ -32,6 +32,7 @@ export default async function Home({ searchParams, params }: { searchParams: Pro
   const resultsKey = JSON.stringify(resolvedSearchParams);
   const tHero = await getTranslations('Hero');
   const tHome = await getTranslations('Home');
+  const tTestimonials = await getTranslations('Testimonials');
   const prefix = `/${locale}`;
 
   // Filter Logic - Using a more robust approach
@@ -136,8 +137,6 @@ export default async function Home({ searchParams, params }: { searchParams: Pro
         <AIPromo />
       </section>
 
-      <DecorativeSeparator />
-
       {/* Blog Preview */}
       <section className="container mx-auto px-4 md:px-6 py-24">
         <div className="flex items-center justify-between mb-12">
@@ -152,15 +151,38 @@ export default async function Home({ searchParams, params }: { searchParams: Pro
               key={post.id}
               post={post}
               locale={locale}
-              readMoreLabel={tHome('viewAll')}
+              readMoreLabel={tHome('readArticle')}
             />
           ))}
         </div>
       </section>
 
-      <section className="container mx-auto px-4 md:px-6 pb-24">
-        <Newsletter />
-      </section>
+      {/* Testimonials */}
+      <Testimonials
+        locale={locale}
+        title={tHome('testimonialsTitle')}
+        subtitle={tHome('testimonialsSubtitle')}
+        testimonials={{
+          testimonial1Name: tTestimonials('testimonial1Name'),
+          testimonial1Role: tTestimonials('testimonial1Role'),
+          testimonial1Text: tTestimonials('testimonial1Text'),
+          testimonial2Name: tTestimonials('testimonial2Name'),
+          testimonial2Role: tTestimonials('testimonial2Role'),
+          testimonial2Text: tTestimonials('testimonial2Text'),
+          testimonial3Name: tTestimonials('testimonial3Name'),
+          testimonial3Role: tTestimonials('testimonial3Role'),
+          testimonial3Text: tTestimonials('testimonial3Text'),
+          testimonial4Name: tTestimonials('testimonial4Name'),
+          testimonial4Role: tTestimonials('testimonial4Role'),
+          testimonial4Text: tTestimonials('testimonial4Text'),
+          testimonial5Name: tTestimonials('testimonial5Name'),
+          testimonial5Role: tTestimonials('testimonial5Role'),
+          testimonial5Text: tTestimonials('testimonial5Text'),
+          testimonial6Name: tTestimonials('testimonial6Name'),
+          testimonial6Role: tTestimonials('testimonial6Role'),
+          testimonial6Text: tTestimonials('testimonial6Text'),
+        }}
+      />
 
       <FAQ />
     </div>

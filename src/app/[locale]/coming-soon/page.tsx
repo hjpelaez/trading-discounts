@@ -89,20 +89,16 @@ export default function ComingSoonPage() {
 
                 {/* Email capture form */}
                 {!success ? (
-                    <form onSubmit={handleSubmit} className="max-w-md mx-auto mb-12">
-                        <div className="flex flex-col gap-3">
-                            <div className="flex flex-col sm:flex-row gap-3">
-                                <div className="flex-1 relative">
-                                    <input
-                                        type="text"
-                                        required
-                                        placeholder={t('namePlaceholder')}
-                                        value={name}
-                                        onChange={(e) => setName(e.target.value)}
-                                        className="w-full px-4 py-4 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent backdrop-blur-sm"
-                                    />
-                                </div>
-                            </div>
+                    <form onSubmit={handleSubmit} className="max-w-4xl mx-auto mb-12">
+                        <div className="flex flex-col sm:flex-row gap-3">
+                            <input
+                                type="text"
+                                required
+                                placeholder={t('namePlaceholder')}
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                className="flex-1 px-6 py-4 bg-white/10 border border-white/20 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent backdrop-blur-sm"
+                            />
                             {/* Honeypot field - hidden from humans */}
                             <input
                                 type="text"
@@ -114,26 +110,21 @@ export default function ComingSoonPage() {
                                 autoComplete="off"
                                 aria-hidden="true"
                             />
-                            <div className="flex flex-col sm:flex-row gap-3">
-                                <div className="flex-1 relative">
-                                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-                                    <input
-                                        type="email"
-                                        required
-                                        placeholder={t('emailPlaceholder')}
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        className="w-full pl-12 pr-4 py-4 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent backdrop-blur-sm"
-                                    />
-                                </div>
-                                <button
-                                    type="submit"
-                                    disabled={loading}
-                                    className="px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-purple-500/50"
-                                >
-                                    {loading ? t('sending') : t('notifyButton')}
-                                </button>
-                            </div>
+                            <input
+                                type="email"
+                                required
+                                placeholder={t('emailPlaceholder')}
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="flex-[2] px-6 py-4 bg-white/10 border border-white/20 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent backdrop-blur-sm"
+                            />
+                            <button
+                                type="submit"
+                                disabled={loading}
+                                className="px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold rounded-2xl transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-purple-500/50 whitespace-nowrap"
+                            >
+                                {loading ? t('sending') : t('notifyButton')}
+                            </button>
                         </div>
                         {error && (
                             <p className="mt-3 text-red-400 text-sm">{error}</p>

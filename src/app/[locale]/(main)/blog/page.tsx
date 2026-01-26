@@ -50,7 +50,7 @@ export default async function BlogPage({ params, searchParams }: { params: Promi
                 </div>
             </section>
 
-            <div className="container mx-auto px-4 py-24 md:py-40">
+            <div className="container mx-auto px-4 py-12">
                 <FadeIn delay={0.1} className="mb-24">
                     <BlogFilter categories={categories} />
                 </FadeIn>

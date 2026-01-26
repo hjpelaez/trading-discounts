@@ -37,8 +37,9 @@ export default async function AdminTranslationsPage() {
     const flatEn = flattenMessages(sourceMessages.en);
     const flatEs = flattenMessages(sourceMessages.es);
 
-    // Get all unique keys from both sources
-    const allKeys = Array.from(new Set([...Object.keys(flatEn), ...Object.keys(flatEs)])).sort();
+    // Get all unique keys preserving the order from the JSON files
+    // We use flatEn as the base order since both files should have the same structure
+    const allKeys = Array.from(new Set([...Object.keys(flatEn), ...Object.keys(flatEs)]));
 
     return (
         <div className="space-y-8">

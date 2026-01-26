@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, useRef, useEffect } from "react";
-import { Save, Search, AlertCircle, ChevronDown, ChevronRight, Trash2, Wand2, RotateCcw, X } from "lucide-react";
+import { Save, Search, AlertCircle, ChevronDown, ChevronRight, Trash2, Wand2, RotateCcw, X, Menu, Zap, Home, MessageSquare, Star, Mail, HelpCircle, Footprints, Grid3x3, BarChart3, BookOpen, Phone, Bot, Cookie, Lock, Clock } from "lucide-react";
 import { saveTranslationAction, deleteTranslationAction } from "@/actions/translation-actions";
 import { FadeIn } from "@/components/animations";
 import { cn } from "@/lib/utils";
@@ -104,6 +104,32 @@ export function TranslationsManager({ allKeys, flatEn, flatEs, dynamicTranslatio
     );
 }
 
+// Helper function to get icon for each group
+function getGroupIcon(groupName: string) {
+    const iconMap: Record<string, any> = {
+        'Navbar': Menu,
+        'Hero': Zap,
+        'Home': Home,
+        'AIPromo': Bot,
+        'Testimonials': MessageSquare,
+        'Newsletter': Mail,
+        'FAQ': HelpCircle,
+        'PreFooter': Footprints,
+        'Footer': Grid3x3,
+        'Common': Grid3x3,
+        'Compare': BarChart3,
+        'Blog': BookOpen,
+        'Contact': Phone,
+        'AI': Bot,
+        'Cookies': Cookie,
+        'auth': Lock,
+        'ComingSoon': Clock
+    };
+
+    const Icon = iconMap[groupName] || Grid3x3;
+    return <Icon className="h-4 w-4 text-primary" />;
+}
+
 interface TranslationGroupProps {
     group: string;
     keys: string[];
@@ -129,7 +155,8 @@ function TranslationGroup({ group, keys, isExpanded, onToggle, data }: Translati
                     <div className={cn("p-1.5 rounded-md bg-muted transition-transform duration-200", isExpanded && "rotate-90")}>
                         <ChevronRight className="h-4 w-4 text-muted-foreground" />
                     </div>
-                    <div>
+                    <div className="flex items-center gap-2">
+                        {getGroupIcon(group)}
                         <h3 className="font-bold text-sm flex items-center gap-2">
                             {group}
                             <span className="text-xs font-normal text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
