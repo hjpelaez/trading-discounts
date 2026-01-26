@@ -39,8 +39,8 @@ export default async function ForexPage({ searchParams }: { searchParams: Promis
     });
 
     return (
-        <div className="container mx-auto py-12 px-4 md:px-6">
-            <div className="relative overflow-hidden rounded-3xl mb-12 border border-border/50 shadow-2xl">
+        <div className="container mx-auto py-24 px-4 md:px-6">
+            <div className="relative overflow-hidden rounded-3xl mb-24 border border-border/50 shadow-2xl">
                 <BackgroundAurora />
                 <div className="relative z-10 py-16 md:py-24 text-center">
                     <h1 className="text-4xl md:text-7xl font-black tracking-tighter mb-4 bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/60">
