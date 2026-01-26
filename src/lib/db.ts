@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { createStaticClient } from "@/lib/supabase/static";
 import { PropFirm } from "@/lib/data";
 import { cache } from "react";
 
@@ -9,7 +10,7 @@ export const dynamic = 'force-dynamic';
 
 export const getFirms = cache(async (): Promise<PropFirm[]> => {
     try {
-        const supabase = await createClient();
+        const supabase = createStaticClient();
         const { data, error } = await supabase
             .from('Firm')
             .select('*')
@@ -26,7 +27,7 @@ export const getFirms = cache(async (): Promise<PropFirm[]> => {
 
 export async function getFirmById(id: string): Promise<PropFirm | undefined> {
     try {
-        const supabase = await createClient();
+        const supabase = createStaticClient();
         const { data, error } = await supabase
             .from('Firm')
             .select('*')
@@ -71,7 +72,7 @@ export interface Page {
 
 export const getPages = cache(async (): Promise<Page[]> => {
     try {
-        const supabase = await createClient();
+        const supabase = createStaticClient();
         const { data, error } = await supabase
             .from('Page')
             .select('*');
@@ -91,7 +92,7 @@ export const getPages = cache(async (): Promise<Page[]> => {
 
 export async function getPageBySlug(slug: string): Promise<Page | undefined> {
     try {
-        const supabase = await createClient();
+        const supabase = createStaticClient();
         const { data, error } = await supabase
             .from('Page')
             .select('*')
@@ -153,7 +154,7 @@ export interface BlogPost {
 
 export const getBlogPosts = cache(async (): Promise<BlogPost[]> => {
     try {
-        const supabase = await createClient();
+        const supabase = createStaticClient();
         const { data, error } = await supabase
             .from('BlogPost')
             .select('*')
@@ -174,7 +175,7 @@ export const getBlogPosts = cache(async (): Promise<BlogPost[]> => {
 
 export async function getBlogPostById(id: string): Promise<BlogPost | undefined> {
     try {
-        const supabase = await createClient();
+        const supabase = createStaticClient();
         const { data, error } = await supabase
             .from('BlogPost')
             .select('*')
@@ -191,7 +192,7 @@ export async function getBlogPostById(id: string): Promise<BlogPost | undefined>
 
 export async function getBlogPostBySlug(slug: string): Promise<BlogPost | undefined> {
     try {
-        const supabase = await createClient();
+        const supabase = createStaticClient();
         const { data, error } = await supabase
             .from('BlogPost')
             .select('*')
@@ -240,7 +241,7 @@ export interface Subscriber {
 
 export const getSubscribers = cache(async (): Promise<Subscriber[]> => {
     try {
-        const supabase = await createClient();
+        const supabase = createStaticClient();
         const { data, error } = await supabase
             .from('Subscriber')
             .select('*')
@@ -254,16 +255,11 @@ export const getSubscribers = cache(async (): Promise<Subscriber[]> => {
     }
 });
 
-// We don't save subscribers via this file anymore, it's done directly in the form action or API
-// But keeping a compatible signature if needed, or just removing it.
-// The previous saveSubscriber used to write to JSON. We can remove it or update it.
-// For now, let's remove the file-based save logic as it is not used by the new form.
-
 // --- CATEGORIES ---
 
 export const getBlogCategories = cache(async (): Promise<string[]> => {
     try {
-        const supabase = await createClient();
+        const supabase = createStaticClient();
         const { data, error } = await supabase
             .from('BlogCategory')
             .select('name');
@@ -306,7 +302,7 @@ export interface TranslationsDB {
 
 export const getDynamicTranslations = cache(async (): Promise<TranslationsDB> => {
     try {
-        const supabase = await createClient();
+        const supabase = createStaticClient();
         const { data, error } = await supabase
             .from('DynamicTranslation')
             .select('*');
@@ -363,7 +359,7 @@ const DEFAULT_SETTINGS: Settings = {
 
 export const getSettings = cache(async (): Promise<Settings> => {
     try {
-        const supabase = await createClient();
+        const supabase = createStaticClient();
         const { data, error } = await supabase
             .from('Setting')
             .select('*')
@@ -386,4 +382,3 @@ export async function saveSettings(settings: Settings) {
 
     if (error) throw error;
 }
-
