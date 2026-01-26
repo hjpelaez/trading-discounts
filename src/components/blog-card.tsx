@@ -2,7 +2,8 @@
 
 import { Calendar, User, ArrowRight, Sparkles, ImageOff } from "lucide-react";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import Image from "next/image";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 interface BlogPost {
@@ -30,29 +31,25 @@ export function BlogCard({ post, locale, readMoreLabel }: BlogCardProps) {
     const title = post.title[locale as "en" | "es"];
     const excerpt = post.excerpt[locale as "en" | "es"];
 
-    useEffect(() => {
-        if (post.imageUrl) {
-            const img = new window.Image();
-            img.src = post.imageUrl;
-            img.onload = () => setImageStatus("success");
-            img.onerror = () => setImageStatus("error");
-        }
-    }, [post.imageUrl]);
-
     return (
         <Link href={`/${locale}/blog/${post.slug}`} className="group block h-full">
             <article className="h-full bg-card rounded-[40px] border border-border/50 overflow-hidden hover:border-primary transition-all hover:shadow-[0_20px_80px_-15px_rgba(var(--primary-rgb),0.15)] flex flex-col group-hover:-translate-y-2 duration-500 relative">
                 <div className="aspect-[16/10] overflow-hidden relative bg-muted/20">
-                    {imageStatus === "success" && (
-                        <img
-                            src={post.imageUrl}
-                            alt=""
-                            className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-700 ease-out"
-                        />
-                    )}
+                    <Image
+                        src={post.imageUrl}
+                        alt=""
+                        fill
+                        className={cn(
+                            "object-cover transition-transform duration-700 ease-out group-hover:scale-110",
+                            imageStatus === "success" ? "opacity-100" : "opacity-0"
+                        )}
+                        onLoad={() => setImageStatus("success")}
+                        onError={() => setImageStatus("error")}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
 
                     {(imageStatus === "error" || imageStatus === "loading") && (
-                        <div className="w-full h-full flex flex-col items-center justify-center text-primary/40 gap-3 bg-gradient-to-br from-primary/5 to-primary/10 animate-pulse">
+                        <div className="absolute inset-0 flex flex-col items-center justify-center text-primary/40 gap-3 bg-gradient-to-br from-primary/5 to-primary/10 animate-pulse">
                             <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20">
                                 <ImageOff className="h-8 w-8 text-primary/60" />
                             </div>

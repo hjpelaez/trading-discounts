@@ -11,6 +11,25 @@ interface PageProps {
     params: Promise<{ locale: string; firmId: string }>;
 }
 
+import { Metadata } from "next";
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string, firmId: string }> }): Promise<Metadata> {
+    const { firmId } = await params;
+    const firm = await getFirmById(firmId);
+
+    if (!firm) return { title: 'Trading Discounts' };
+
+    return {
+        title: `${firm.name} Discount Code | Trading Discounts`,
+        description: `Get instant access to exclusive discounts for ${firm.name}. Verified coupon codes for ${firm.categories.join(", ")} trading evaluations.`,
+        openGraph: {
+            title: `${firm.name} Discount Code | Trading Discounts`,
+            description: `Save ${firm.discount} on your ${firm.name} challenge today.`,
+            images: [firm.imageUrl || '/og-default.jpg'],
+        }
+    };
+}
+
 export async function generateStaticParams() {
     const firms = await getFirms();
     return firms.flatMap((firm) =>

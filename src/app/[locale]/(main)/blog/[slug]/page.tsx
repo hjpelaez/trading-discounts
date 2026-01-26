@@ -5,6 +5,28 @@ import { FadeIn, StaggerContainer, StaggerItem } from "@/components/animations";
 import { Calendar, User, ArrowLeft, Tag } from "lucide-react";
 import Link from "next/link";
 import { BlogCard } from "@/components/blog-card";
+import { Metadata } from "next";
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string, slug: string }> }): Promise<Metadata> {
+    const { locale, slug } = await params;
+    const post = await getBlogPostBySlug(slug);
+
+    if (!post) return { title: 'Trading Discounts' };
+
+    const title = post.title[locale as "en" | "es"].replace(/<[^>]*>?/gm, '');
+    const description = post.excerpt[locale as "en" | "es"];
+
+    return {
+        title: `${title} | Trading Discounts`,
+        description: description,
+        openGraph: {
+            title: title,
+            description: description,
+            images: [post.imageUrl],
+        }
+    };
+}
+import Image from "next/image";
 
 export default async function BlogPostPage({ params }: { params: Promise<{ locale: string, slug: string }> }) {
     const { locale, slug } = await params;
@@ -57,12 +79,17 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
             {/* Content - Full Width */}
             <div className="container mx-auto px-4 md:px-6 -mt-12 relative z-20">
                 <FadeIn delay={0.2}>
-                    <div className="rounded-3xl border border-border bg-card overflow-hidden shadow-2xl">
-                        <img
-                            src={post.imageUrl}
-                            alt={title.replace(/<[^>]*>?/gm, '')}
-                            className="w-full aspect-[21/9] object-cover"
-                        />
+                    <div className="rounded-3xl border border-border bg-card overflow-hidden shadow-2xl relative">
+                        <div className="w-full aspect-[21/9] relative">
+                            <Image
+                                src={post.imageUrl}
+                                alt={title.replace(/<[^>]*>?/gm, '')}
+                                fill
+                                className="object-cover"
+                                priority
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
+                            />
+                        </div>
                         <div
                             className="p-8 md:p-16 lg:p-20 prose prose-slate md:prose-lg lg:prose-xl max-w-none dark:prose-invert prose-headings:font-bold prose-a:text-primary prose-a:no-underline hover:prose-a:underline"
                             dangerouslySetInnerHTML={{ __html: content }}

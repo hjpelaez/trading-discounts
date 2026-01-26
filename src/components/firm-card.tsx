@@ -5,6 +5,7 @@ import { useState, useRef, useEffect } from "react";
 import { PropFirm } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import Image from "next/image";
 import { useFavorites } from "@/lib/hooks/use-favorites";
 import { useComparison } from "@/lib/hooks/use-comparison";
 import { useTranslations } from "next-intl";
@@ -86,11 +87,15 @@ export function FirmCard({ firm, className }: FirmCardProps) {
                 <div className="flex justify-between items-start mb-4">
                     <div className="flex items-center gap-4">
                         {firm.imageUrl ? (
-                            <img
-                                src={firm.imageUrl}
-                                alt={`${firm.name} Logo`}
-                                className="h-16 w-16 rounded-xl object-contain bg-background p-2 border shadow-sm transition-transform group-hover:scale-110"
-                            />
+                            <div className="relative h-16 w-16 shrink-0 rounded-xl overflow-hidden bg-background border shadow-sm transition-transform group-hover:scale-110">
+                                <Image
+                                    src={firm.imageUrl}
+                                    alt={`${firm.name} Logo`}
+                                    fill
+                                    className="object-contain p-2"
+                                    sizes="64px"
+                                />
+                            </div>
                         ) : (
                             <div className="h-16 w-16 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-bold border border-primary/20 shadow-sm text-xl">
                                 {firm.name.substring(0, 2).toUpperCase()}
