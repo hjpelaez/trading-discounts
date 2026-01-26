@@ -53,7 +53,7 @@ export async function uploadImageAction(formData: FormData) {
             .from('blog-images')
             .getPublicUrl(filename);
 
-        console.log(`File optimized and uploaded to: ${publicUrl}`);
+        // console.log(`File optimized and uploaded to: ${publicUrl}`);
 
         return { success: true, url: publicUrl };
     } catch (error) {

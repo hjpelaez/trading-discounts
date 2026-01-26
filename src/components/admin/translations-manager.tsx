@@ -216,7 +216,7 @@ function TranslationRow({ itemKey, data }: TranslationRowProps) {
     const handleAutoTranslate = (lang: 'en' | 'es') => {
         // Mock auto-translate logic
         // In a real app, this would call an API
-        console.log(`Auto-translating ${itemKey} to ${lang}`);
+        // console.log(`Auto-translating ${itemKey} to ${lang}`);
     };
 
     return (

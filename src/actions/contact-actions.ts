@@ -6,7 +6,7 @@ export async function sendContactEmailAction(formData: FormData) {
     const subject = formData.get("subject");
     const message = formData.get("message");
 
-    console.log("Contact Form Submission:", { name, email, subject, message });
+    // console.log("Contact Form Submission:", { name, email, subject, message });
 
     // Implementation logic for email (using mock or process.env variables)
     // To actually send to Gmail, user needs:
