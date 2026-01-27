@@ -15,7 +15,7 @@ export async function middleware(request: NextRequest) {
     const locale = locales.includes(segment) ? segment : 'en';
 
     // Check if maintenance mode is enabled
-    const isMaintenanceMode = process.env.MAINTENANCE_MODE === 'true'
+    const isMaintenanceMode = false; // process.env.MAINTENANCE_MODE === 'true'
 
     // Allow access to admin, auth, api, and coming-soon routes even in maintenance mode
     const isAllowedPath =

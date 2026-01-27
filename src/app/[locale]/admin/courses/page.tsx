@@ -20,8 +20,7 @@ export default async function AdminCoursesPage() {
 
     // Helper to get Spanish title for the list
     const getTitle = (course: CourseDB) => {
-        if (typeof course.title === 'string') return course.title;
-        return course.title.es || course.title.en; // Prefer Spanish
+        return course.title;
     };
 
     return (

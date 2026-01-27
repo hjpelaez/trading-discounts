@@ -3,6 +3,8 @@ import { getMessages } from 'next-intl/server';
 import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { LazyMotionProvider } from "@/components/providers/lazy-motion-provider";
+import { ThemeProvider } from "@/components/providers/theme-provider";
+import { GoogleAnalytics } from '@next/third-parties/google';
 import "../globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -18,17 +20,25 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale} className="dark" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <body
         className={cn(inter.className, "min-h-screen bg-background font-sans antialiased flex flex-col")}
         suppressHydrationWarning
       >
         <NextIntlClientProvider messages={messages}>
-          <LazyMotionProvider>
-            {children}
-          </LazyMotionProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <LazyMotionProvider>
+              {children}
+            </LazyMotionProvider>
+          </ThemeProvider>
         </NextIntlClientProvider>
       </body>
+      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || "G-XXXXXXXXXX"} />
     </html>
   );
 }

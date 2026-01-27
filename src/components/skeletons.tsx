@@ -59,3 +59,29 @@ export function BlogCardSkeleton() {
         </div>
     );
 }
+export function TableSkeleton() {
+    return (
+        <div className="rounded-md border bg-card">
+            <div className="p-4 border-b flex items-center justify-between">
+                <Skeleton className="h-8 w-48" />
+                <Skeleton className="h-8 w-24" />
+            </div>
+            <div className="divide-y">
+                {[...Array(5)].map((_, i) => (
+                    <div key={i} className="p-4 grid grid-cols-4 gap-4 items-center">
+                        <Skeleton className="h-12 w-12 rounded-lg" />
+                        <div className="space-y-1">
+                            <Skeleton className="h-4 w-32" />
+                            <Skeleton className="h-3 w-20" />
+                        </div>
+                        <Skeleton className="h-6 w-20 justify-self-center" />
+                        <div className="flex justify-end gap-2">
+                            <Skeleton className="h-8 w-8" />
+                            <Skeleton className="h-8 w-8" />
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}

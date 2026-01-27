@@ -120,7 +120,7 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                 <div className="flex items-start gap-4">
                     <Sparkles className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
                     <div className="flex-1">
-                        <h3 className="font-semibold text-lg mb-2">✨ AI Auto-Fill (Powered by Gemini)</h3>
+                        <h3 className="font-semibold text-lg mb-2">✨ AI Auto-Fill (Powered by Llama 3.3)</h3>
                         <p className="text-sm text-muted-foreground mb-4">
                             {firm
                                 ? "Update this firm's data by pasting their website URL and letting AI extract the latest information."
@@ -178,7 +178,7 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
             {/* Tab Content */}
             <div className="space-y-6">
                 {/* Basic Info Tab */}
-                {activeTab === "basic" && (
+                <div className={activeTab === "basic" ? "block" : "hidden"}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-4 rounded-lg border bg-card p-6">
                             <h2 className="font-semibold text-lg border-b pb-2">Basic Information</h2>
@@ -235,10 +235,10 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                             </div>
                         </div>
                     </div>
-                )}
+                </div>
 
                 {/* Firm Details Tab */}
-                {activeTab === "details" && (
+                <div className={activeTab === "details" ? "block" : "hidden"}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-4 rounded-lg border bg-card p-6">
                             <h2 className="font-semibold text-lg border-b pb-2">Company Details</h2>
@@ -296,10 +296,10 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                             </div>
                         </div>
                     </div>
-                )}
+                </div>
 
                 {/* Trading Info Tab */}
-                {activeTab === "trading" && (
+                <div className={activeTab === "trading" ? "block" : "hidden"}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-4 rounded-lg border bg-card p-6">
                             <h2 className="font-semibold text-lg border-b pb-2">Trading Parameters</h2>
@@ -342,10 +342,10 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                             </div>
                         </div>
                     </div>
-                )}
+                </div>
 
                 {/* Payout & Rules Tab */}
-                {activeTab === "payout" && (
+                <div className={activeTab === "payout" ? "block" : "hidden"}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-4 rounded-lg border bg-card p-6">
                             <h2 className="font-semibold text-lg border-b pb-2">Payout Information</h2>
@@ -389,7 +389,7 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                             </div>
                         </div>
                     </div>
-                )}
+                </div>
             </div>
         </form>
     );

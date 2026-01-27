@@ -14,6 +14,7 @@ import { AIPromo } from "@/components/ai-promo";
 import { BackgroundAurora } from "@/components/background-aurora";
 import { BlogCard } from "@/components/blog-card";
 import { Testimonials } from "@/components/testimonials";
+import { JsonLd } from "@/components/json-ld";
 
 interface SearchParams {
   q?: string;
@@ -70,6 +71,17 @@ export default async function Home({ searchParams, params }: { searchParams: Pro
 
   return (
     <div className="flex flex-col min-h-screen">
+      <JsonLd data={{
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Trading Discounts",
+        "url": "https://trading-discounts.com",
+        "logo": "https://trading-discounts.com/logo.png",
+        "sameAs": [
+          "https://twitter.com/tradingdiscounts",
+          "https://instagram.com/tradingdiscounts"
+        ]
+      }} />
       {/* Hero Section */}
       <section className="relative py-20 md:py-32 overflow-hidden">
         <BackgroundAurora />

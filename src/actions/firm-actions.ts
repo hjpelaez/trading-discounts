@@ -39,7 +39,7 @@ export async function saveFirmAction(formData: FormData) {
         featured: formData.get("featured") === "on",
 
         // Ratings
-        rating: parseFloat(formData.get("rating") as string),
+        rating: parseFloat(formData.get("rating") as string) || 0,
         trustpilotScore: parseFloat(formData.get("trustpilotScore") as string) || null,
 
         // Firm Details
@@ -55,7 +55,7 @@ export async function saveFirmAction(formData: FormData) {
         assets: parseArray(formData.get("assets") as string),
 
         // Trading Info
-        minPrice: parseInt(formData.get("minPrice") as string, 10),
+        minPrice: parseInt(formData.get("minPrice") as string, 10) || 0,
         maxLeverage: formData.get("maxLeverage") as string,
         drawdownType: formData.get("drawdownType") as "Trailing" | "Static" | "Balance-based" | "Step-based",
 
