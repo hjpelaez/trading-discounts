@@ -21,9 +21,20 @@ export default async function LocaleLayout({
   const messages = await getMessages();
   const settings = await getSettings();
 
-  const gaId = settings.googleAnalyticsId || process.env.NEXT_PUBLIC_GA_ID || "G-XXXXXXXXXX";
-  const gscId = settings.googleSearchConsoleId;
-  const recaptchaKey = settings.recaptchaSiteKey;
+  // Función de limpieza radical para evitar crashes por scripts pegados
+  const sanitize = (val: string, pattern: RegExp, fallback: string) => {
+    if (!val) return fallback;
+    // Si contiene scripts o HTML, intentamos extraer el ID con el patrón
+    if (val.includes('<') || val.length > 100) {
+      const match = val.match(pattern);
+      return match ? match[0] : fallback;
+    }
+    return val.trim();
+  };
+
+  const gaId = sanitize(settings.googleAnalyticsId, /G-[A-Z0-9]+/, process.env.NEXT_PUBLIC_GA_ID || "G-XXXXXXXXXX");
+  const gscId = sanitize(settings.googleSearchConsoleId, /[a-zA-Z0-9_-]{43}/, ""); // GSC meta tags suelen tener 43 caracteres
+  const recaptchaKey = sanitize(settings.recaptchaSiteKey, /[a-zA-Z0-9_-]{40}/, ""); // reCAPTCHA v3 keys suelen tener 40
 
   return (
     <html lang={locale} suppressHydrationWarning>
