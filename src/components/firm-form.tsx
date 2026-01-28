@@ -5,24 +5,24 @@ import { extractFirmDataFromURL } from "@/actions/ai-actions";
 import { PropFirm } from "@/lib/data";
 import { ChevronLeft, Save, Sparkles } from "lucide-react";
 import Link from "next/link";
-import { useFormStatus } from "react-dom";
+import { useRouter } from "next/navigation";
 import { useState, useRef } from "react";
 
-function SubmitButton() {
-    const { pending } = useFormStatus();
+function SubmitButton({ loading }: { loading: boolean }) {
     return (
         <button
             type="submit"
-            disabled={pending}
+            disabled={loading}
             className="inline-flex items-center justify-center rounded-md bg-primary px-8 py-2 text-sm font-bold text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:opacity-50"
         >
-            {pending ? "Saving..." : "Save Firm"} <Save className="ml-2 h-4 w-4" />
+            {loading ? "Saving..." : "Save Firm"} <Save className="ml-2 h-4 w-4" />
         </button>
     );
 }
 
 export function FirmForm({ firm }: { firm?: PropFirm }) {
     const [activeTab, setActiveTab] = useState("basic");
+    const [langTab, setLangTab] = useState<"en" | "es">("en");
     const [autoFillUrl, setAutoFillUrl] = useState("");
     const [isExtracting, setIsExtracting] = useState(false);
     const formRef = useRef<HTMLFormElement>(null);
@@ -47,6 +47,7 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
             if (!form) return;
 
             // Helper to set form values
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const setValue = (name: string, value: any) => {
                 const input = form.elements.namedItem(name) as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
                 if (input) {
@@ -60,9 +61,29 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                 }
             };
 
+            // Helper for fields
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const setBilingualValue = (baseName: string, value: any) => {
+                if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+                    setValue(baseName, value.es || value.en || "");
+                } else if (Array.isArray(value)) {
+                    setValue(baseName, value.join(", "));
+                } else {
+                    setValue(baseName, value);
+                }
+            };
+
             // Fill all fields
             if (data.name) setValue("name", data.name);
-            if (data.description) setValue("description", data.description);
+
+            // Bilingual Fields
+            if (data.description) setBilingualValue("description", data.description);
+            if (data.features) setBilingualValue("features", data.features);
+            if (data.rules) setBilingualValue("rules", data.rules);
+            if (data.consistencyRules) setBilingualValue("consistencyRules", data.consistencyRules);
+            if (data.prohibitedPractices) setBilingualValue("prohibitedPractices", data.prohibitedPractices);
+
+            // Standard Fields
             if (data.rating) setValue("rating", data.rating);
             if (data.trustpilotScore) setValue("trustpilotScore", data.trustpilotScore);
             if (data.country) setValue("country", data.country);
@@ -76,17 +97,13 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
             if (data.minPrice) setValue("minPrice", data.minPrice);
             if (data.maxLeverage) setValue("maxLeverage", data.maxLeverage);
             if (data.drawdownType) setValue("drawdownType", data.drawdownType);
-            if (data.features) setValue("features", data.features);
-            if (data.rules) setValue("rules", data.rules);
-            if (data.consistencyRules) setValue("consistencyRules", data.consistencyRules);
-            if (data.prohibitedPractices) setValue("prohibitedPractices", data.prohibitedPractices);
             if (data.paymentMethods) setValue("paymentMethods", data.paymentMethods);
             if (data.payoutMethods) setValue("payoutMethods", data.payoutMethods);
             if (data.payoutFrequency) setValue("payoutFrequency", data.payoutFrequency);
             if (data.minPayout) setValue("minPayout", data.minPayout);
 
             alert("✨ Form auto-filled successfully! Please review and adjust as needed.");
-        } catch (error: any) {
+        } catch (error: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
             alert(`Error: ${error.message}`);
         } finally {
             setIsExtracting(false);
@@ -100,8 +117,30 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
         { id: "payout", label: "Payout & Rules" },
     ];
 
+    const [loading, setLoading] = useState(false);
+    const router = useRouter();
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setLoading(true);
+
+        const formData = new FormData(e.currentTarget);
+
+        try {
+            console.log("Submitting firm form...");
+            await saveFirmAction(formData);
+            router.push("/admin");
+            router.refresh();
+        } catch (error) {
+            console.error("Error submitting form:", error);
+            alert("Error al guardar la firma. Por favor intenta de nuevo.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
-        <form ref={formRef} action={saveFirmAction} className="space-y-6 max-w-6xl">
+        <form ref={formRef} onSubmit={handleSubmit} className="space-y-6 max-w-6xl">
             <input type="hidden" name="id" value={firm?.id || ""} />
 
             {/* Header */}
@@ -112,7 +151,7 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                     </Link>
                     <h1 className="text-3xl font-bold tracking-tight">{firm ? `Edit ${firm.name}` : "New Firm"}</h1>
                 </div>
-                <SubmitButton />
+                <SubmitButton loading={loading} />
             </div>
 
             {/* AI Auto-Fill Section */}
@@ -190,7 +229,14 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
 
                             <div className="space-y-2">
                                 <label className="text-sm font-medium">Description *</label>
-                                <textarea name="description" defaultValue={firm?.description} required rows={3} className="w-full rounded-md border bg-background px-3 py-2" placeholder="Short marketing blurb" />
+                                <textarea
+                                    name="description"
+                                    defaultValue={typeof firm?.description === 'string' ? firm.description : (firm?.description as { en: string; es: string })?.en || ""}
+                                    required
+                                    rows={3}
+                                    className="w-full rounded-md border bg-background px-3 py-2"
+                                    placeholder="marketing blurb..."
+                                />
                             </div>
 
                             <div className="space-y-2">
@@ -273,13 +319,13 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
 
                             <div className="space-y-2">
                                 <label className="text-sm font-medium">Categories *</label>
-                                <input name="categories" defaultValue={firm?.categories.join(", ")} className="w-full rounded-md border bg-background px-3 py-2" placeholder="crypto, forex, futures" />
+                                <input name="categories" defaultValue={firm?.categories?.join(", ") || ""} className="w-full rounded-md border bg-background px-3 py-2" placeholder="crypto, forex, futures" />
                                 <p className="text-xs text-muted-foreground">Comma separated: crypto, forex, futures, stocks</p>
                             </div>
 
                             <div className="space-y-2">
                                 <label className="text-sm font-medium">Platforms *</label>
-                                <input name="platforms" defaultValue={firm?.platforms.join(", ")} className="w-full rounded-md border bg-background px-3 py-2" placeholder="MT4, MT5, cTrader" />
+                                <input name="platforms" defaultValue={firm?.platforms?.join(", ") || ""} className="w-full rounded-md border bg-background px-3 py-2" placeholder="MT4, MT5, cTrader" />
                                 <p className="text-xs text-muted-foreground">Comma separated trading platforms</p>
                             </div>
 
@@ -306,18 +352,18 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
 
                             <div className="space-y-2">
                                 <label className="text-sm font-medium">Min Price ($) *</label>
-                                <input name="minPrice" defaultValue={firm?.minPrice} type="number" required className="w-full rounded-md border bg-background px-3 py-2" />
+                                <input name="minPrice" defaultValue={firm?.minPrice} type="number" className="w-full rounded-md border bg-background px-3 py-2" />
                                 <p className="text-xs text-muted-foreground">Minimum challenge price</p>
                             </div>
 
                             <div className="space-y-2">
                                 <label className="text-sm font-medium">Max Leverage *</label>
-                                <input name="maxLeverage" defaultValue={firm?.maxLeverage} required className="w-full rounded-md border bg-background px-3 py-2" placeholder="e.g. 1:100" />
+                                <input name="maxLeverage" defaultValue={firm?.maxLeverage} className="w-full rounded-md border bg-background px-3 py-2" placeholder="e.g. 1:100" />
                             </div>
 
                             <div className="space-y-2">
                                 <label className="text-sm font-medium">Drawdown Type *</label>
-                                <select name="drawdownType" defaultValue={firm?.drawdownType} required className="w-full rounded-md border bg-background px-3 py-2">
+                                <select name="drawdownType" defaultValue={firm?.drawdownType} className="w-full rounded-md border bg-background px-3 py-2">
                                     <option value="Trailing">Trailing</option>
                                     <option value="Static">Static</option>
                                     <option value="Balance-based">Balance-based</option>
@@ -331,14 +377,12 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
 
                             <div className="space-y-2">
                                 <label className="text-sm font-medium">Features *</label>
-                                <textarea name="features" defaultValue={firm?.features.join(", ")} rows={3} className="w-full rounded-md border bg-background px-3 py-2" placeholder="Fast Payouts, No Time Limit, Weekend Holding" />
-                                <p className="text-xs text-muted-foreground">Comma separated key features</p>
+                                <textarea name="features" defaultValue={firm?.features?.join(", ") || ""} rows={3} className="w-full rounded-md border bg-background px-3 py-2" placeholder="Features (comma separated)" />
                             </div>
 
                             <div className="space-y-2">
                                 <label className="text-sm font-medium">Rules *</label>
-                                <textarea name="rules" defaultValue={firm?.rules.join(", ")} rows={3} className="w-full rounded-md border bg-background px-3 py-2" placeholder="Max DD 10%, Consistency rule, Min trading days" />
-                                <p className="text-xs text-muted-foreground">Comma separated trading rules</p>
+                                <textarea name="rules" defaultValue={firm?.rules?.join(", ") || ""} rows={3} className="w-full rounded-md border bg-background px-3 py-2" placeholder="Rules (comma separated)" />
                             </div>
                         </div>
                     </div>
@@ -352,7 +396,7 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
 
                             <div className="space-y-2">
                                 <label className="text-sm font-medium">Payment Methods *</label>
-                                <input name="paymentMethods" defaultValue={firm?.paymentMethods.join(", ")} className="w-full rounded-md border bg-background px-3 py-2" placeholder="Credit Card, Crypto, Wire Transfer" />
+                                <input name="paymentMethods" defaultValue={firm?.paymentMethods?.join(", ") || ""} className="w-full rounded-md border bg-background px-3 py-2" placeholder="Credit Card, Crypto, Wire Transfer" />
                                 <p className="text-xs text-muted-foreground">Comma separated payment methods</p>
                             </div>
 
@@ -378,14 +422,12 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
 
                             <div className="space-y-2">
                                 <label className="text-sm font-medium">Consistency Rules</label>
-                                <textarea name="consistencyRules" defaultValue={firm?.consistencyRules || ""} rows={4} className="w-full rounded-md border bg-background px-3 py-2" placeholder="Detailed consistency rule explanation..." />
-                                <p className="text-xs text-muted-foreground">Detailed text about consistency requirements</p>
+                                <textarea name="consistencyRules" defaultValue={firm?.consistencyRules || ""} rows={4} className="w-full rounded-md border bg-background px-3 py-2" placeholder="Detailed consistency rules..." />
                             </div>
 
                             <div className="space-y-2">
                                 <label className="text-sm font-medium">Prohibited Practices</label>
-                                <textarea name="prohibitedPractices" defaultValue={firm?.prohibitedPractices?.join(", ") || ""} rows={4} className="w-full rounded-md border bg-background px-3 py-2" placeholder="No martingale, No HFT, No copy trading" />
-                                <p className="text-xs text-muted-foreground">Comma separated prohibited trading practices</p>
+                                <textarea name="prohibitedPractices" defaultValue={firm?.prohibitedPractices?.join(", ") || ""} rows={4} className="w-full rounded-md border bg-background px-3 py-2" placeholder="Prohibited practices..." />
                             </div>
                         </div>
                     </div>

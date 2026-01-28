@@ -8,8 +8,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useFavorites } from "@/lib/hooks/use-favorites";
 import { useComparison } from "@/lib/hooks/use-comparison";
-import { useTranslations } from "next-intl";
-import confetti from "canvas-confetti";
+import { useTranslations, useLocale } from "next-intl";
 import { m, useMotionValue, useSpring, useTransform } from "framer-motion";
 
 interface FirmCardProps {
@@ -24,6 +23,19 @@ export function FirmCard({ firm, className }: FirmCardProps) {
     const { toggleFavorite, isFavorite } = useFavorites();
     const { comparisonList, toggleComparison } = useComparison();
     const t = useTranslations('Common');
+    const locale = useLocale();
+
+    // Helper for bilingual fields
+    const renderBilingual = (val: any) => {
+        if (!val) return "";
+        if (typeof val === 'string') return val;
+        if (typeof val === 'object') {
+            return val[locale as "en" | "es"] || val.en || val.es || "";
+        }
+        return String(val);
+    };
+
+    const description = renderBilingual(firm.description);
 
     // Mouse Tracking Glow
     const mouseX = useMotionValue(0);
@@ -37,9 +49,13 @@ export function FirmCard({ firm, className }: FirmCardProps) {
         mouseY.set(clientY - top);
     };
 
-    const copyCode = (e: React.MouseEvent) => {
+    const copyCode = async (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
+
+        // Lazy load confetti
+        const confetti = (await import("canvas-confetti")).default;
+
         navigator.clipboard.writeText(firm.code);
         setCopied(true);
 
@@ -136,7 +152,7 @@ export function FirmCard({ firm, className }: FirmCardProps) {
                     </div>
                 </div>
 
-                <p className="text-sm text-muted-foreground line-clamp-2 mb-4 leading-relaxed">{firm.description}</p>
+                <p className="text-sm text-muted-foreground line-clamp-2 mb-4 leading-relaxed">{description}</p>
 
                 <div className="flex flex-wrap gap-1.5 mb-6">
                     {firm.platforms.map((p) => (

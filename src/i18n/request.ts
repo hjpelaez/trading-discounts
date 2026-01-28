@@ -20,6 +20,7 @@ export default getRequestConfig(async ({ requestLocale }: { requestLocale: Promi
         const parts = key.split('.');
         const translatedValue = value[locale as 'en' | 'es'];
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let current: any = overrides; // Internal traversal still needs flexibility
         for (let i = 0; i < parts.length - 1; i++) {
             current[parts[i]] = current[parts[i]] || {};

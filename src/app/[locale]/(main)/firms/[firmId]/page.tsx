@@ -4,8 +4,11 @@ import { notFound } from "next/navigation";
 import { Check, ExternalLink, TrendingUp, DollarSign, Monitor, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import { CopyButton } from "@/components/copy-button";
+import { getTranslations } from "next-intl/server";
 
 const locales = ['en', 'es'];
+
+export const dynamic = 'force-dynamic';
 
 interface PageProps {
     params: Promise<{ locale: string; firmId: string }>;
@@ -14,17 +17,28 @@ interface PageProps {
 import { Metadata } from "next";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string, firmId: string }> }): Promise<Metadata> {
-    const { firmId } = await params;
+    const { firmId, locale } = await params;
     const firm = await getFirmById(firmId);
 
     if (!firm) return { title: 'Trading Discounts' };
 
+    const renderBilingual = (val: any) => {
+        if (!val) return "";
+        if (typeof val === 'string') return val;
+        if (typeof val === 'object') {
+            return val[locale as "en" | "es"] || val.en || val.es || "";
+        }
+        return String(val);
+    };
+
+    const description = renderBilingual(firm.description);
+
     return {
         title: `${firm.name} Discount Code | Trading Discounts`,
-        description: `Get instant access to exclusive discounts for ${firm.name}. Verified coupon codes for ${firm.categories.join(", ")} trading evaluations.`,
+        description: description || `Get instant access to exclusive discounts for ${firm.name}. Verified coupon codes for ${firm.categories.join(", ")} trading evaluations.`,
         openGraph: {
             title: `${firm.name} Discount Code | Trading Discounts`,
-            description: `Save ${firm.discount} on your ${firm.name} challenge today.`,
+            description: description || `Save ${firm.discount} on your ${firm.name} challenge today.`,
             images: [firm.imageUrl || '/og-default.jpg'],
         }
     };
@@ -42,6 +56,7 @@ export async function generateStaticParams() {
 
 export default async function FirmPage({ params }: PageProps) {
     const { firmId, locale } = await params;
+    const lang = locale as "en" | "es";
 
     const firm = await getFirmById(firmId);
 
@@ -49,12 +64,36 @@ export default async function FirmPage({ params }: PageProps) {
         notFound();
     }
 
+    const t = await getTranslations('FirmDetails');
+
     const allFirms = await getFirms();
 
     // Similar firms logic
     const similarFirms = allFirms
         .filter(f => f.categories.some(c => firm.categories.includes(c)) && f.id !== firm.id)
         .slice(0, 3);
+
+    const renderBilingual = (val: any) => {
+        if (!val) return "";
+        if (typeof val === 'string') return val;
+        if (typeof val === 'object') {
+            return val[lang] || val.en || val.es || "";
+        }
+        return String(val);
+    };
+
+    const renderBilingualArray = (val: any): string[] => {
+        if (!val) return [];
+        if (Array.isArray(val)) return val;
+        if (typeof val === 'object') {
+            return val[lang] || val.en || val.es || [];
+        }
+        return [];
+    };
+
+    const description = renderBilingual(firm.description);
+    const features = renderBilingualArray(firm.features);
+    const rules = renderBilingualArray(firm.rules);
 
     return (
         <div className="flex flex-col min-h-screen">
@@ -67,7 +106,7 @@ export default async function FirmPage({ params }: PageProps) {
                                 <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">{firm.name}</h1>
                                 {firm.featured && (
                                     <span className="rounded-full bg-primary/10 px-3 py-1 text-sm font-semibold text-primary border border-primary/20">
-                                        Featured Choice
+                                        {t('featuredChoice')}
                                     </span>
                                 )}
                             </div>
@@ -79,19 +118,19 @@ export default async function FirmPage({ params }: PageProps) {
                                 <span>•</span>
                                 <span>{firm.categories.map(c => c.toUpperCase()).join(" / ")}</span>
                             </div>
-                            <p className="text-xl text-muted-foreground">{firm.description}</p>
+                            <p className="text-xl text-muted-foreground">{description}</p>
                         </div>
 
                         {/* CTA Card */}
                         <div className="w-full md:w-auto min-w-[300px] rounded-xl border bg-card p-6 shadow-lg">
                             <div className="text-center space-y-4">
                                 <div>
-                                    <p className="text-sm text-muted-foreground uppercase font-semibold">Special Offer</p>
+                                    <p className="text-sm text-muted-foreground uppercase font-semibold">{t('specialOffer')}</p>
                                     <p className="text-4xl font-bold text-primary mt-1">{firm.discount}</p>
                                 </div>
 
                                 <div className="p-3 bg-muted rounded-lg border border-dashed border-primary/30">
-                                    <p className="text-xs text-muted-foreground mb-1">Use Code at Checkout:</p>
+                                    <p className="text-xs text-muted-foreground mb-1">{t('useCode')}</p>
                                     <div className="flex items-center justify-center gap-2">
                                         <code className="text-lg font-mono font-bold">{firm.code}</code>
                                         <CopyButton code={firm.code} />
@@ -103,10 +142,10 @@ export default async function FirmPage({ params }: PageProps) {
                                     target="_blank"
                                     className="inline-flex w-full items-center justify-center rounded-lg bg-primary px-4 py-3 text-base font-bold text-primary-foreground shadow transition-colors hover:bg-primary/90"
                                 >
-                                    Claim Discount <ExternalLink className="ml-2 h-4 w-4" />
+                                    {t('claim')} <ExternalLink className="ml-2 h-4 w-4" />
                                 </Link>
                                 <p className="text-xs text-muted-foreground">
-                                    *Terms and conditions apply on the firm&apos;s website.
+                                    {t('terms')}
                                 </p>
                             </div>
                         </div>
@@ -121,21 +160,21 @@ export default async function FirmPage({ params }: PageProps) {
 
                         {/* At a Glance Grid */}
                         <section>
-                            <h2 className="text-2xl font-bold mb-6">At a Glance</h2>
+                            <h2 className="text-2xl font-bold mb-6">{t('glance')}</h2>
                             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                                 <div className="p-4 rounded-lg bg-muted/40 border">
                                     <TrendingUp className="h-5 w-5 text-primary mb-2" />
-                                    <p className="text-xs text-muted-foreground">Max Leverage</p>
+                                    <p className="text-xs text-muted-foreground">{t('maxLeverage')}</p>
                                     <p className="font-bold">{firm.maxLeverage}</p>
                                 </div>
                                 <div className="p-4 rounded-lg bg-muted/40 border">
                                     <DollarSign className="h-5 w-5 text-primary mb-2" />
-                                    <p className="text-xs text-muted-foreground">Starting Price</p>
+                                    <p className="text-xs text-muted-foreground">{t('startingPrice')}</p>
                                     <p className="font-bold">${firm.minPrice}</p>
                                 </div>
                                 <div className="p-4 rounded-lg bg-muted/40 border col-span-2 sm:col-span-2">
                                     <Monitor className="h-5 w-5 text-primary mb-2" />
-                                    <p className="text-xs text-muted-foreground">Platforms</p>
+                                    <p className="text-xs text-muted-foreground">{t('platforms')}</p>
                                     <div className="flex flex-wrap gap-1 mt-1">
                                         {firm.platforms.map(p => (
                                             <span key={p} className="text-xs font-medium bg-background px-2 py-0.5 rounded border">
@@ -149,9 +188,9 @@ export default async function FirmPage({ params }: PageProps) {
 
                         {/* Features */}
                         <section>
-                            <h2 className="text-2xl font-bold mb-6">Why Choose {firm.name}?</h2>
+                            <h2 className="text-2xl font-bold mb-6">{t('whyChoose', { name: firm.name })}</h2>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                {firm.features.map((feature, i) => (
+                                {features.map((feature, i) => (
                                     <div key={i} className="flex items-start gap-3">
                                         <div className="mt-1 rounded-full bg-green-500/10 p-1">
                                             <Check className="h-3 w-3 text-green-500" />
@@ -164,9 +203,9 @@ export default async function FirmPage({ params }: PageProps) {
 
                         {/* Rules */}
                         <section>
-                            <h2 className="text-2xl font-bold mb-6">Key Trading Rules</h2>
+                            <h2 className="text-2xl font-bold mb-6">{t('rulesTitle')}</h2>
                             <div className="rounded-xl border bg-card overflow-hidden">
-                                {firm.rules.map((rule, i) => (
+                                {rules.map((rule, i) => (
                                     <div key={i} className="flex items-center gap-4 p-4 border-b last:border-0 hover:bg-muted/50 transition-colors">
                                         <ShieldCheck className="h-5 w-5 text-muted-foreground" />
                                         <span className="font-medium">{rule}</span>
@@ -180,7 +219,7 @@ export default async function FirmPage({ params }: PageProps) {
                     {/* Sidebar / Similar Firms */}
                     <div>
                         <div className="sticky top-24">
-                            <h3 className="text-lg font-bold mb-4">Similar Funded Accounts</h3>
+                            <h3 className="text-lg font-bold mb-4">{t('similarTitle')}</h3>
                             <div className="flex flex-col gap-4">
                                 {similarFirms.map(f => (
                                     <FirmCard key={f.id} firm={f} className="border-border bg-muted/20" />

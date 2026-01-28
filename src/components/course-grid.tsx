@@ -87,7 +87,7 @@ export function CourseGrid({ initialCourses, filters }: CourseGridProps) {
 
             {!hasMore && courses.length > 0 && (
                 <div className="text-center py-8 text-muted-foreground text-sm">
-                    You've reached the end. 🚀
+                    You&apos;ve reached the end. 🚀
                 </div>
             )}
         </div>

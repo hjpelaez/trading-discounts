@@ -1,189 +1,11 @@
 [
     {
-        "id": "apex-trader",
-        "name": "Apex Trader Funding",
-        "description": "Best for Futures fanatics. High leverage, simple rules.",
-        "discount": "90% OFF",
-        "code": "PFT",
-        "link": "https://apextraderfunding.com/member/aff/go/propfirmtrader1",
-        "categories": [
-            "futures",
-            "crypto"
-        ],
-        "featured": true,
-        "rating": 4.8,
-        "platforms": [
-            "Rithmic",
-            "Tradovate",
-            "NinjaTrader"
-        ],
-        "minPrice": 147,
-        "features": [
-            "One Step Evaluation",
-            "Trade During News",
-            "No Daily Drawdown",
-            "Keep 100% of first $25k"
-        ],
-        "rules": [
-            "Trailing Threshold Drawdown",
-            "Consistency Rule"
-        ],
-        "maxLeverage": "1:20",
-        "paymentMethods": [
-            "Credit Card",
-            "Crypto"
-        ],
-        "trustpilotScore": 4.8,
-        "imageUrl": "https://ui-avatars.com/api/?name=Apex+Trader&background=0D8ABC&color=fff&size=128",
-        "drawdownType": "Trailing"
-    },
-    {
-        "id": "atmos-funded",
-        "name": "AtmosFunded",
-        "description": "Community favorite. Great support and fast payouts.",
-        "discount": "25% OFF",
-        "code": "PFT1",
-        "link": "https://app.atmosfunded.com/en/challenges?campaign_id=2&ref_id=65&lp=1",
-        "categories": [
-            "forex",
-            "crypto"
-        ],
-        "rating": 4.5,
-        "platforms": [
-            "MT4",
-            "MT5",
-            "cTrader"
-        ],
-        "minPrice": 50,
-        "features": [
-            "High HFT Allowed",
-            "Weekly Payouts",
-            "No Time Limits"
-        ],
-        "rules": [
-            "5% Daily Drawdown",
-            "10% Max Drawdown"
-        ],
-        "maxLeverage": "1:100",
-        "paymentMethods": [
-            "Credit Card",
-            "Crypto",
-            "Wise"
-        ],
-        "trustpilotScore": 4.5,
-        "imageUrl": "https://ui-avatars.com/api/?name=Atmos+Funded&background=2E3A59&color=fff&size=128",
-        "drawdownType": "Static"
-    },
-    {
-        "id": "alpha-capital",
-        "name": "Alpha Capital",
-        "description": "Industry leading conditions. Low spreads.",
-        "discount": "30% OFF",
-        "code": "PFT",
-        "link": "https://app.alphacapitalgroup.uk/signup/PFT",
-        "categories": [
-            "forex"
-        ],
-        "rating": 4.7,
-        "platforms": [
-            "MT5"
-        ],
-        "minPrice": 99,
-        "features": [
-            "0% Commission",
-            "Raw Spreads",
-            "Scaling Plan up to $2M"
-        ],
-        "rules": [
-            "No Martingale",
-            "No HFT"
-        ],
-        "maxLeverage": "1:100",
-        "paymentMethods": [
-            "Credit Card",
-            "Crypto"
-        ],
-        "trustpilotScore": 4.6,
-        "imageUrl": "https://ui-avatars.com/api/?name=Alpha Capital &background=10B981&color=fff&size=128",
-        "drawdownType": "Static"
-    },
-    {
-        "id": "blueberry-funded",
-        "name": "Blueberry Funded",
-        "description": "Reliable and trusted. 200% refund bonus.",
-        "discount": "25% OFF",
-        "code": "PFT",
-        "link": "https://blueberryfunded.com/?utm_source=affiliate&ref=3464",
-        "categories": [
-            "forex",
-            "crypto"
-        ],
-        "featured": true,
-        "rating": 4.6,
-        "platforms": [
-            "MT4",
-            "MT5"
-        ],
-        "minPrice": 69,
-        "features": [
-            "200% Refund Bonus",
-            "Bi-weekly Payouts",
-            "Balance Based Drawdown"
-        ],
-        "rules": [
-            "No Copy Trading",
-            "Weekend Holding Allowed"
-        ],
-        "maxLeverage": "1:50",
-        "paymentMethods": [
-            "Credit Card",
-            "Crypto"
-        ],
-        "trustpilotScore": 4.4,
-        "imageUrl": "https://ui-avatars.com/api/?name=Blueberry&background=3B82F6&color=fff&size=128",
-        "drawdownType": "Balance-based"
-    },
-    {
-        "id": "topstep",
-        "name": "Topstep",
-        "description": "The original futures prop firm. Safe and secure.",
-        "discount": "70% OFF",
-        "code": "LINK",
-        "link": "https://www.topstep.com/",
-        "categories": [
-            "futures"
-        ],
-        "rating": 4.9,
-        "platforms": [
-            "Tradovate",
-            "NinjaTrader"
-        ],
-        "minPrice": 49,
-        "features": [
-            "First Payout Bonus",
-            "Free Coaching",
-            "Fast Payouts"
-        ],
-        "rules": [
-            "Only Trade Permitted Products",
-            "Daily Loss Limit"
-        ],
-        "maxLeverage": "1:50",
-        "paymentMethods": [
-            "Credit Card",
-            "PayPal"
-        ],
-        "trustpilotScore": 4.7,
-        "imageUrl": "https://ui-avatars.com/api/?name=Topstep&background=F59E0B&color=fff&size=128",
-        "drawdownType": "Trailing"
-    },
-    {
         "id": "ftmo",
         "name": "FTMO",
         "description": "The gold standard of prop trading.",
         "discount": "Best Deal",
         "code": "LINK",
-        "link": "https://trader.ftmo.com/?affiliates=NQKhLFRlDnYcDTvrEyeq",
+        "link": "https://ftmo.com",
         "categories": [
             "forex",
             "crypto"
@@ -216,5 +38,662 @@
         "trustpilotScore": 4.9,
         "imageUrl": "https://ui-avatars.com/api/?name=FTMO&background=111827&color=fff&size=128",
         "drawdownType": "Static"
+    },
+    {
+        "id": "funded-next",
+        "name": "FundedNext",
+        "description": "Innovative prop firm with competitive conditions.",
+        "discount": "Special Offer",
+        "code": "PFT",
+        "link": "https://fundednext.com",
+        "categories": [
+            "forex",
+            "crypto"
+        ],
+        "rating": 4.7,
+        "platforms": [
+            "MT4",
+            "MT5"
+        ],
+        "minPrice": 99,
+        "features": [
+            "Profit Sharing from Demo",
+            "No Time Limit",
+            "Balance Based Drawdown"
+        ],
+        "rules": [
+            "Daily Loss Limit",
+            "Max Loss"
+        ],
+        "maxLeverage": "1:100",
+        "paymentMethods": [
+            "Credit Card",
+            "Crypto"
+        ],
+        "trustpilotScore": 4.6,
+        "imageUrl": "https://ui-avatars.com/api/?name=FundedNext&background=1E293B&color=fff&size=128",
+        "drawdownType": "Balance-based"
+    },
+    {
+        "id": "the-5ers",
+        "name": "The 5%ers",
+        "description": "Growth-focused prop firm for serious traders.",
+        "discount": "Best Price",
+        "code": "PFT",
+        "link": "https://the5ers.com",
+        "categories": [
+            "forex",
+            "crypto"
+        ],
+        "rating": 4.8,
+        "platforms": [
+            "MT5"
+        ],
+        "minPrice": 95,
+        "features": [
+            "Instant Funding",
+            "Hyper Growth Plan",
+            "Supportive Community"
+        ],
+        "rules": [
+            "Stop Loss Required",
+            "Max Daily Loss"
+        ],
+        "maxLeverage": "1:30",
+        "paymentMethods": [
+            "Credit Card",
+            "Crypto"
+        ],
+        "trustpilotScore": 4.8,
+        "imageUrl": "https://ui-avatars.com/api/?name=The5ers&background=EF4444&color=fff&size=128",
+        "drawdownType": "Static"
+    },
+    {
+        "id": "sabio-trade",
+        "name": "SabioTrade",
+        "description": "Modern prop firm with integrated trading tools.",
+        "discount": "20% OFF",
+        "code": "PFT",
+        "link": "https://sabiotrade.com",
+        "categories": [
+            "forex",
+            "crypto"
+        ],
+        "rating": 4.5,
+        "platforms": [
+            "SabioTrader"
+        ],
+        "minPrice": 50,
+        "features": [
+            "Proprietary Platform",
+            "Fast Payouts",
+            "Simple Rules"
+        ],
+        "rules": [
+            "Daily Loss Limit",
+            "Max Loss"
+        ],
+        "maxLeverage": "1:100",
+        "paymentMethods": [
+            "Credit Card",
+            "Crypto"
+        ],
+        "trustpilotScore": 4.4,
+        "imageUrl": "https://ui-avatars.com/api/?name=SabioTrade&background=065F46&color=fff&size=128",
+        "drawdownType": "Static"
+    },
+    {
+        "id": "funded-trading-plus",
+        "name": "Funded Trading Plus",
+        "description": "No time limits, no pressure prop firm.",
+        "discount": "PFT DISCOUNT",
+        "code": "PFT",
+        "link": "https://www.fundedtradingplus.com",
+        "categories": [
+            "forex",
+            "crypto"
+        ],
+        "rating": 4.7,
+        "platforms": [
+            "MT4",
+            "MT5",
+            "DXtrade"
+        ],
+        "minPrice": 119,
+        "features": [
+            "No News Restrictions",
+            "Keep up to 90%",
+            "Simple One Stage"
+        ],
+        "rules": [
+            "Daily Loss Limit",
+            "Total Drawdown"
+        ],
+        "maxLeverage": "1:30",
+        "paymentMethods": [
+            "Credit Card",
+            "Crypto"
+        ],
+        "trustpilotScore": 4.8,
+        "imageUrl": "https://ui-avatars.com/api/?name=FTPlus&background=1E40AF&color=fff&size=128",
+        "drawdownType": "Relative"
+    },
+    {
+        "id": "e8-markets",
+        "name": "E8 Markets",
+        "description": "User-centric prop firm with flexible funding.",
+        "discount": "Special Deal",
+        "code": "PFT",
+        "link": "https://e8markets.com",
+        "categories": [
+            "forex",
+            "crypto"
+        ],
+        "rating": 4.6,
+        "platforms": [
+            "MT4",
+            "MT5"
+        ],
+        "minPrice": 138,
+        "features": [
+            "Custom Challenges",
+            "Fast Payouts",
+            "User Friendly Dashboard"
+        ],
+        "rules": [
+            "Max Daily Loss",
+            "Max Global Loss"
+        ],
+        "maxLeverage": "1:100",
+        "paymentMethods": [
+            "Credit Card",
+            "Crypto"
+        ],
+        "trustpilotScore": 4.7,
+        "imageUrl": "https://ui-avatars.com/api/?name=E8Markets&background=4F46E5&color=fff&size=128",
+        "drawdownType": "Static"
+    },
+    {
+        "id": "city-traders-imperium",
+        "name": "City Traders Imperium (CTI)",
+        "description": "Specialists in long-term funding and education.",
+        "discount": "EXCLUSIVE",
+        "code": "PFT",
+        "link": "https://citytradersimperium.com",
+        "categories": [
+            "forex",
+            "crypto"
+        ],
+        "rating": 4.7,
+        "platforms": [
+            "MT5"
+        ],
+        "minPrice": 100,
+        "features": [
+            "Direct Funding",
+            "Education Programs",
+            "Scaling up to $4M"
+        ],
+        "rules": [
+            "Max Loss",
+            "Minimum Trading Days"
+        ],
+        "maxLeverage": "1:100",
+        "paymentMethods": [
+            "Credit Card",
+            "Crypto"
+        ],
+        "trustpilotScore": 4.8,
+        "imageUrl": "https://ui-avatars.com/api/?name=CTI&background=B45309&color=fff&size=128",
+        "drawdownType": "Static"
+    },
+    {
+        "id": "fxify",
+        "name": "FXIFY",
+        "description": "Customizable prop firm for high-performance traders.",
+        "discount": "PFT OFF",
+        "code": "PFT",
+        "link": "https://fxify.com",
+        "categories": [
+            "forex",
+            "crypto"
+        ],
+        "rating": 4.8,
+        "platforms": [
+            "MT4",
+            "MT5"
+        ],
+        "minPrice": 99,
+        "features": [
+            "Instant Payouts",
+            "Unlimited Trading Days",
+            "High Leverage"
+        ],
+        "rules": [
+            "Max Daily Loss",
+            "Prohibited Trading Styles"
+        ],
+        "maxLeverage": "1:100",
+        "paymentMethods": [
+            "Credit Card",
+            "Crypto"
+        ],
+        "trustpilotScore": 4.7,
+        "imageUrl": "https://ui-avatars.com/api/?name=FXIFY&background=312E81&color=fff&size=128",
+        "drawdownType": "Static"
+    },
+    {
+        "id": "alpha-capital",
+        "name": "Alpha Capital Group",
+        "description": "Industry leading conditions. Low spreads.",
+        "discount": "30% OFF",
+        "code": "PFT",
+        "link": "https://alphacapitalgroup.uk",
+        "categories": [
+            "forex"
+        ],
+        "rating": 4.7,
+        "platforms": [
+            "MT5"
+        ],
+        "minPrice": 99,
+        "features": [
+            "0% Commission",
+            "Raw Spreads",
+            "Scaling Plan up to $2M"
+        ],
+        "rules": [
+            "No Martingale",
+            "No HFT"
+        ],
+        "maxLeverage": "1:100",
+        "paymentMethods": [
+            "Credit Card",
+            "Crypto"
+        ],
+        "trustpilotScore": 4.6,
+        "imageUrl": "https://ui-avatars.com/api/?name=AlphaGroup&background=10B981&color=fff&size=128",
+        "drawdownType": "Static"
+    },
+    {
+        "id": "funding-pips",
+        "name": "Funding Pips",
+        "description": "Simple and effective prop trading solutions.",
+        "discount": "PFT DEAL",
+        "code": "PFT",
+        "link": "https://fundingpips.com",
+        "categories": [
+            "forex",
+            "crypto"
+        ],
+        "rating": 4.6,
+        "platforms": [
+            "MT5",
+            "MatchTrader"
+        ],
+        "minPrice": 32,
+        "features": [
+            "Cheap Evaluations",
+            "Fast Support",
+            "High Profit Split"
+        ],
+        "rules": [
+            "Daily Drawdown",
+            "Total Drawdown"
+        ],
+        "maxLeverage": "1:100",
+        "paymentMethods": [
+            "Credit Card",
+            "Crypto"
+        ],
+        "trustpilotScore": 4.7,
+        "imageUrl": "https://ui-avatars.com/api/?name=FPips&background=4B5563&color=fff&size=128",
+        "drawdownType": "Static"
+    },
+    {
+        "id": "goat-funded",
+        "name": "Goat Funded Trader",
+        "description": "The GOAT of prop firms with great incentives.",
+        "discount": "EXTREME",
+        "code": "PFT",
+        "link": "https://goatfundedtrader.com",
+        "categories": [
+            "forex"
+        ],
+        "rating": 4.5,
+        "platforms": [
+            "MT4",
+            "MT5"
+        ],
+        "minPrice": 45,
+        "features": [
+            "Fast Payouts",
+            "No Time Limits",
+            "Active Community"
+        ],
+        "rules": [
+            "Daily Loss",
+            "Maximum Loss"
+        ],
+        "maxLeverage": "1:100",
+        "paymentMethods": [
+            "Credit Card",
+            "Crypto"
+        ],
+        "trustpilotScore": 4.5,
+        "imageUrl": "https://ui-avatars.com/api/?name=GoatFT&background=D97706&color=fff&size=128",
+        "drawdownType": "Static"
+    },
+    {
+        "id": "funder-pro",
+        "name": "FunderPro",
+        "description": "Prop trading without the restrictions.",
+        "discount": "PRO DEAL",
+        "code": "PFT",
+        "link": "https://funderpro.com",
+        "categories": [
+            "forex",
+            "crypto"
+        ],
+        "rating": 4.6,
+        "platforms": [
+            "MT4",
+            "MT5",
+            "TradeLocker"
+        ],
+        "minPrice": 99,
+        "features": [
+            "Weekly Payouts",
+            "No News Restrictions",
+            "Simple Rules"
+        ],
+        "rules": [
+            "Daily Loss",
+            "Max Loss"
+        ],
+        "maxLeverage": "1:100",
+        "paymentMethods": [
+            "Credit Card",
+            "Crypto"
+        ],
+        "trustpilotScore": 4.7,
+        "imageUrl": "https://ui-avatars.com/api/?name=FunderPro&background=059669&color=fff&size=128",
+        "drawdownType": "Static"
+    },
+    {
+        "id": "blueberry-funded",
+        "name": "Blueberry Funded",
+        "description": "Reliable and trusted. 200% refund bonus.",
+        "discount": "25% OFF",
+        "code": "PFT",
+        "link": "https://blueberryfunded.com",
+        "categories": [
+            "forex",
+            "crypto"
+        ],
+        "rating": 4.6,
+        "platforms": [
+            "MT4",
+            "MT5"
+        ],
+        "minPrice": 69,
+        "features": [
+            "200% Refund Bonus",
+            "Bi-weekly Payouts",
+            "Balance Based Drawdown"
+        ],
+        "rules": [
+            "No Copy Trading",
+            "Weekend Holding Allowed"
+        ],
+        "maxLeverage": "1:50",
+        "paymentMethods": [
+            "Credit Card",
+            "Crypto"
+        ],
+        "trustpilotScore": 4.4,
+        "imageUrl": "https://ui-avatars.com/api/?name=Blueberry&background=3B82F6&color=fff&size=128",
+        "drawdownType": "Balance-based"
+    },
+    {
+        "id": "dna-funded",
+        "name": "DNA Funded",
+        "description": "Precision and focus for dedicated traders.",
+        "discount": "DNA OFFER",
+        "code": "PFT",
+        "link": "https://dnafunded.com",
+        "categories": [
+            "forex"
+        ],
+        "rating": 4.4,
+        "platforms": [
+            "MT4",
+            "MT5"
+        ],
+        "minPrice": 80,
+        "features": [
+            "Custom Dashboards",
+            "Fast Onboarding",
+            "Supportive Team"
+        ],
+        "rules": [
+            "Daily Loss Limit",
+            "Max Relative Drawdown"
+        ],
+        "maxLeverage": "1:100",
+        "paymentMethods": [
+            "Credit Card",
+            "Crypto"
+        ],
+        "trustpilotScore": 4.3,
+        "imageUrl": "https://ui-avatars.com/api/?name=DNAFunded&background=7C3AED&color=fff&size=128",
+        "drawdownType": "Relative"
+    },
+    {
+        "id": "think-capital",
+        "name": "ThinkCapital",
+        "description": "Professional grade prop firm for institutional thinkers.",
+        "discount": "THINK BIG",
+        "code": "PFT",
+        "link": "https://thinkcapital.com",
+        "categories": [
+            "forex",
+            "crypto"
+        ],
+        "rating": 4.5,
+        "platforms": [
+            "MT5"
+        ],
+        "minPrice": 150,
+        "features": [
+            "Low Spreads",
+            "High Leverage",
+            "Advanced Analytics"
+        ],
+        "rules": [
+            "Max Loss",
+            "Standard Daily Loss"
+        ],
+        "maxLeverage": "1:100",
+        "paymentMethods": [
+            "Credit Card",
+            "Crypto"
+        ],
+        "trustpilotScore": 4.5,
+        "imageUrl": "https://ui-avatars.com/api/?name=ThinkCap&background=374151&color=fff&size=128",
+        "drawdownType": "Static"
+    },
+    {
+        "id": "topstep",
+        "name": "Topstep",
+        "description": "The original futures prop firm. Safe and secure.",
+        "discount": "70% OFF",
+        "code": "LINK",
+        "link": "https://www.topstep.com",
+        "categories": [
+            "futures",
+            "crypto"
+        ],
+        "rating": 4.9,
+        "platforms": [
+            "Tradovate",
+            "NinjaTrader"
+        ],
+        "minPrice": 49,
+        "features": [
+            "First Payout Bonus",
+            "Free Coaching",
+            "Fast Payouts"
+        ],
+        "rules": [
+            "Only Trade Permitted Products",
+            "Daily Loss Limit"
+        ],
+        "maxLeverage": "1:50",
+        "paymentMethods": [
+            "Credit Card",
+            "PayPal"
+        ],
+        "trustpilotScore": 4.7,
+        "imageUrl": "https://ui-avatars.com/api/?name=Topstep&background=F59E0B&color=fff&size=128",
+        "drawdownType": "Trailing"
+    },
+    {
+        "id": "apex-trader",
+        "name": "Apex Trader Funding",
+        "description": "Best for Futures fanatics. High leverage, simple rules.",
+        "discount": "90% OFF",
+        "code": "PFT",
+        "link": "https://apextraderfunding.com",
+        "categories": [
+            "futures"
+        ],
+        "rating": 4.8,
+        "platforms": [
+            "Rithmic",
+            "Tradovate",
+            "NinjaTrader"
+        ],
+        "minPrice": 147,
+        "features": [
+            "One Step Evaluation",
+            "Trade During News",
+            "No Daily Drawdown"
+        ],
+        "rules": [
+            "Trailing Threshold Drawdown",
+            "Consistency Rule"
+        ],
+        "maxLeverage": "1:20",
+        "paymentMethods": [
+            "Credit Card",
+            "Crypto"
+        ],
+        "trustpilotScore": 4.8,
+        "imageUrl": "https://ui-avatars.com/api/?name=ApexTrader&background=0D8ABC&color=fff&size=128",
+        "drawdownType": "Trailing"
+    },
+    {
+        "id": "earn-2-trade",
+        "name": "Earn2Trade",
+        "description": "Education-first futures prop firm.",
+        "discount": "BEST DEAL",
+        "code": "LINK",
+        "link": "https://www.earn2trade.com",
+        "categories": [
+            "futures"
+        ],
+        "rating": 4.7,
+        "platforms": [
+            "NinjaTrader",
+            "Finamark"
+        ],
+        "minPrice": 150,
+        "features": [
+            "Bootcamp training",
+            "Progress tracking",
+            "Scaling capital"
+        ],
+        "rules": [
+            "Trade during approved hours",
+            "Follow drawdown rules"
+        ],
+        "maxLeverage": "1:20",
+        "paymentMethods": [
+            "Credit Card",
+            "Wire Transfer"
+        ],
+        "trustpilotScore": 4.6,
+        "imageUrl": "https://ui-avatars.com/api/?name=Earn2Trade&background=047857&color=fff&size=128",
+        "drawdownType": "Dynamic"
+    },
+    {
+        "id": "my-funded-futures",
+        "name": "MyFundedFutures",
+        "description": "Streamlined futures prop trading experience.",
+        "discount": "MFF OFFER",
+        "code": "PFT",
+        "link": "https://myfundedfutures.com",
+        "categories": [
+            "futures"
+        ],
+        "rating": 4.6,
+        "platforms": [
+            "Tradovate",
+            "Rithmic"
+        ],
+        "minPrice": 100,
+        "features": [
+            "No Activation Fees",
+            "Simple Rules",
+            "Fast Payouts"
+        ],
+        "rules": [
+            "Max Loss",
+            "Daily Loss Limit"
+        ],
+        "maxLeverage": "1:20",
+        "paymentMethods": [
+            "Credit Card",
+            "Crypto"
+        ],
+        "trustpilotScore": 4.5,
+        "imageUrl": "https://ui-avatars.com/api/?name=MFF&background=EF4444&color=fff&size=128",
+        "drawdownType": "Static"
+    },
+    {
+        "id": "one-up-trader",
+        "name": "OneUp Trader",
+        "description": "Funded futures trading since 2016.",
+        "discount": "ONEUP DEALS",
+        "code": "LINK",
+        "link": "https://oneuptrader.com",
+        "categories": [
+            "futures"
+        ],
+        "rating": 4.8,
+        "platforms": [
+            "NinjaTrader",
+            "Rithmic",
+            "Quantower"
+        ],
+        "minPrice": 125,
+        "features": [
+            "90% Profit Split",
+            "Instant Funding Options",
+            "Trusted Brand"
+        ],
+        "rules": [
+            "Max Drawdown",
+            "Daily Loss Limit"
+        ],
+        "maxLeverage": "1:20",
+        "paymentMethods": [
+            "Credit Card",
+            "Wire Transfer"
+        ],
+        "trustpilotScore": 4.7,
+        "imageUrl": "https://ui-avatars.com/api/?name=OneUp&background=2563EB&color=fff&size=128",
+        "drawdownType": "Trailing"
     }
 ]

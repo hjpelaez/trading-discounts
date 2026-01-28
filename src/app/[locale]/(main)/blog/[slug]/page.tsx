@@ -5,6 +5,7 @@ import { FadeIn, StaggerContainer, StaggerItem } from "@/components/animations";
 import { Calendar, User, ArrowLeft, Tag } from "lucide-react";
 import Link from "next/link";
 import { BlogCard } from "@/components/blog-card";
+import { ShareButtons } from "@/components/share-buttons";
 import { Metadata } from "next";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string, slug: string }> }): Promise<Metadata> {
@@ -94,13 +95,19 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
                             className="p-8 md:p-16 lg:p-20 prose prose-slate md:prose-lg lg:prose-xl max-w-none dark:prose-invert prose-headings:font-bold prose-a:text-primary prose-a:no-underline hover:prose-a:underline"
                             dangerouslySetInnerHTML={{ __html: content }}
                         />
+                        <div className="px-8 md:px-16 lg:px-20 pb-12">
+                            <ShareButtons
+                                url={`https://trading-discounts.com/${locale}/blog/${slug}`}
+                                title={title.replace(/<[^>]*>?/gm, '')}
+                            />
+                        </div>
                     </div>
                 </FadeIn>
             </div>
 
             {/* Related Posts */}
             {relatedPosts.length > 0 && (
-                <div className="container mx-auto px-4 md:px-6 mt-24 -mb-12">
+                <div className="container mx-auto px-4 md:px-6 mt-32 mb-12">
                     <FadeIn delay={0.4}>
                         <div className="text-center mb-12">
                             <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">

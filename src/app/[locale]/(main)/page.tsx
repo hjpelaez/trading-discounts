@@ -23,7 +23,6 @@ interface SearchParams {
   drawdown?: string;
 }
 
-export const dynamic = 'force-dynamic';
 
 export default async function Home({ searchParams, params }: { searchParams: Promise<SearchParams>; params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -49,7 +48,11 @@ export default async function Home({ searchParams, params }: { searchParams: Pro
     // 1. Search Query
     const matchesQuery = !searchQ ||
       firm.name.toLowerCase().includes(searchQ) ||
-      firm.description.toLowerCase().includes(searchQ);
+      (firm.description && typeof firm.description === 'object' && (
+        (firm.description as { en: string; es: string }).en?.toLowerCase()?.includes(searchQ) ||
+        (firm.description as { en: string; es: string }).es?.toLowerCase()?.includes(searchQ)
+      )) ||
+      (typeof firm.description === 'string' && firm.description.toLowerCase().includes(searchQ));
 
     // 2. Platform
     const matchesPlatform = !filterPlatform ||
@@ -150,7 +153,7 @@ export default async function Home({ searchParams, params }: { searchParams: Pro
       </section>
 
       {/* Blog Preview */}
-      <section className="container mx-auto px-4 md:px-6 py-24">
+      <section className="container mx-auto px-4 md:px-6 py-28 md:py-36 border-t border-border/50">
         <div className="flex items-center justify-between mb-12">
           <h2 className="text-3xl font-bold tracking-tight">{tHome('recentArticles')}</h2>
           <Link href={`${prefix}/blog`} className="text-primary font-bold flex items-center hover:underline">
@@ -170,33 +173,37 @@ export default async function Home({ searchParams, params }: { searchParams: Pro
       </section>
 
       {/* Testimonials */}
-      <Testimonials
-        locale={locale}
-        title={tHome('testimonialsTitle')}
-        subtitle={tHome('testimonialsSubtitle')}
-        testimonials={{
-          testimonial1Name: tTestimonials('testimonial1Name'),
-          testimonial1Role: tTestimonials('testimonial1Role'),
-          testimonial1Text: tTestimonials('testimonial1Text'),
-          testimonial2Name: tTestimonials('testimonial2Name'),
-          testimonial2Role: tTestimonials('testimonial2Role'),
-          testimonial2Text: tTestimonials('testimonial2Text'),
-          testimonial3Name: tTestimonials('testimonial3Name'),
-          testimonial3Role: tTestimonials('testimonial3Role'),
-          testimonial3Text: tTestimonials('testimonial3Text'),
-          testimonial4Name: tTestimonials('testimonial4Name'),
-          testimonial4Role: tTestimonials('testimonial4Role'),
-          testimonial4Text: tTestimonials('testimonial4Text'),
-          testimonial5Name: tTestimonials('testimonial5Name'),
-          testimonial5Role: tTestimonials('testimonial5Role'),
-          testimonial5Text: tTestimonials('testimonial5Text'),
-          testimonial6Name: tTestimonials('testimonial6Name'),
-          testimonial6Role: tTestimonials('testimonial6Role'),
-          testimonial6Text: tTestimonials('testimonial6Text'),
-        }}
-      />
+      <section className="border-t border-border/50 bg-muted/5">
+        <Testimonials
+          locale={locale}
+          title={tHome('testimonialsTitle')}
+          subtitle={tHome('testimonialsSubtitle')}
+          testimonials={{
+            testimonial1Name: tTestimonials('testimonial1Name'),
+            testimonial1Role: tTestimonials('testimonial1Role'),
+            testimonial1Text: tTestimonials('testimonial1Text'),
+            testimonial2Name: tTestimonials('testimonial2Name'),
+            testimonial2Role: tTestimonials('testimonial2Role'),
+            testimonial2Text: tTestimonials('testimonial2Text'),
+            testimonial3Name: tTestimonials('testimonial3Name'),
+            testimonial3Role: tTestimonials('testimonial3Role'),
+            testimonial3Text: tTestimonials('testimonial3Text'),
+            testimonial4Name: tTestimonials('testimonial4Name'),
+            testimonial4Role: tTestimonials('testimonial4Role'),
+            testimonial4Text: tTestimonials('testimonial4Text'),
+            testimonial5Name: tTestimonials('testimonial5Name'),
+            testimonial5Role: tTestimonials('testimonial5Role'),
+            testimonial5Text: tTestimonials('testimonial5Text'),
+            testimonial6Name: tTestimonials('testimonial6Name'),
+            testimonial6Role: tTestimonials('testimonial6Role'),
+            testimonial6Text: tTestimonials('testimonial6Text'),
+          }}
+        />
+      </section>
 
-      <FAQ />
+      <section className="border-t border-border/50 bg-background">
+        <FAQ />
+      </section>
     </div>
   );
 }

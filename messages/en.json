@@ -8,7 +8,8 @@
         "blog": "Blog",
         "contact": "Contact",
         "courses": "Courses",
-        "ai": "Ask Tidi"
+        "ai": "Ask Tidi",
+        "ai_tooltip": "Ask Tidi AI Assistant"
     },
     "Hero": {
         "pill": "🚀 The #1 Prop Firm Discount Aggregator",
@@ -228,6 +229,22 @@
         "feature3Desc": "All codes verified daily",
         "footer": "© 2025 Trading Discounts. All rights reserved."
     },
+    "Crypto": {
+        "title": "Crypto Prop <highlight>Firms</highlight>",
+        "subtitle": "Get funded with cryptocurrency. The best prop firms offering crypto payouts and trading pairs."
+    },
+    "Forex": {
+        "title": "Forex Prop <highlight>Firms</highlight>",
+        "subtitle": "Trade major, minor, and exotic pairs with high leverage. Exclusive discounts for FX traders."
+    },
+    "Futures": {
+        "title": "Futures Prop <highlight>Firms</highlight>",
+        "subtitle": "Trade futures contracts on CME, COMEX, and NYMEX. Best deals for futures evaluation accounts."
+    },
+    "CoursesPage": {
+        "title": "Trading <highlight>Courses</highlight>",
+        "subtitle": "Master the markets with our curated selection of top-rated trading courses."
+    },
     "AdminCourses": {
         "createTitle": "Create New Course",
         "editTitle": "Edit Course",
@@ -267,5 +284,19 @@
         "addFirm": "Add Firm",
         "viewSite": "View Website",
         "logout": "Log Out"
+    },
+    "FirmDetails": {
+        "glance": "At a Glance",
+        "maxLeverage": "Max Leverage",
+        "startingPrice": "Starting Price",
+        "platforms": "Platforms",
+        "whyChoose": "Why Choose {name}?",
+        "rulesTitle": "Key Trading Rules",
+        "similarTitle": "Similar Funded Accounts",
+        "specialOffer": "Special Offer",
+        "useCode": "Use Code at Checkout:",
+        "claim": "Claim Discount",
+        "terms": "*Terms and conditions apply on the firm's website.",
+        "featuredChoice": "Featured Choice"
     }
 }

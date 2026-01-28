@@ -7,6 +7,7 @@ import { CookieConsent } from "@/components/cookie-consent";
 import { ComparisonBar } from "@/components/comparison-bar";
 import { AIAssistant } from "@/components/ai-assistant";
 import { ScrollToTop } from "@/components/scroll-to-top";
+import { ScrollToTopOnPathChange } from "@/components/scroll-on-top";
 import { DecorativeSeparator } from "@/components/decorative-separator";
 import { getSettings } from "@/lib/db";
 
@@ -24,7 +25,7 @@ export default async function MainLayout({
                 {children}
 
                 {/* Newsletter Section */}
-                <section className="container mx-auto px-4 md:px-6 mb-24">
+                <section className="container mx-auto px-4 md:px-6 mb-24 mt-20 md:mt-32">
                     <Newsletter />
                 </section>
 
@@ -36,6 +37,7 @@ export default async function MainLayout({
             <AIAssistant />
             <CookieConsent />
             <ScrollToTop />
+            <ScrollToTopOnPathChange />
         </>
     );
 }

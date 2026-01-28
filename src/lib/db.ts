@@ -3,9 +3,6 @@ import { createStaticClient } from "@/lib/supabase/static";
 import { PropFirm } from "@/lib/data";
 import { cache } from "react";
 
-// Force dynamic execution for data fetching to ensure fresh data
-export const dynamic = 'force-dynamic';
-
 // --- FIRMS ---
 
 export const getFirms = cache(async (): Promise<PropFirm[]> => {
@@ -358,8 +355,8 @@ export interface CourseDB {
     priceLabel: string;
     priceMin?: number;
     priceMax?: number;
-    learningPoints?: string[];
-    curriculum?: any[]; // JSON
+    learningPoints: string[];
+    curriculum?: unknown[]; // JSON
 }
 
 export const getCourses = cache(async (filters?: { category?: string; language?: string; minPrice?: number; maxPrice?: number; page?: number; pageSize?: number }): Promise<CourseDB[]> => {

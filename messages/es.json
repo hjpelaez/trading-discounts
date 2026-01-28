@@ -8,7 +8,8 @@
         "blog": "Blog",
         "contact": "Contacto",
         "courses": "Cursos",
-        "ai": "Preguntar a Tidi"
+        "ai": "Preguntar a Tidi",
+        "ai_tooltip": "Preguntar al Asistente IA Tidi"
     },
     "Hero": {
         "pill": "🚀 El Agregador #1 de Descuentos en Prop Firms",
@@ -228,6 +229,22 @@
         "feature3Desc": "Todos los códigos verificados diariamente",
         "footer": "© 2025 Trading Discounts. Todos los derechos reservados."
     },
+    "Crypto": {
+        "title": "Prop Firms de <highlight>Criptomonedas</highlight>",
+        "subtitle": "Obtén financiamiento con cripto. Las mejores firmas de fondeo que ofrecen pagos y pares de criptomonedas."
+    },
+    "Forex": {
+        "title": "Prop Firms de <highlight>Forex</highlight>",
+        "subtitle": "Opera pares mayores, menores y exóticos con alto apalancamiento. Descuentos exclusivos para traders de FX."
+    },
+    "Futures": {
+        "title": "Prop Firms de <highlight>Futuros</highlight>",
+        "subtitle": "Opera contratos de futuros en CME, COMEX y NYMEX. Las mejores ofertas para cuentas de evaluación de futuros."
+    },
+    "CoursesPage": {
+        "title": "Cursos de <highlight>Trading</highlight>",
+        "subtitle": "Domina los mercados con nuestra selección curada de los mejores cursos de trading."
+    },
     "AdminCourses": {
         "createTitle": "Crear Nuevo Curso",
         "editTitle": "Editar Curso",
@@ -267,5 +284,19 @@
         "addFirm": "Añadir Firma",
         "viewSite": "Ver Sitio Web",
         "logout": "Cerrar Sesión"
+    },
+    "FirmDetails": {
+        "glance": "A un Vistazo",
+        "maxLeverage": "Apalancamiento Máx",
+        "startingPrice": "Precio Inicial",
+        "platforms": "Plataformas",
+        "whyChoose": "¿Por qué elegir {name}?",
+        "rulesTitle": "Reglas Clave de Trading",
+        "similarTitle": "Cuentas Fondeadas Similares",
+        "specialOffer": "Oferta Especial",
+        "useCode": "Usa el Código al Pagar:",
+        "claim": "Reclamar Descuento",
+        "terms": "*Aplican términos y condiciones en el sitio web de la firma.",
+        "featuredChoice": "Elección Destacada"
     }
 }

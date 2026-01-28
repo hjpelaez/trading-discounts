@@ -4,7 +4,6 @@ import { SearchInput } from "@/components/search-input";
 import { FilterBar } from "@/components/filter-bar";
 import { StaggerContainer, StaggerItem, FadeIn } from "@/components/animations";
 import { AIPromo } from "@/components/ai-promo";
-import { BackgroundAurora } from "@/components/background-aurora";
 import { getTranslations } from "next-intl/server";
 
 interface SearchParams {
@@ -30,7 +29,11 @@ export default async function FuturesPage({ searchParams }: { searchParams: Prom
         const isFutures = f.categories.includes("futures");
         const matchesQuery = !searchQ ||
             f.name.toLowerCase().includes(searchQ) ||
-            f.description.toLowerCase().includes(searchQ);
+            (typeof f.description === 'object' && (
+                f.description?.en?.toLowerCase()?.includes(searchQ) ||
+                f.description?.es?.toLowerCase()?.includes(searchQ)
+            )) ||
+            (typeof f.description === 'string' && (f.description as string).toLowerCase().includes(searchQ));
         const matchesPlatform = !filterPlatform ||
             f.platforms.some(p => p === filterPlatform);
         const matchesRating = f.rating >= filterRating;
@@ -40,16 +43,13 @@ export default async function FuturesPage({ searchParams }: { searchParams: Prom
 
     return (
         <div className="container mx-auto py-24 px-4 md:px-6">
-            <div className="relative overflow-hidden rounded-3xl mb-24 border border-border/50 shadow-2xl">
-                <BackgroundAurora />
-                <div className="relative z-10 py-16 md:py-24 text-center">
-                    <h1 className="text-4xl md:text-7xl font-black tracking-tighter mb-4 bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/60">
-                        Futures Prop Firms
-                    </h1>
-                    <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto">
-                        Trade futures contracts on CME, COMEX, and NYMEX. Best deals for futures evaluation accounts.
-                    </p>
-                </div>
+            <div className="mb-12">
+                <h1 className="text-4xl md:text-7xl font-black tracking-tighter mb-4">
+                    Futures Prop <span className="text-primary">Firms</span>
+                </h1>
+                <p className="text-muted-foreground text-lg md:text-xl max-w-2xl">
+                    Trade futures contracts on CME, COMEX, and NYMEX. Best deals for futures evaluation accounts.
+                </p>
             </div>
 
             <FadeIn className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">

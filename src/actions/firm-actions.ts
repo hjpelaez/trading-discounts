@@ -6,9 +6,13 @@ import { redirect } from "next/navigation";
 import { randomUUID } from "crypto"; // Keep this import as crypto.randomUUID() is used
 
 export async function deleteFirmAction(id: string) {
-    await deleteFirm(id);
-    revalidatePath("/");
-    revalidatePath("/admin");
+    try {
+        await deleteFirm(id);
+        revalidatePath("/", "layout");
+    } catch (error) {
+        console.error("Error deleting firm:", error);
+        throw error;
+    }
 }
 
 export async function saveFirmAction(formData: FormData) {
@@ -27,11 +31,17 @@ export async function saveFirmAction(formData: FormData) {
         return isNaN(num) ? null : num;
     };
 
+    // Helper to parse array fields with optional fallback
+    const parseBilingualArray = (field: string) => ({
+        en: parseArray(formData.get(`${field}_en`) as string),
+        es: parseArray(formData.get(`${field}_es`) as string),
+    });
+
     const firm = {
         id,
         // Basic Info
         name: formData.get("name") as string,
-        description: formData.get("description") as string,
+        description: (formData.get("description") as string) || "",
         link: formData.get("link") as string,
         imageUrl: (formData.get("imageUrl") as string) || null,
         discount: formData.get("discount") as string,
@@ -62,7 +72,7 @@ export async function saveFirmAction(formData: FormData) {
         // Features & Rules
         features: parseArray(formData.get("features") as string),
         rules: parseArray(formData.get("rules") as string),
-        consistencyRules: (formData.get("consistencyRules") as string) || null,
+        consistencyRules: (formData.get("consistencyRules") as string) || "",
         prohibitedPractices: parseArray(formData.get("prohibitedPractices") as string),
 
         // Payout Info
@@ -72,8 +82,13 @@ export async function saveFirmAction(formData: FormData) {
         minPayout: (formData.get("minPayout") as string) || null,
     };
 
-    await saveFirm(firm);
-    revalidatePath("/admin");
-    revalidatePath("/");
-    redirect("/admin");
+    try {
+        console.log("Saving firm to DB:", id);
+        await saveFirm(firm);
+        console.log("Firm saved successfully. Revalidating all paths...");
+        revalidatePath("/", "layout");
+    } catch (error) {
+        console.error("CRITICAL ERROR SAVING FIRM:", error);
+        throw error;
+    }
 }

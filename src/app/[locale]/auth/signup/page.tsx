@@ -46,8 +46,8 @@ export default function SignupPage() {
             setTimeout(() => {
                 router.push('/auth/login')
             }, 2000)
-        } catch (error: any) {
-            setError(error.message || 'Error al registrarse')
+        } catch (error: unknown) {
+            setError(error instanceof Error ? error.message : 'Error al registrarse')
         } finally {
             setLoading(false)
         }

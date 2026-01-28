@@ -2,6 +2,8 @@ import { CourseForm } from "../_components/course-form";
 import { getCourseById } from "@/lib/db";
 import { notFound } from "next/navigation";
 
+export const dynamic = 'force-dynamic';
+
 interface EditCoursePageProps {
     params: Promise<{ id: string }>;
 }

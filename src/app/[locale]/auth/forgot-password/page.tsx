@@ -26,8 +26,8 @@ export default function ForgotPasswordPage() {
             if (error) throw error
 
             setSuccess(true)
-        } catch (error: any) {
-            setError(error.message || 'Error al enviar el email')
+        } catch (error: unknown) {
+            setError(error instanceof Error ? error.message : 'Error al enviar el email')
         } finally {
             setLoading(false)
         }

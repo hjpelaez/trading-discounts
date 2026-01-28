@@ -79,7 +79,7 @@ export function Testimonials({ locale, title, subtitle, testimonials }: Testimon
 
                             {/* Testimonial Text */}
                             <p className="text-muted-foreground leading-relaxed relative z-10">
-                                "{testimonial.text}"
+                                &quot;{testimonial.text}&quot;
                             </p>
 
                             {/* Gradient Overlay on Hover */}

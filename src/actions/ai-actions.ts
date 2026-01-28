@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
 const MAX_RETRIES = 5;
@@ -75,7 +76,10 @@ export async function extractFirmDataFromURL(url: string) {
 
 {
   "name": "firm name",
-  "description": "short marketing description (max 100 chars)",
+  "description": {
+    "en": "English marketing description (max 100 chars)",
+    "es": "Spanish marketing description (max 100 chars)"
+  },
   "rating": 4.5,
   "trustpilotScore": 4.5,
   "country": "country code or flag emoji",
@@ -89,10 +93,22 @@ export async function extractFirmDataFromURL(url: string) {
   "minPrice": 100,
   "maxLeverage": "1:100",
   "drawdownType": "Trailing",
-  "features": ["Fast Payouts", "No Time Limit"],
-  "rules": ["Max DD 10%", "Consistency rule"],
-  "consistencyRules": "detailed text about consistency",
-  "prohibitedPractices": ["No martingale", "No HFT"],
+  "features": {
+    "en": ["Feature 1", "Feature 2"],
+    "es": ["Característica 1", "Característica 2"]
+  },
+  "rules": {
+    "en": ["Rule 1", "Rule 2"],
+    "es": ["Regla 1", "Regla 2"]
+  },
+  "consistencyRules": {
+    "en": "English consistency rule text",
+    "es": "Spanish consistency rule text"
+  },
+  "prohibitedPractices": {
+    "en": ["Practice 1", "Practice 2"],
+    "es": ["Práctica 1", "Práctica 2"]
+  },
   "paymentMethods": ["Credit Card", "Crypto"],
   "payoutMethods": ["Crypto", "Wire Transfer"],
   "payoutFrequency": "14 days",
@@ -196,29 +212,28 @@ export async function extractCourseDataFromURL(url: string) {
                         model: "llama-3.3-70b-versatile",
                         messages: [{
                             role: "user",
-                            content: `You are a strict data assistant. Your goal is to extract course data and ensure consistency in language.
+                            content: `You are a strict data assistant. Your goal is to extract course data in a SINGLE language.
 
 RULES:
-1. DETECT the primary language of the course content (usually the Title's language).
-2. OUTPUT the entire JSON in that SINGLE detected language.
-3. IF the content is mixed (e.g. Spanish title but English learning points), YOU MUST TRANSLATE the English parts into Spanish.
-4. DO NOT return mixed "Spanglish". If the course is Spanish, everything must be Spanish.
+1. DETECT the primary language of the course content.
+2. IF there is a target language provided (contextual), use that. Otherwise, use the detected primary language.
+3. OUTPUT the entire JSON in that SINGLE language.
+4. DO NOT return mixed "Spanglish". Translate any mixed content to the chosen single language.
 
 Extract and return ONLY this JSON structure:
 {
   "title": "Course Title",
-  "description": "Short engaging description (max 150 chars) - IN THE DETECTED LANGUAGE",
+  "description": "Short engaging description (max 150 chars) - IN THE CHOSEN LANGUAGE",
   "instructor": "Instructor Name",
   "platform": "e.g. Udemy, Teachable, Youtube",
   "rating": 4.8,
   "duration": "e.g. 12h 30m",
-  "level": "Beginner/Intermediate/Advanced/All Levels",
+  "level": "Beginner/Intermediate/Advanced/All Levels (translated to the chosen language)",
   "language": "English" or "Spanish",
-  "category": "Forex" or "Crypto" or "Futures" or "Options" or "Stocks" (infer from content),
+  "category": "Forex/Crypto/Futures/Options/Stocks (translated to the chosen language)",
   "priceLabel": "$197" or "Free" or "$97 - $197",
-  "priceMin": 197.00 (numeric value of lowest price, 0 if free),
-  "priceMax": null (numeric value if range, else null),
-  "learningPoints": ["Point 1", "Point 2", "Point 3", "Point 4", "Point 5"] (TOP 5 key takeaways - TRANSLATED TO DETECTED LANGUAGE)
+  "priceMin": 197.00,
+  "learningPoints": ["Point 1", "Point 2", "Point 3", "Point 4", "Point 5"] (TOP 5 takeaways - TRANSLATED TO CHOSEN LANGUAGE)
 }
 
 HTML content:

@@ -54,8 +54,8 @@ export default function ChangePasswordPage() {
             setTimeout(() => {
                 router.push('/admin')
             }, 2000)
-        } catch (error: any) {
-            setError(error.message || 'Error al cambiar la contraseña')
+        } catch (error: unknown) {
+            setError(error instanceof Error ? error.message : 'Error al cambiar la contraseña')
         } finally {
             setLoading(false)
         }

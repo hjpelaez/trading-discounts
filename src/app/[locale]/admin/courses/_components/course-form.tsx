@@ -36,26 +36,37 @@ export function CourseForm({ initialData }: CourseFormProps) {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
 
-    // Normalize initialData if it comes from the old bilingual structure
-    const normalizedData = initialData ? {
-        ...initialData,
-        title: typeof initialData.title === 'object' ? (initialData.title as any).en || "" : initialData.title,
-        description: typeof initialData.description === 'object' ? (initialData.description as any).en || "" : initialData.description,
-        learningPoints: Array.isArray(initialData.learningPoints) ? initialData.learningPoints : ((initialData.learningPoints as any)?.en || [])
-    } : EMPTY_COURSE;
+    // Sanitize data for monolingual form
+    const sanitizeData = (data: any): CourseDB => {
+        if (!data) return EMPTY_COURSE;
+        const isEsp = data.language === 'Spanish' || data.language === 'Español';
+        const getS = (v: any) => typeof v === 'object' && v !== null ? (v.es || v.en || "") : (v || "");
+        return {
+            ...data,
+            title: getS(data.title),
+            description: getS(data.description),
+            learningPoints: Array.isArray(data.learningPoints)
+                ? data.learningPoints
+                : (data.learningPoints?.es || data.learningPoints?.en || [])
+        };
+    };
 
-    const [formData, setFormData] = useState<CourseDB>(normalizedData as CourseDB);
+    const [formData, setFormData] = useState<CourseDB>(sanitizeData(initialData));
 
     const handleChange = (field: keyof CourseDB, value: any) => {
         setFormData(prev => {
             const newData = { ...prev, [field]: value };
 
-            // Auto-generate ID from title for NEW courses if ID hasn't been manually set (or matches old auto-gen)
-            if (!initialData && field === 'title' && typeof value === 'string') {
-                const autoId = value.toLowerCase()
+            // Auto-generate ID from title for NEW courses if ID hasn't been manually set
+            if (!initialData && field === 'title') {
+                const titleStr = value;
+                const autoId = (titleStr as string).toLowerCase()
                     .replace(/[^a-z0-9]+/g, '-')
                     .replace(/(^-|-$)/g, '');
-                if (!prev.id || prev.id === prev.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')) {
+
+                const currentAutoId = prev.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+                if (!prev.id || prev.id === currentAutoId) {
                     newData.id = autoId;
                 }
             }
@@ -68,14 +79,29 @@ export function CourseForm({ initialData }: CourseFormProps) {
         setFormData(prev => {
             const currentPoints = [...(prev.learningPoints || [])];
             currentPoints[index] = text;
-            return { ...prev, learningPoints: currentPoints };
+            return {
+                ...prev,
+                learningPoints: currentPoints
+            };
         });
     };
 
-    // Ensure we always have 5 slots for points
-    const points = formData.learningPoints || [];
-    const displayPoints = [...points];
-    while (displayPoints.length < 5) displayPoints.push("");
+    const addPointSlot = () => {
+        setFormData(prev => ({
+            ...prev,
+            learningPoints: [...(prev.learningPoints || []), ""]
+        }));
+    };
+
+    const removePointSlot = (index: number) => {
+        setFormData(prev => ({
+            ...prev,
+            learningPoints: (prev.learningPoints || []).filter((_, i) => i !== index)
+        }));
+    };
+
+    // Ensure we have some default slots if empty
+    const displayPoints = formData.learningPoints.length > 0 ? formData.learningPoints : [""];
 
     const [autoFillUrl, setAutoFillUrl] = useState("");
     const [isExtracting, setIsExtracting] = useState(false);
@@ -97,10 +123,13 @@ export function CourseForm({ initialData }: CourseFormProps) {
             }
 
             const data = result.data;
+            // Handle potentially bilingual data from AI by picking one or providing fallback
+            const getStr = (val: any) => typeof val === 'object' ? (val.es || val.en || "") : (val || "");
+
             setFormData(prev => ({
                 ...prev,
-                title: typeof data.title === 'string' ? data.title : prev.title,
-                description: typeof data.description === 'string' ? data.description : prev.description,
+                title: getStr(data.title) || prev.title,
+                description: getStr(data.description) || prev.description,
                 instructor: data.instructor || prev.instructor,
                 link: autoFillUrl,
                 imageUrl: data.imageUrl || prev.imageUrl,
@@ -113,13 +142,14 @@ export function CourseForm({ initialData }: CourseFormProps) {
                 priceLabel: data.priceLabel || prev.priceLabel,
                 priceMin: data.priceMin !== undefined ? data.priceMin : prev.priceMin,
                 priceMax: data.priceMax !== undefined ? data.priceMax : prev.priceMax,
-                // Take up to 5 points
-                learningPoints: data.learningPoints ? data.learningPoints.slice(0, 5) : prev.learningPoints
+                learningPoints: Array.isArray(data.learningPoints)
+                    ? data.learningPoints
+                    : (data.learningPoints?.es || data.learningPoints?.en || [])
             }));
             alert("✨ Datos extraídos! Revisa los campos.");
-        } catch (e: any) {
+        } catch (e: unknown) {
             console.error(e);
-            alert("Error: " + e.message);
+            alert("Error: " + (e instanceof Error ? e.message : "Extract failed"));
         } finally {
             setIsExtracting(false);
         }
@@ -129,10 +159,9 @@ export function CourseForm({ initialData }: CourseFormProps) {
         e.preventDefault();
         setLoading(true);
 
-        // Filter out empty learning points
         const cleanFormData = {
             ...formData,
-            learningPoints: (formData.learningPoints || []).filter(p => p.trim() !== "")
+            learningPoints: (formData.learningPoints || []).filter(p => p.trim() !== ""),
         };
 
         try {
@@ -156,7 +185,7 @@ export function CourseForm({ initialData }: CourseFormProps) {
                         {initialData ? "Editar Curso" : "Crear Nuevo Curso"}
                     </h2>
                     <p className="text-muted-foreground text-sm">
-                        La información se mostrará en las fichas tal cual la escribas aquí (sin pestañas por idioma).
+                        Los cursos se gestionan en un solo idioma.
                     </p>
                 </div>
                 <div className="flex gap-2">
@@ -176,10 +205,7 @@ export function CourseForm({ initialData }: CourseFormProps) {
                 <div className="flex items-start gap-4">
                     <Sparkles className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
                     <div className="flex-1">
-                        <h3 className="font-semibold text-lg mb-2">✨ AI Auto-Fill (Groq Llama 3)</h3>
-                        <p className="text-sm text-muted-foreground mb-4">
-                            Pega la URL del curso y la IA rellenará los campos automáticamente en el idioma detectado.
-                        </p>
+                        <h3 className="font-semibold text-lg mb-2">✨ AI Auto-Fill</h3>
                         <div className="flex gap-3">
                             <input
                                 type="url"
@@ -195,14 +221,7 @@ export function CourseForm({ initialData }: CourseFormProps) {
                                 disabled={isExtracting}
                                 className="inline-flex items-center justify-center rounded-md bg-primary px-6 py-2 text-sm font-bold text-primary-foreground shadow transition-colors hover:bg-primary/90 disabled:opacity-50"
                             >
-                                {isExtracting ? (
-                                    <>Extrayendo...</>
-                                ) : (
-                                    <>
-                                        <Sparkles className="mr-2 h-4 w-4" />
-                                        Auto-Rellenar
-                                    </>
-                                )}
+                                {isExtracting ? "Extrayendo..." : "Auto-Rellenar"}
                             </button>
                         </div>
                     </div>
@@ -210,48 +229,60 @@ export function CourseForm({ initialData }: CourseFormProps) {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {/* Main Content Column */}
                 <div className="md:col-span-2 space-y-6">
-
                     <div className="space-y-4 bg-card p-6 rounded-xl border shadow-sm">
-
                         <div className="space-y-2">
                             <label className="text-sm font-bold">Título del Curso</label>
                             <input
                                 type="text"
-                                value={formData.title as string}
+                                value={formData.title}
                                 onChange={(e) => handleChange('title', e.target.value)}
                                 className="w-full text-lg p-3 font-semibold rounded-md border bg-background"
-                                placeholder="Ej. Master en Trading Algorítmico"
+                                placeholder="Ej. Algorithmic Trading Masterclass"
                             />
                         </div>
 
                         <div className="space-y-2">
                             <label className="text-sm font-bold">Descripción</label>
                             <textarea
-                                value={formData.description as string}
+                                value={formData.description}
                                 onChange={(e) => handleChange('description', e.target.value)}
                                 className="w-full p-3 rounded-md border bg-background min-h-[150px]"
-                                placeholder="Resumen atractivo del curso..."
+                                placeholder="Resumen del curso..."
                             />
                         </div>
 
                         <div className="space-y-3 pt-4">
-                            <label className="text-sm font-bold flex items-center gap-2">
-                                <Sparkles className="h-4 w-4 text-yellow-500" />
-                                Puntos Clave (Lo que aprenderás)
-                                <span className="text-xs font-normal text-muted-foreground ml-auto">Máximo 5 puntos</span>
-                            </label>
+                            <div className="flex justify-between items-center gap-2">
+                                <div className="flex items-center gap-2">
+                                    <Sparkles className="h-4 w-4 text-yellow-500" />
+                                    <span className="text-sm font-bold">Puntos Clave</span>
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={addPointSlot}
+                                    className="p-1 text-primary hover:bg-primary/10 rounded-full transition-colors"
+                                >
+                                    <Plus className="h-4 w-4" />
+                                </button>
+                            </div>
                             <div className="space-y-3">
-                                {displayPoints.slice(0, 5).map((point, index) => (
+                                {displayPoints.map((point, index) => (
                                     <div key={index} className="flex gap-3 items-center">
                                         <span className="text-xs font-mono text-muted-foreground w-4">{index + 1}.</span>
                                         <input
                                             value={point}
                                             onChange={(e) => updatePoint(index, e.target.value)}
                                             className="flex-1 p-2 rounded-md border bg-background text-sm"
-                                            placeholder={`Punto clave #${index + 1} (dejar vacío si no se usa)`}
+                                            placeholder={`Punto clave #${index + 1}`}
                                         />
+                                        <button
+                                            type="button"
+                                            onClick={() => removePointSlot(index)}
+                                            className="p-1 text-muted-foreground hover:text-red-500 transition-colors"
+                                        >
+                                            <X className="h-4 w-4" />
+                                        </button>
                                     </div>
                                 ))}
                             </div>
@@ -259,7 +290,6 @@ export function CourseForm({ initialData }: CourseFormProps) {
                     </div>
                 </div>
 
-                {/* Sidebar Column (Metadata) */}
                 <div className="space-y-6">
                     <div className="space-y-4 bg-card p-6 rounded-xl border shadow-sm">
                         <h3 className="font-bold border-b pb-2 mb-4">Configuración</h3>
@@ -276,8 +306,6 @@ export function CourseForm({ initialData }: CourseFormProps) {
                                 ))}
                             </select>
                         </div>
-
-                        {/* ID is hidden/auto-generated, removed manual input */}
 
                         <div className="space-y-2">
                             <label className="text-xs font-bold text-muted-foreground">Instructor</label>
@@ -303,7 +331,7 @@ export function CourseForm({ initialData }: CourseFormProps) {
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-xs font-bold text-muted-foreground">Enlace Externo (Afiliado)</label>
+                            <label className="text-xs font-bold text-muted-foreground">Enlace Externo</label>
                             <input
                                 type="url"
                                 value={formData.link}
@@ -315,25 +343,21 @@ export function CourseForm({ initialData }: CourseFormProps) {
 
                         <div className="space-y-4">
                             <label className="text-xs font-bold text-muted-foreground">Imagen de Portada</label>
-
                             {formData.id ? (
                                 <div className="space-y-3">
                                     <ImageUploader
                                         slug={`course-${formData.id}`}
                                         onUploadComplete={(url: string) => handleChange('imageUrl', url)}
                                     />
-                                    <div className="flex gap-2 items-center">
-                                        <input
-                                            type="url"
-                                            value={formData.imageUrl || ""}
-                                            onChange={(e) => handleChange('imageUrl', e.target.value)}
-                                            className="flex-1 p-2 rounded-md border bg-background text-sm"
-                                            placeholder="https://..."
-                                        />
-                                    </div>
+                                    <input
+                                        type="url"
+                                        value={formData.imageUrl || ""}
+                                        onChange={(e) => handleChange('imageUrl', e.target.value)}
+                                        className="w-full p-2 rounded-md border bg-background text-sm"
+                                        placeholder="https://..."
+                                    />
                                     {formData.imageUrl && (
                                         <div className="relative aspect-video w-full overflow-hidden rounded-lg border">
-                                            {/* eslint-disable-next-line @next/next/no-img-element */}
                                             <img src={formData.imageUrl} alt="Preview" className="object-cover w-full h-full" />
                                         </div>
                                     )}
@@ -351,7 +375,7 @@ export function CourseForm({ initialData }: CourseFormProps) {
                                 id="featured"
                                 checked={formData.featured}
                                 onChange={(e) => handleChange('featured', e.target.checked)}
-                                className="h-4 w-4 rounded border-primary text-primary focus:ring-primary"
+                                className="h-4 w-4 rounded border-primary text-primary"
                             />
                             <label htmlFor="featured" className="text-sm font-bold">Destacar este curso</label>
                         </div>
@@ -370,7 +394,7 @@ export function CourseForm({ initialData }: CourseFormProps) {
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="text-xs font-bold text-muted-foreground">Puntuación (0-5)</label>
+                                <label className="text-xs font-bold text-muted-foreground">Puntuación</label>
                                 <input
                                     type="number"
                                     step="0.1"
@@ -399,7 +423,6 @@ export function CourseForm({ initialData }: CourseFormProps) {
                                     value={formData.duration || ""}
                                     onChange={(e) => handleChange('duration', e.target.value)}
                                     className="w-full p-2 rounded-md border bg-background text-sm"
-                                    placeholder="ej. 10h 30m"
                                 />
                             </div>
                             <div className="space-y-2">
@@ -418,6 +441,6 @@ export function CourseForm({ initialData }: CourseFormProps) {
                     </div>
                 </div>
             </div>
-        </form >
+        </form>
     );
 }

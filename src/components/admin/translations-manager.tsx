@@ -106,7 +106,7 @@ export function TranslationsManager({ allKeys, flatEn, flatEs, dynamicTranslatio
 
 // Helper function to get icon for each group
 function getGroupIcon(groupName: string) {
-    const iconMap: Record<string, any> = {
+    const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
         'Navbar': Menu,
         'Hero': Zap,
         'Home': Home,

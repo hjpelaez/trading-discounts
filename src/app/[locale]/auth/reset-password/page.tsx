@@ -41,8 +41,8 @@ export default function ResetPasswordPage() {
             setTimeout(() => {
                 router.push('/auth/login')
             }, 2000)
-        } catch (error: any) {
-            setError(error.message || 'Error al cambiar la contraseña')
+        } catch (error: unknown) {
+            setError(error instanceof Error ? error.message : 'Error al cambiar la contraseña')
         } finally {
             setLoading(false)
         }

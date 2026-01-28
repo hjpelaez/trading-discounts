@@ -1,40 +1,52 @@
 "use client";
 
-import { ExternalLink, Check, Heart, Sparkles, Clock, BarChart, ArrowRight, Globe, Tag } from "lucide-react";
+import { ExternalLink, Check, Sparkles, Clock, BarChart, Globe, Tag } from "lucide-react";
 import { CourseDB } from "@/lib/db";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
 import { m, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { useTranslations } from "next-intl";
 
 interface CourseCardProps {
     course: CourseDB;
     className?: string;
 }
 
-import { useLocale } from "next-intl";
-
-// ...
-
 export function CourseCard({ course, className }: CourseCardProps) {
-    // Runtime check for legacy bilingual data
-    const getLegacyString = (val: any): string => {
+    const isSpanish = course.language === 'Spanish' || course.language === 'Español' || (typeof course.language === 'object' && ((course.language as any).es || (course.language as any).en) === 'Spanish');
+
+    // Helper to handle legacy bilingual objects or direct strings
+    const renderString = (val: any) => {
         if (typeof val === 'string') return val;
-        if (val && typeof val === 'object') {
-            return val.en || val.es || "";
+        if (typeof val === 'object' && val !== null) {
+            return val[isSpanish ? 'es' : 'en'] || val.en || val.es || '';
         }
-        return "";
+        return val ? String(val) : '';
     };
 
-    const title = getLegacyString(course.title);
-    const description = getLegacyString(course.description);
-    const learningPoints = course.learningPoints || [];
-    const isSpanish = course.language === 'Spanish' || course.language === 'Español';
+    const renderArray = (val: any) => {
+        if (Array.isArray(val)) return val;
+        if (typeof val === 'object' && val !== null) {
+            return val[isSpanish ? 'es' : 'en'] || val.en || val.es || [];
+        }
+        return [];
+    };
+
+    const title = renderString(course.title);
+    const description = renderString(course.description);
+    const learningPoints = renderArray(course.learningPoints);
+    const instructor = renderString(course.instructor);
+    const platform = renderString(course.platform);
+    const duration = renderString(course.duration);
+    const level = renderString(course.level);
+    const language = renderString(course.language);
+    const category = renderString(course.category);
+    const priceLabel = renderString(course.priceLabel);
 
     // Helper for labels based on COURSE language (not UI user language)
     const getLabel = (type: 'Level' | 'Category' | 'Language' | 'Button', value: string) => {
-        const dictionary: any = {
+        type Localization = { es: string; en: string };
+        const dictionary: Record<string, Record<string, Localization>> = {
             Level: {
                 'Beginner': { es: 'Principiante', en: 'Beginner' },
                 'Intermediate': { es: 'Intermedio', en: 'Intermediate' },
@@ -127,7 +139,7 @@ export function CourseCard({ course, className }: CourseCardProps) {
                             <Link href={course.link} target="_blank">{title}</Link>
                         </h3>
                         <div className="flex items-center gap-2 text-sm text-muted-foreground font-medium">
-                            <span>{isSpanish ? 'Por' : 'by'} {course.instructor}</span>
+                            <span>{isSpanish ? 'Por' : 'by'} {instructor}</span>
                             <div className="w-1 h-1 rounded-full bg-muted-foreground/30" />
                             <div className="flex items-center text-yellow-500">
                                 ★ {course.rating}
@@ -142,13 +154,12 @@ export function CourseCard({ course, className }: CourseCardProps) {
                     </p>
 
                     {/* Highlights (All points) */}
-                    {learningPoints && learningPoints.length > 0 && (
+                    {learningPoints && Array.isArray(learningPoints) && learningPoints.length > 0 && (
                         <div className="mb-6 space-y-1.5">
-                            {learningPoints.map((point, i) => (
+                            {learningPoints.map((point: string, i: number) => (
                                 <div key={i} className="flex items-start gap-2 text-xs text-muted-foreground/80">
                                     <Check className="h-3 w-3 text-green-500 shrink-0 mt-0.5" />
-                                    <span className="line-clamp-1">{point}</span>
-                                    {/*  Note: Removed line-clamp-1 if they want full text, sticking to current style but showing all items */}
+                                    <span className="line-clamp-1">{renderString(point)}</span>
                                 </div>
                             ))}
                         </div>
@@ -159,25 +170,25 @@ export function CourseCard({ course, className }: CourseCardProps) {
                     <div className="grid grid-cols-2 gap-y-3 gap-x-2 mb-3 text-xs font-bold text-muted-foreground">
                         <div className="flex items-center gap-2 bg-muted/50 px-2 py-1.5 rounded-lg">
                             <Clock className="h-3.5 w-3.5 text-primary" />
-                            <span>{course.duration}</span>
+                            <span>{duration}</span>
                         </div>
                         <div className="flex items-center gap-2 bg-muted/50 px-2 py-1.5 rounded-lg">
                             <BarChart className="h-3.5 w-3.5 text-primary" />
-                            <span>{getLabel('Level', course.level)}</span>
+                            <span>{getLabel('Level', level)}</span>
                         </div>
                         <div className="flex items-center gap-2 bg-muted/50 px-2 py-1.5 rounded-lg">
                             <Globe className="h-3.5 w-3.5 text-primary" />
-                            <span>{getLabel('Language', course.language)}</span>
+                            <span>{getLabel('Language', language)}</span>
                         </div>
                         <div className="flex items-center gap-2 bg-muted/50 px-2 py-1.5 rounded-lg">
                             <Tag className="h-3.5 w-3.5 text-primary" />
-                            <span>{getLabel('Category', course.category)}</span>
+                            <span>{getLabel('Category', category)}</span>
                         </div>
                     </div>
 
                     <div className="flex items-center justify-between gap-4 mt-2">
                         <div className="text-xl font-black text-foreground">
-                            {course.priceLabel}
+                            {priceLabel}
                         </div>
                         <Link
                             href={course.link}

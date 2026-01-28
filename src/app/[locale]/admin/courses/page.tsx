@@ -13,14 +13,23 @@ export default async function AdminCoursesPage() {
 
     async function deleteCourseAction(formData: FormData) {
         "use server";
-        const id = formData.get("id") as string;
-        await deleteCourse(id);
-        revalidatePath("/admin/courses");
+        try {
+            const id = formData.get("id") as string;
+            await deleteCourse(id);
+            revalidatePath("/", "layout");
+        } catch (error) {
+            console.error("Error deleting course:", error);
+        }
     }
 
-    // Helper to get Spanish title for the list
+    // Helper for legacy bilingual data
     const getTitle = (course: CourseDB) => {
-        return course.title;
+        const title = course.title;
+        if (typeof title === 'string') return title;
+        if (typeof title === 'object' && title !== null) {
+            return (title as any).es || (title as any).en || "Untitled";
+        }
+        return "Untitled";
     };
 
     return (
@@ -42,8 +51,8 @@ export default async function AdminCoursesPage() {
                     </Link>
                 </div>
 
-                <div className="rounded-xl border bg-card shadow-sm overflow-hidden">
-                    <table className="w-full text-sm text-left">
+                <div className="rounded-xl border bg-card shadow-sm overflow-hidden text-card-foreground">
+                    <table className="w-full text-sm text-left border-collapse">
                         <thead className="bg-muted/50 border-b">
                             <tr>
                                 <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground w-[50px]">
@@ -63,7 +72,7 @@ export default async function AdminCoursesPage() {
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="divide-y">
                             {courses.length === 0 ? (
                                 <tr>
                                     <td colSpan={5} className="p-20 text-center text-muted-foreground">
@@ -72,11 +81,11 @@ export default async function AdminCoursesPage() {
                                 </tr>
                             ) : (
                                 courses.map((course, index) => (
-                                    <tr key={course.id} className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                                    <tr key={course.id} className="transition-colors hover:bg-muted/50">
                                         <td className="p-4 align-middle font-medium">{index + 1}</td>
                                         <td className="p-4 align-middle">
                                             <div className="flex flex-col">
-                                                <span className="font-bold text-foreground">
+                                                <span className="font-bold">
                                                     {getTitle(course)}
                                                 </span>
                                                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -90,10 +99,10 @@ export default async function AdminCoursesPage() {
                                             <div className="text-xs space-y-1">
                                                 <div><span className="font-semibold">Idioma:</span> {course.language}</div>
                                                 <div><span className="font-semibold">Nivel:</span> {course.level}</div>
-                                                <div><span className="text-yellow-500">★ {course.rating}</span></div>
+                                                <div><span className="text-yellow-500 font-bold">★ {course.rating}</span></div>
                                             </div>
                                         </td>
-                                        <td className="p-4 align-middle font-mono font-medium text-primary">
+                                        <td className="p-4 align-middle font-mono font-bold text-primary">
                                             {course.priceLabel}
                                         </td>
                                         <td className="p-4 align-middle text-right">

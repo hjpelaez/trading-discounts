@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { Rocket, Mail, CheckCircle2 } from 'lucide-react'
+import { Rocket, CheckCircle2 } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
 export default function ComingSoonPage() {
@@ -48,7 +48,7 @@ export default function ComingSoonPage() {
             setEmail('')
             setName('')
             setHoneypot('')
-        } catch (err: any) {
+        } catch {
             setError(t('error'))
         } finally {
             setLoading(false)

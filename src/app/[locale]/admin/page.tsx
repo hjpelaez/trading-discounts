@@ -5,6 +5,8 @@ import { Pencil, Trash2, PlusCircle, Building2, FileText, Users, TrendingUp, Ext
 import { FadeIn } from "@/components/animations";
 import { GrowthChart } from "@/components/admin/growth-chart";
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminDashboard() {
     const firms = await getFirms();
     const posts = await getBlogPosts();

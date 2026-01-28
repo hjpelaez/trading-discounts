@@ -5,8 +5,13 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function saveCourseAction(data: CourseDB) {
-    await saveCourse(data);
-    revalidatePath("/admin/courses");
-    revalidatePath("/courses");
-    // We don't redirect here, let the client handle it or redirect if new
+    try {
+        console.log("Saving course to DB:", data.id);
+        await saveCourse(data);
+        console.log("Course saved successfully. Revalidating all paths...");
+        revalidatePath("/", "layout");
+    } catch (error) {
+        console.error("CRITICAL ERROR SAVING COURSE:", error);
+        throw error;
+    }
 }
