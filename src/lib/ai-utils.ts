@@ -87,7 +87,7 @@ export async function callGroq(
 /**
  * Limpia el HTML para reducir el uso de tokens antes de enviarlo a la IA.
  */
-export function cleanHtmlForAI(html: string) {
+export async function cleanHtmlForAI(html: string) {
     if (!html) return "";
     const truncatedHtml = html.substring(0, 50000);
     return truncatedHtml
