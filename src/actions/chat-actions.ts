@@ -1,13 +1,12 @@
 "use server";
 
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import { getFirms } from "@/lib/db";
-
-const apiKey = process.env.GOOGLE_GEMINI_API_KEY;
-const genAI = apiKey ? new GoogleGenerativeAI(apiKey) : null;
+import { callGroq } from "@/lib/ai-utils";
 
 export async function sendMessageAction(messages: { role: "user" | "model"; content: string }[], locale: string = 'en') {
-    if (!genAI) {
+    const apiKey = process.env.GROQ_API_KEY;
+
+    if (!apiKey) {
         // Fallback for demo mode if no API Key is provided
         const lastMessage = messages[messages.length - 1].content.toLowerCase();
 
@@ -15,12 +14,11 @@ export async function sendMessageAction(messages: { role: "user" | "model"; cont
             return locale === 'es' ? "¡Hola! Soy Tidi, tu asistente de Trading Discounts. Puedo ayudarte a encontrar la mejor empresa de fondeo. ¿Qué estás buscando exactamente?" : "Hello! I am Tidi, your Trading Discounts assistant. I can help you find the best prop firm deal. What are you looking for?";
         }
 
-        return locale === 'es' ? "Actualmente estoy en modo demo (sin API Key). En la versión final, usaré Gemini para analizar todas nuestras ofertas y recomendarte la ideal." : "I am currently in demo mode (no API Key). In the final version, I will use Gemini to analyze all offers and give you a personalized recommendation.";
+        return locale === 'es' ? "Actualmente estoy en modo demo (sin API Key). En la versión final, usaré IA para analizar todas nuestras ofertas y recomendarte la ideal." : "I am currently in demo mode (no API Key). In the final version, I will use AI to analyze all offers and give you a personalized recommendation.";
     }
 
     try {
         const firms = await getFirms();
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
         const systemPrompt = `
 You are "Tidi", the expert AI assistant for "Trading Discounts" (TD).
@@ -41,26 +39,21 @@ RULES:
 6. If you don't have specific data for a question, be honest and suggest the closest match.
 `;
 
-        const chat = model.startChat({
-            history: [
-                {
-                    role: "user",
-                    parts: [{ text: systemPrompt }],
-                },
-                {
-                    role: "model",
-                    parts: [{ text: `Understood. I am Tidi. I will reply in ${locale === 'es' ? 'Spanish' : 'English'}.` }],
-                },
-                ...messages.slice(0, -1).map(m => ({
-                    role: m.role,
-                    parts: [{ text: m.content }],
-                }))
-            ],
+        // Adaptamos el historial al formato de Groq (OpenAI style)
+        const groqMessages = [
+            { role: "system", content: systemPrompt },
+            ...messages.map(m => ({
+                role: m.role === "model" ? "assistant" : "user",
+                content: m.content
+            }))
+        ];
+
+        const response = await callGroq(groqMessages, {
+            model: "llama-3.3-70b-versatile",
+            temperature: 0.7
         });
 
-        const result = await chat.sendMessage(messages[messages.length - 1].content);
-        const response = await result.response;
-        return response.text();
+        return response;
     } catch (error) {
         console.error("AI Error:", error);
         return locale === 'es' ? "Lo siento, ha habido un error procesando tu consulta. Por favor, inténtalo de nuevo más tarde." : "Sorry, I encountered an error processing your request. Please try again later.";

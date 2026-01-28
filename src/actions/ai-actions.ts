@@ -1,35 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
-const MAX_RETRIES = 5;
-const INITIAL_DELAY = 2000;
-
-async function fetchWithRetry(url: string, options: RequestInit, retries = MAX_RETRIES, delay = INITIAL_DELAY): Promise<Response> {
-    try {
-        const response = await fetch(url, options);
-        if ((response.status === 429 || response.status === 503) && retries > 0) {
-            console.warn(`Gemini API busy (${response.status}). Retrying in ${delay}ms... (${retries} retries left)`);
-            await new Promise(resolve => setTimeout(resolve, delay));
-            return fetchWithRetry(url, options, retries - 1, delay * 2);
-        }
-        return response;
-    } catch (error) {
-        if (retries > 0) {
-            console.warn(`Fetch error. Retrying in ${delay}ms... (${retries} retries left)`, error);
-            await new Promise(resolve => setTimeout(resolve, delay));
-            return fetchWithRetry(url, options, retries - 1, delay * 2);
-        }
-        throw error;
-    }
-}
+import { callGroq, cleanHtmlForAI } from "@/lib/ai-utils";
 
 export async function extractFirmDataFromURL(url: string) {
     try {
-        const apiKey = process.env.GROQ_API_KEY;
-        if (!apiKey) {
-            throw new Error("GROQ_API_KEY not configured");
-        }
-
         // Fetch the webpage content
         let html = "";
         try {
@@ -47,32 +22,10 @@ export async function extractFirmDataFromURL(url: string) {
             throw new Error(`Could not access the provided URL: ${fetchError.message}`);
         }
 
-        // Clean HTML to reduce token usage (reuse logic if possible or inline)
-        const cleanHtml = (html: string) => {
-            const truncatedHtml = html.substring(0, 50000);
-            return truncatedHtml
-                .replace(/<script\b[^>]*>([\s\S]*?)<\/script>/gim, "")
-                .replace(/<style\b[^>]*>([\s\S]*?)<\/style>/gim, "")
-                .replace(/<!--[\s\S]*?-->/g, "")
-                .replace(/\s+/g, " ")
-                .substring(0, 15000);
-        };
-        const cleanedContent = cleanHtml(html);
+        const cleanedContent = cleanHtmlForAI(html);
 
         // Call Groq API
-        const groqResponse = await fetchWithRetry(
-            "https://api.groq.com/openai/v1/chat/completions",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${apiKey}`
-                },
-                body: JSON.stringify({
-                    model: "llama-3.3-70b-versatile",
-                    messages: [{
-                        role: "user",
-                        content: `Extract prop firm information from this HTML and return ONLY a valid JSON object with these exact fields (use null for missing data):
+        const prompt = `Extract prop firm information from this HTML and return ONLY a valid JSON object with these exact fields (use null for missing data):
 
 {
   "name": "firm name",
@@ -118,34 +71,16 @@ export async function extractFirmDataFromURL(url: string) {
 HTML content:
 ${cleanedContent}
 
-Return ONLY the JSON object, no markdown.`
-                    }],
-                    response_format: { type: "json_object" }
-                }),
-            }
-        );
+Return ONLY the JSON object, no conversation or markdown.`;
 
-        if (!groqResponse.ok) {
-            const errorText = await groqResponse.text();
-            throw new Error(`Groq API Error: ${groqResponse.statusText} (${groqResponse.status}) - ${errorText}`);
-        }
+        const responseText = await callGroq([
+            { role: "user", content: prompt }
+        ], {
+            jsonMode: true,
+            temperature: 0.1
+        });
 
-        const data = await groqResponse.json();
-
-        if (!data.choices || !data.choices[0]?.message?.content) {
-            throw new Error("Invalid response from Groq API: No content returned");
-        }
-
-        const extractedText = data.choices[0].message.content;
-
-        // Clean up the response (remove markdown code blocks if present)
-        const jsonText = extractedText
-            .replace(/```json\n?/g, '')
-            .replace(/```\n?/g, '')
-            .trim();
-
-        const firmData = JSON.parse(jsonText);
-
+        const firmData = JSON.parse(responseText);
         return { success: true, data: firmData };
 
     } catch (error: any) {
@@ -159,11 +94,6 @@ Return ONLY the JSON object, no markdown.`
 
 export async function extractCourseDataFromURL(url: string) {
     try {
-        const apiKey = process.env.GEMINI_API_KEY;
-        if (!apiKey) {
-            throw new Error("GEMINI_API_KEY not configured");
-        }
-
         // Fetch the webpage content
         let html = "";
         try {
@@ -181,38 +111,11 @@ export async function extractCourseDataFromURL(url: string) {
             throw new Error(`Could not access the provided URL: ${fetchError.message}`);
         }
 
-        // Clean HTML to reduce token usage
-        const cleanHtml = (html: string) => {
-            // Limit input size BEFORE regex to avoid performance issues/freezes on large pages
-            const truncatedHtml = html.substring(0, 50000);
-            return truncatedHtml
-                .replace(/<script\b[^>]*>([\s\S]*?)<\/script>/gim, "")
-                .replace(/<style\b[^>]*>([\s\S]*?)<\/style>/gim, "")
-                .replace(/<!--[\s\S]*?-->/g, "")
-                .replace(/\s+/g, " ")
-                .substring(0, 15000); // Final limit
-        };
-
-        const cleanedContent = cleanHtml(html);
+        const cleanedContent = cleanHtmlForAI(html);
 
         // Call Groq API to extract structured data
         try {
-            const apiKey = process.env.GROQ_API_KEY;
-            if (!apiKey) throw new Error("GROQ_API_KEY missing");
-
-            const groqResponse = await fetchWithRetry(
-                "https://api.groq.com/openai/v1/chat/completions",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${apiKey}`
-                    },
-                    body: JSON.stringify({
-                        model: "llama-3.3-70b-versatile",
-                        messages: [{
-                            role: "user",
-                            content: `You are a strict data assistant. Your goal is to extract course data in a SINGLE language.
+            const prompt = `You are a strict data assistant. Your goal is to extract course data in a SINGLE language.
 
 RULES:
 1. DETECT the primary language of the course content.
@@ -239,26 +142,16 @@ Extract and return ONLY this JSON structure:
 HTML content:
 ${cleanedContent}
 
-Return ONLY the JSON object, no markdown.`
-                        }],
-                        response_format: { type: "json_object" }
-                    }),
-                }
-            );
+Return ONLY the JSON object, no conversation or markdown.`;
 
-            if (!groqResponse.ok) {
-                const errorText = await groqResponse.text();
-                throw new Error(`Groq API Error: ${groqResponse.statusText} (${groqResponse.status}) - ${errorText}`);
-            }
+            const responseText = await callGroq([
+                { role: "user", content: prompt }
+            ], {
+                jsonMode: true,
+                temperature: 0.1
+            });
 
-            const data = await groqResponse.json();
-
-            if (!data.choices || !data.choices[0]?.message?.content) {
-                throw new Error("Invalid response from Groq API: No content returned");
-            }
-
-            const extractedText = data.choices[0].message.content;
-            const courseData = JSON.parse(extractedText);
+            const courseData = JSON.parse(responseText);
             return { success: true, data: courseData };
 
         } catch (apiError: any) {

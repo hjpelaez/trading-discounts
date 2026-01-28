@@ -1,20 +1,11 @@
 "use server";
 
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import { CourseDB } from "@/lib/db";
-
-const apiKey = process.env.GOOGLE_GEMINI_API_KEY;
-const genAI = apiKey ? new GoogleGenerativeAI(apiKey) : null;
+import { callGroq, cleanHtmlForAI } from "@/lib/ai-utils";
 
 export async function autoFillCourseFromUrl(url: string): Promise<Partial<CourseDB> | null> {
-    if (!genAI) {
-        throw new Error("Missing API Key");
-    }
-
     try {
-        // 1. Fetch the HTML content (simplified)
-        // Note: Real world would use specialized scrapers for SPA handling,
-        // but for many course landing pages, simple fetch gets enough meta tags/text.
+        // 1. Fetch the HTML content
         const res = await fetch(url, {
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
@@ -26,13 +17,9 @@ export async function autoFillCourseFromUrl(url: string): Promise<Partial<Course
         }
 
         const html = await res.text();
+        const contentSample = cleanHtmlForAI(html);
 
-        // Truncate HTML to avoid token limits if extremely large (e.g. 100k chars is plenty for metadata)
-        const contentSample = html.substring(0, 150000);
-
-        // 2. Prompt Gemini
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
+        // 2. Prompt Groq
         const prompt = `
         You are a Data Extraction Assistant.
         I will provide the HTML source of a course landing page.
@@ -66,22 +53,21 @@ export async function autoFillCourseFromUrl(url: string): Promise<Partial<Course
         HTML Source:
         ${contentSample}
         
-        Return ONLY the JSON. No markdown formatting.
+        Return ONLY the JSON. No conversation or markdown.
         `;
 
-        const result = await model.generateContent(prompt);
-        const response = result.response;
-        const text = response.text();
+        const responseText = await callGroq([
+            { role: "user", content: prompt }
+        ], {
+            jsonMode: true,
+            temperature: 0.2 // Lower temperature for extraction
+        });
 
-        // Clean markdown code blocks if present
-        const jsonStr = text.replace(/```json/g, "").replace(/```/g, "").trim();
-
-        const data = JSON.parse(jsonStr);
-
-        return data;
+        const data = JSON.parse(responseText);
+        return data as Partial<CourseDB>;
 
     } catch (error) {
-        console.error("AutoFill Error:", error);
+        console.error("AutoFill Course Error:", error);
         throw error;
     }
 }
