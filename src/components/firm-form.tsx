@@ -220,64 +220,64 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                 <div className={activeTab === "basic" ? "block" : "hidden"}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-4 rounded-lg border bg-card p-6">
-                            <h2 className="font-semibold text-lg border-b pb-2">Basic Information</h2>
+                            <h2 className="font-semibold text-lg border-b pb-2">Información Básica</h2>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">Firm Name *</label>
-                                <input name="name" defaultValue={firm?.name} required className="w-full rounded-md border bg-background px-3 py-2" placeholder="e.g. Apex Trader" />
+                                <label className="text-sm font-medium">Nombre de la Firma *</label>
+                                <input name="name" defaultValue={firm?.name} required className="w-full rounded-md border bg-background px-3 py-2" placeholder="ej. Apex Trader" />
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">Description *</label>
+                                <label className="text-sm font-medium">Descripción *</label>
                                 <textarea
                                     name="description"
                                     defaultValue={typeof firm?.description === 'string' ? firm.description : (firm?.description as { en: string; es: string })?.en || ""}
                                     required
                                     rows={3}
                                     className="w-full rounded-md border bg-background px-3 py-2"
-                                    placeholder="marketing blurb..."
+                                    placeholder="resumen de marketing..."
                                 />
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">Affiliate Link *</label>
+                                <label className="text-sm font-medium">Enlace de Afiliado *</label>
                                 <input name="link" defaultValue={firm?.link} required type="url" className="w-full rounded-md border bg-background px-3 py-2" placeholder="https://..." />
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">Logo URL</label>
+                                <label className="text-sm font-medium">URL del Logo</label>
                                 <input name="imageUrl" defaultValue={firm?.imageUrl || ""} className="w-full rounded-md border bg-background px-3 py-2" placeholder="https://.../logo.png" />
                             </div>
                         </div>
 
                         <div className="space-y-4 rounded-lg border bg-card p-6">
-                            <h2 className="font-semibold text-lg border-b pb-2">Discount & Metrics</h2>
+                            <h2 className="font-semibold text-lg border-b pb-2">Descuento y Métricas</h2>
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
-                                    <label className="text-sm font-medium">Discount Label *</label>
-                                    <input name="discount" defaultValue={firm?.discount} required className="w-full rounded-md border bg-background px-3 py-2" placeholder="e.g. 90% OFF" />
+                                    <label className="text-sm font-medium">Etiqueta de Descuento *</label>
+                                    <input name="discount" defaultValue={firm?.discount} required className="w-full rounded-md border bg-background px-3 py-2" placeholder="ej. 90% OFF" />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-sm font-medium">Code *</label>
+                                    <label className="text-sm font-medium">Código *</label>
                                     <input name="code" defaultValue={firm?.code} required className="w-full rounded-md border bg-background px-3 py-2 font-mono" />
                                 </div>
                             </div>
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
-                                    <label className="text-sm font-medium">Rating (0-5) *</label>
+                                    <label className="text-sm font-medium">Puntuación (0-5) *</label>
                                     <input name="rating" defaultValue={firm?.rating} type="number" step="0.1" max="5" required className="w-full rounded-md border bg-background px-3 py-2" />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-sm font-medium">Trustpilot Score</label>
+                                    <label className="text-sm font-medium">Puntuación Trustpilot</label>
                                     <input name="trustpilotScore" defaultValue={firm?.trustpilotScore?.toString() || ""} type="number" step="0.1" max="5" className="w-full rounded-md border bg-background px-3 py-2" />
                                 </div>
                             </div>
 
                             <div className="space-y-2 flex items-center pt-4">
                                 <input type="checkbox" name="featured" id="featured" defaultChecked={firm?.featured} className="h-4 w-4" />
-                                <label htmlFor="featured" className="text-sm font-medium ml-2">⭐ Featured (Show first)</label>
+                                <label htmlFor="featured" className="text-sm font-medium ml-2">⭐ Destacado (Mostrar primero)</label>
                             </div>
                         </div>
                     </div>
@@ -287,17 +287,17 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                 <div className={activeTab === "details" ? "block" : "hidden"}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-4 rounded-lg border bg-card p-6">
-                            <h2 className="font-semibold text-lg border-b pb-2">Company Details</h2>
+                            <h2 className="font-semibold text-lg border-b pb-2">Detalles de la Empresa</h2>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">Country</label>
-                                <input name="country" defaultValue={firm?.country || ""} className="w-full rounded-md border bg-background px-3 py-2" placeholder="e.g. US, UK, VC" />
-                                <p className="text-xs text-muted-foreground">Country code or emoji flag</p>
+                                <label className="text-sm font-medium">País</label>
+                                <input name="country" defaultValue={firm?.country || ""} className="w-full rounded-md border bg-background px-3 py-2" placeholder="ej. US, UK, VC" />
+                                <p className="text-xs text-muted-foreground">Código de país o bandera emoji</p>
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">Active Years</label>
-                                <input name="activeYears" defaultValue={firm?.activeYears?.toString() || ""} type="number" className="w-full rounded-md border bg-background px-3 py-2" placeholder="e.g. 3" />
+                                <label className="text-sm font-medium">Años Activa</label>
+                                <input name="activeYears" defaultValue={firm?.activeYears?.toString() || ""} type="number" className="w-full rounded-md border bg-background px-3 py-2" placeholder="ej. 3" />
                                 <p className="text-xs text-muted-foreground">Years in operation</p>
                             </div>
 

@@ -274,6 +274,7 @@
     },
     "Admin": {
         "dashboard": "Panel de Control",
+        "firms": "Firmas",
         "pages": "Páginas",
         "courses": "Cursos",
         "blog": "Blog",

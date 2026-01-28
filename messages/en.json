@@ -274,6 +274,7 @@
     },
     "Admin": {
         "dashboard": "Dashboard",
+        "firms": "Firms",
         "pages": "Pages",
         "courses": "Courses",
         "blog": "Blog",

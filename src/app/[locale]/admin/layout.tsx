@@ -1,4 +1,4 @@
-import { LayoutDashboard, PlusCircle, Globe, FileText, Users, LogOut, GraduationCap } from "lucide-react";
+import { LayoutDashboard, PlusCircle, Globe, FileText, Users, LogOut, GraduationCap, Building2 } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
@@ -28,6 +28,10 @@ export default async function AdminLayout({
                 </div>
 
                 <nav className="flex-1 p-4 space-y-2">
+                    <Link href="/admin/firms" className="flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-accent hover:text-accent-foreground transition-all">
+                        <Building2 className="h-4 w-4" />
+                        {t('firms')}
+                    </Link>
                     <Link href="/admin" className="flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-accent hover:text-accent-foreground transition-all">
                         <LayoutDashboard className="h-4 w-4" />
                         {t('dashboard')}
