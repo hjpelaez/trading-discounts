@@ -23,7 +23,7 @@ export default async function AdminDashboard() {
         <div className="space-y-10">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Panel de Control</h1>
+                    <h1 className="text-3xl font-bold tracking-tight">Estadísticas</h1>
                     <p className="text-muted-foreground text-sm">Bienvenido de nuevo. Aquí tienes un resumen de tu sitio.</p>
                 </div>
                 <div className="flex items-center gap-3">

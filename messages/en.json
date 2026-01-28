@@ -273,7 +273,7 @@
         "errorSaving": "Error saving course"
     },
     "Admin": {
-        "dashboard": "Dashboard",
+        "dashboard": "Statistics",
         "firms": "Firms",
         "pages": "Pages",
         "courses": "Courses",
@@ -283,6 +283,8 @@
         "settings": "Settings",
         "quickActions": "Quick Actions",
         "addFirm": "Add Firm",
+        "addCourse": "Add Course",
+        "addPost": "Add Post",
         "viewSite": "View Website",
         "logout": "Log Out"
     },

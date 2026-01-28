@@ -273,7 +273,7 @@
         "errorSaving": "Error al guardar el curso"
     },
     "Admin": {
-        "dashboard": "Panel de Control",
+        "dashboard": "Estadísticas",
         "firms": "Firmas",
         "pages": "Páginas",
         "courses": "Cursos",
@@ -283,6 +283,8 @@
         "settings": "Configuración",
         "quickActions": "Acciones Rápidas",
         "addFirm": "Añadir Firma",
+        "addCourse": "Añadir Curso",
+        "addPost": "Añadir Post",
         "viewSite": "Ver Sitio Web",
         "logout": "Cerrar Sesión"
     },
