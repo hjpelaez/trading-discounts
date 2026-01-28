@@ -22,14 +22,15 @@ export default async function LocaleLayout({
   const settings = await getSettings();
 
   // Función de limpieza radical para evitar crashes por scripts pegados
-  const sanitize = (val: string, pattern: RegExp, fallback: string) => {
-    if (!val) return fallback;
+  const sanitize = (val: any, pattern: RegExp, fallback: string) => {
+    if (typeof val !== 'string' || !val) return fallback;
+    const clean = val.trim();
     // Si contiene scripts o HTML, intentamos extraer el ID con el patrón
-    if (val.includes('<') || val.length > 100) {
-      const match = val.match(pattern);
+    if (clean.includes('<') || clean.length > 150) {
+      const match = clean.match(pattern);
       return match ? match[0] : fallback;
     }
-    return val.trim();
+    return clean;
   };
 
   const gaId = sanitize(settings.googleAnalyticsId, /G-[A-Z0-9]+/, process.env.NEXT_PUBLIC_GA_ID || "G-XXXXXXXXXX");

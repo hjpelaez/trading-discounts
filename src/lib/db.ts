@@ -474,11 +474,19 @@ export const getSettings = cache(async (): Promise<Settings> => {
             .single();
 
         if (error && error.code !== 'PGRST116') throw error; // PGRST116 is "no rows returned"
+
+        // El objeto en la DB guarda todo en 'socials' para evitar cambios de esquema
+        const dbSocials = data?.socials || {};
+
         return data ? {
-            socials: data.socials,
-            googleAnalyticsId: data.googleAnalyticsId || "",
-            googleSearchConsoleId: data.googleSearchConsoleId || "",
-            recaptchaSiteKey: data.recaptchaSiteKey || ""
+            socials: {
+                facebook: dbSocials.facebook || "",
+                instagram: dbSocials.instagram || "",
+                telegram: dbSocials.telegram || ""
+            },
+            googleAnalyticsId: dbSocials.googleAnalyticsId || "",
+            googleSearchConsoleId: dbSocials.googleSearchConsoleId || "",
+            recaptchaSiteKey: dbSocials.recaptchaSiteKey || ""
         } : DEFAULT_SETTINGS;
     } catch (error) {
         console.error("Error fetching settings:", error);
@@ -492,10 +500,12 @@ export async function saveSettings(settings: Settings) {
         .from('Setting')
         .upsert({
             id: 'default',
-            socials: settings.socials,
-            googleAnalyticsId: settings.googleAnalyticsId,
-            googleSearchConsoleId: settings.googleSearchConsoleId,
-            recaptchaSiteKey: settings.recaptchaSiteKey,
+            socials: {
+                ...settings.socials,
+                googleAnalyticsId: settings.googleAnalyticsId,
+                googleSearchConsoleId: settings.googleSearchConsoleId,
+                recaptchaSiteKey: settings.recaptchaSiteKey
+            },
             updatedAt: new Date().toISOString()
         });
 
