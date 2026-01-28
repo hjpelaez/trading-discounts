@@ -15,7 +15,7 @@ function SubmitButton({ loading }: { loading: boolean }) {
             disabled={loading}
             className="inline-flex items-center justify-center rounded-md bg-primary px-8 py-2 text-sm font-bold text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:opacity-50"
         >
-            {loading ? "Saving..." : "Save Firm"} <Save className="ml-2 h-4 w-4" />
+            {loading ? "Guardando..." : "Guardar Firma"} <Save className="ml-2 h-4 w-4" />
         </button>
     );
 }
@@ -111,10 +111,10 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
     };
 
     const tabs = [
-        { id: "basic", label: "Basic Info" },
-        { id: "details", label: "Firm Details" },
-        { id: "trading", label: "Trading Info" },
-        { id: "payout", label: "Payout & Rules" },
+        { id: "basic", label: "Información Básica" },
+        { id: "details", label: "Detalles" },
+        { id: "trading", label: "Trading" },
+        { id: "payout", label: "Pagos" },
     ];
 
     const [loading, setLoading] = useState(false);
@@ -149,21 +149,21 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                     <Link href="/admin" className="p-2 hover:bg-muted rounded-full">
                         <ChevronLeft className="h-5 w-5" />
                     </Link>
-                    <h1 className="text-3xl font-bold tracking-tight">{firm ? `Edit ${firm.name}` : "New Firm"}</h1>
+                    <h1 className="text-3xl font-bold tracking-tight">{firm ? "Editar Firma" : "Nueva Firma"}</h1>
                 </div>
                 <SubmitButton loading={loading} />
             </div>
 
             {/* AI Auto-Fill Section */}
-            <div className="rounded-lg border-2 border-dashed border-primary/30 bg-primary/5 p-6">
+            <div className="rounded-lg border-2 border-dashed border-primary/30 bg-primary/5 p-6 md:p-8">
                 <div className="flex items-start gap-4">
                     <Sparkles className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
                     <div className="flex-1">
-                        <h3 className="font-semibold text-lg mb-2">✨ AI Auto-Fill (Powered by Llama 3.3)</h3>
+                        <h3 className="font-semibold text-lg mb-2">✨ AI Auto-Fill</h3>
                         <p className="text-sm text-muted-foreground mb-4">
                             {firm
-                                ? "Update this firm's data by pasting their website URL and letting AI extract the latest information."
-                                : "Paste the firm's website URL and let AI extract all the information automatically."
+                                ? "Actualiza los datos de esta firma pegando la URL de su sitio web y dejando que la IA extraiga la información más reciente."
+                                : "Pega la URL del sitio web de la firma y deja que la IA extraiga toda la información automáticamente."
                             }
                         </p>
                         <div className="flex gap-3">
@@ -171,7 +171,7 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                                 type="url"
                                 value={autoFillUrl}
                                 onChange={(e) => setAutoFillUrl(e.target.value)}
-                                placeholder="https://propfirmtrader.com/prop-firm/blueberry-funded"
+                                placeholder="https://apextraderfunding.com/"
                                 className="flex-1 rounded-md border bg-background px-4 py-2"
                                 disabled={isExtracting}
                             />
@@ -182,15 +182,16 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                                 className="inline-flex items-center justify-center rounded-md bg-primary px-6 py-2 text-sm font-bold text-primary-foreground shadow transition-colors hover:bg-primary/90 disabled:opacity-50"
                             >
                                 {isExtracting ? (
-                                    <>Extracting...</>
+                                    <>Extrayendo...</>
                                 ) : (
                                     <>
                                         <Sparkles className="mr-2 h-4 w-4" />
-                                        {firm ? "Update Data" : "Auto-Fill"}
+                                        {firm ? "Actualizar Datos" : "Auto-Rellenar"}
                                     </>
                                 )}
                             </button>
                         </div>
+                        <p className="mt-2 text-xs text-muted-foreground">Ingresa la URL de la firma y la IA intentará rellenar los campos por ti.</p>
                     </div>
                 </div>
             </div>
@@ -302,43 +303,43 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">Max Allocation</label>
-                                <input name="maxAllocation" defaultValue={firm?.maxAllocation || ""} className="w-full rounded-md border bg-background px-3 py-2" placeholder="e.g. $2,000,000" />
-                                <p className="text-xs text-muted-foreground">Maximum account size</p>
+                                <label className="text-sm font-medium">Asignación Máxima</label>
+                                <input name="maxAllocation" defaultValue={firm?.maxAllocation || ""} className="w-full rounded-md border bg-background px-3 py-2" placeholder="ej. $2,000,000" />
+                                <p className="text-xs text-muted-foreground">Tamaño máximo de cuenta</p>
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">Broker</label>
-                                <input name="broker" defaultValue={firm?.broker || ""} className="w-full rounded-md border bg-background px-3 py-2" placeholder="e.g. Blueberry Markets" />
-                                <p className="text-xs text-muted-foreground">Underlying broker name</p>
+                                <label className="text-sm font-medium">Bróker</label>
+                                <input name="broker" defaultValue={firm?.broker || ""} className="w-full rounded-md border bg-background px-3 py-2" placeholder="ej. Blueberry Markets" />
+                                <p className="text-xs text-muted-foreground">Nombre del bróker subyacente</p>
                             </div>
                         </div>
 
                         <div className="space-y-4 rounded-lg border bg-card p-6">
-                            <h2 className="font-semibold text-lg border-b pb-2">Categories & Platforms</h2>
+                            <h2 className="font-semibold text-lg border-b pb-2">Categorías y Plataformas</h2>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">Categories *</label>
+                                <label className="text-sm font-medium">Categorías *</label>
                                 <input name="categories" defaultValue={firm?.categories?.join(", ") || ""} className="w-full rounded-md border bg-background px-3 py-2" placeholder="crypto, forex, futures" />
-                                <p className="text-xs text-muted-foreground">Comma separated: crypto, forex, futures, stocks</p>
+                                <p className="text-xs text-muted-foreground">Separado por comas: crypto, forex, futures, stocks</p>
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">Platforms *</label>
+                                <label className="text-sm font-medium">Plataformas *</label>
                                 <input name="platforms" defaultValue={firm?.platforms?.join(", ") || ""} className="w-full rounded-md border bg-background px-3 py-2" placeholder="MT4, MT5, cTrader" />
-                                <p className="text-xs text-muted-foreground">Comma separated trading platforms</p>
+                                <p className="text-xs text-muted-foreground">Separado por comas</p>
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">Instruments</label>
+                                <label className="text-sm font-medium">Instrumentos</label>
                                 <input name="instruments" defaultValue={firm?.instruments?.join(", ") || ""} className="w-full rounded-md border bg-background px-3 py-2" placeholder="CFD, Stocks, Futures" />
-                                <p className="text-xs text-muted-foreground">Comma separated instrument types</p>
+                                <p className="text-xs text-muted-foreground">Separado por comas</p>
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">Assets</label>
+                                <label className="text-sm font-medium">Activos</label>
                                 <input name="assets" defaultValue={firm?.assets?.join(", ") || ""} className="w-full rounded-md border bg-background px-3 py-2" placeholder="Crypto, Metals, FX, Indices" />
-                                <p className="text-xs text-muted-foreground">Comma separated asset classes</p>
+                                <p className="text-xs text-muted-foreground">Separado por comas</p>
                             </div>
                         </div>
                     </div>
@@ -348,21 +349,21 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                 <div className={activeTab === "trading" ? "block" : "hidden"}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-4 rounded-lg border bg-card p-6">
-                            <h2 className="font-semibold text-lg border-b pb-2">Trading Parameters</h2>
+                            <h2 className="font-semibold text-lg border-b pb-2">Parámetros de Trading</h2>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">Min Price ($) *</label>
+                                <label className="text-sm font-medium">Precio Mín ($) *</label>
                                 <input name="minPrice" defaultValue={firm?.minPrice} type="number" className="w-full rounded-md border bg-background px-3 py-2" />
-                                <p className="text-xs text-muted-foreground">Minimum challenge price</p>
+                                <p className="text-xs text-muted-foreground">Precio mínimo del challenge</p>
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">Max Leverage *</label>
-                                <input name="maxLeverage" defaultValue={firm?.maxLeverage} className="w-full rounded-md border bg-background px-3 py-2" placeholder="e.g. 1:100" />
+                                <label className="text-sm font-medium">Apalancamiento Máx *</label>
+                                <input name="maxLeverage" defaultValue={firm?.maxLeverage} className="w-full rounded-md border bg-background px-3 py-2" placeholder="ej. 1:100" />
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">Drawdown Type *</label>
+                                <label className="text-sm font-medium">Tipo de Drawdown *</label>
                                 <select name="drawdownType" defaultValue={firm?.drawdownType} className="w-full rounded-md border bg-background px-3 py-2">
                                     <option value="Trailing">Trailing</option>
                                     <option value="Static">Static</option>
@@ -373,16 +374,16 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                         </div>
 
                         <div className="space-y-4 rounded-lg border bg-card p-6">
-                            <h2 className="font-semibold text-lg border-b pb-2">Features & Rules</h2>
+                            <h2 className="font-semibold text-lg border-b pb-2">Características y Reglas</h2>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">Features *</label>
-                                <textarea name="features" defaultValue={firm?.features?.join(", ") || ""} rows={3} className="w-full rounded-md border bg-background px-3 py-2" placeholder="Features (comma separated)" />
+                                <label className="text-sm font-medium">Características *</label>
+                                <textarea name="features" defaultValue={firm?.features?.join(", ") || ""} rows={3} className="w-full rounded-md border bg-background px-3 py-2" placeholder="Características (separadas por comas)" />
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">Rules *</label>
-                                <textarea name="rules" defaultValue={firm?.rules?.join(", ") || ""} rows={3} className="w-full rounded-md border bg-background px-3 py-2" placeholder="Rules (comma separated)" />
+                                <label className="text-sm font-medium">Reglas *</label>
+                                <textarea name="rules" defaultValue={firm?.rules?.join(", ") || ""} rows={3} className="w-full rounded-md border bg-background px-3 py-2" placeholder="Reglas (separadas por comas)" />
                             </div>
                         </div>
                     </div>
@@ -392,42 +393,42 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                 <div className={activeTab === "payout" ? "block" : "hidden"}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-4 rounded-lg border bg-card p-6">
-                            <h2 className="font-semibold text-lg border-b pb-2">Payout Information</h2>
+                            <h2 className="font-semibold text-lg border-b pb-2">Información de Pagos</h2>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">Payment Methods *</label>
+                                <label className="text-sm font-medium">Métodos de Compra *</label>
                                 <input name="paymentMethods" defaultValue={firm?.paymentMethods?.join(", ") || ""} className="w-full rounded-md border bg-background px-3 py-2" placeholder="Credit Card, Crypto, Wire Transfer" />
-                                <p className="text-xs text-muted-foreground">Comma separated payment methods</p>
+                                <p className="text-xs text-muted-foreground">Métodos para comprar el challenge</p>
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">Payout Methods</label>
+                                <label className="text-sm font-medium">Métodos de Retiro</label>
                                 <input name="payoutMethods" defaultValue={firm?.payoutMethods?.join(", ") || ""} className="w-full rounded-md border bg-background px-3 py-2" placeholder="Crypto, Riseworks, Wire Transfer" />
-                                <p className="text-xs text-muted-foreground">Comma separated withdrawal methods</p>
+                                <p className="text-xs text-muted-foreground">Métodos para retirar ganancias</p>
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">Payout Frequency</label>
-                                <input name="payoutFrequency" defaultValue={firm?.payoutFrequency || ""} className="w-full rounded-md border bg-background px-3 py-2" placeholder="e.g. 14 days, Bi-weekly" />
+                                <label className="text-sm font-medium">Frecuencia de Retiro</label>
+                                <input name="payoutFrequency" defaultValue={firm?.payoutFrequency || ""} className="w-full rounded-md border bg-background px-3 py-2" placeholder="ej. 14 días, Bi-semanal" />
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">Minimum Payout</label>
-                                <input name="minPayout" defaultValue={firm?.minPayout || ""} className="w-full rounded-md border bg-background px-3 py-2" placeholder="e.g. $100" />
+                                <label className="text-sm font-medium">Retiro Mínimo</label>
+                                <input name="minPayout" defaultValue={firm?.minPayout || ""} className="w-full rounded-md border bg-background px-3 py-2" placeholder="ej. $100" />
                             </div>
                         </div>
 
                         <div className="space-y-4 rounded-lg border bg-card p-6">
-                            <h2 className="font-semibold text-lg border-b pb-2">Detailed Rules</h2>
+                            <h2 className="font-semibold text-lg border-b pb-2">Reglas Detalladas</h2>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">Consistency Rules</label>
-                                <textarea name="consistencyRules" defaultValue={firm?.consistencyRules || ""} rows={4} className="w-full rounded-md border bg-background px-3 py-2" placeholder="Detailed consistency rules..." />
+                                <label className="text-sm font-medium">Reglas de Consistencia</label>
+                                <textarea name="consistencyRules" defaultValue={firm?.consistencyRules || ""} rows={4} className="w-full rounded-md border bg-background px-3 py-2" placeholder="Reglas detalladas de consistencia..." />
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">Prohibited Practices</label>
-                                <textarea name="prohibitedPractices" defaultValue={firm?.prohibitedPractices?.join(", ") || ""} rows={4} className="w-full rounded-md border bg-background px-3 py-2" placeholder="Prohibited practices..." />
+                                <label className="text-sm font-medium">Prácticas Prohibidas</label>
+                                <textarea name="prohibitedPractices" defaultValue={firm?.prohibitedPractices?.join(", ") || ""} rows={4} className="w-full rounded-md border bg-background px-3 py-2" placeholder="Prácticas prohibidas por la firma..." />
                             </div>
                         </div>
                     </div>

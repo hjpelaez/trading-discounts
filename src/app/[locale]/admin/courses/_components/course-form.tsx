@@ -108,7 +108,7 @@ export function CourseForm({ initialData }: CourseFormProps) {
 
     const handleAutoFill = async () => {
         if (!autoFillUrl) {
-            alert("Please enter a URL");
+            alert("Por favor ingrese una URL");
             return;
         }
 
@@ -118,7 +118,7 @@ export function CourseForm({ initialData }: CourseFormProps) {
             const result = await extractCourseDataFromURL(autoFillUrl);
 
             if (!result.success || !result.data) {
-                alert("Error: " + (result.error || "Failed to extract"));
+                alert("Error: " + (result.error || "Fallo en la extracción"));
                 return;
             }
 
@@ -432,8 +432,13 @@ export function CourseForm({ initialData }: CourseFormProps) {
                                     onChange={(e) => handleChange('level', e.target.value)}
                                     className="w-full p-2 rounded-md border bg-background text-sm"
                                 >
-                                    {["Beginner", "Intermediate", "Advanced", "All Levels"].map(l => (
-                                        <option key={l} value={l}>{l}</option>
+                                    {[
+                                        { v: "Beginner", l: "Principiante" },
+                                        { v: "Intermediate", l: "Intermedio" },
+                                        { v: "Advanced", l: "Avanzado" },
+                                        { v: "All Levels", l: "Todos los niveles" }
+                                    ].map(opt => (
+                                        <option key={opt.v} value={opt.v}>{opt.l}</option>
                                     ))}
                                 </select>
                             </div>
