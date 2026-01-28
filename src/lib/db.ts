@@ -449,6 +449,8 @@ export interface Settings {
         telegram: string;
     };
     googleAnalyticsId: string;
+    googleSearchConsoleId: string;
+    recaptchaSiteKey: string;
 }
 
 const DEFAULT_SETTINGS: Settings = {
@@ -457,7 +459,9 @@ const DEFAULT_SETTINGS: Settings = {
         instagram: "https://instagram.com",
         telegram: "https://t.me"
     },
-    googleAnalyticsId: ""
+    googleAnalyticsId: "",
+    googleSearchConsoleId: "",
+    recaptchaSiteKey: ""
 };
 
 export const getSettings = cache(async (): Promise<Settings> => {
@@ -472,7 +476,9 @@ export const getSettings = cache(async (): Promise<Settings> => {
         if (error && error.code !== 'PGRST116') throw error; // PGRST116 is "no rows returned"
         return data ? {
             socials: data.socials,
-            googleAnalyticsId: data.googleAnalyticsId || ""
+            googleAnalyticsId: data.googleAnalyticsId || "",
+            googleSearchConsoleId: data.googleSearchConsoleId || "",
+            recaptchaSiteKey: data.recaptchaSiteKey || ""
         } : DEFAULT_SETTINGS;
     } catch (error) {
         console.error("Error fetching settings:", error);
@@ -488,6 +494,8 @@ export async function saveSettings(settings: Settings) {
             id: 'default',
             socials: settings.socials,
             googleAnalyticsId: settings.googleAnalyticsId,
+            googleSearchConsoleId: settings.googleSearchConsoleId,
+            recaptchaSiteKey: settings.recaptchaSiteKey,
             updatedAt: new Date().toISOString()
         });
 

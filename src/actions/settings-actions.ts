@@ -8,6 +8,8 @@ export async function saveSettingsAction(formData: FormData) {
     const instagram = formData.get("instagram") as string;
     const telegram = formData.get("telegram") as string;
     const googleAnalyticsId = formData.get("googleAnalyticsId") as string;
+    const googleSearchConsoleId = formData.get("googleSearchConsoleId") as string;
+    const recaptchaSiteKey = formData.get("recaptchaSiteKey") as string;
 
     const currentSettings = await getSettings();
 
@@ -18,7 +20,9 @@ export async function saveSettingsAction(formData: FormData) {
             instagram,
             telegram
         },
-        googleAnalyticsId
+        googleAnalyticsId,
+        googleSearchConsoleId,
+        recaptchaSiteKey
     };
 
     await saveSettings(newSettings);

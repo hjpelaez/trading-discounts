@@ -2,7 +2,7 @@
 
 import { saveSettingsAction } from "@/actions/settings-actions";
 import { useFormStatus } from "react-dom";
-import { Save, Facebook, Instagram, Send, LineChart } from "lucide-react";
+import { Save, Facebook, Instagram, Send, LineChart, Search, ShieldCheck } from "lucide-react";
 
 function SubmitButton() {
     const { pending } = useFormStatus();
@@ -27,6 +27,8 @@ interface SettingsFormProps {
             telegram: string;
         };
         googleAnalyticsId: string;
+        googleSearchConsoleId: string;
+        recaptchaSiteKey: string;
     }
 }
 
@@ -83,6 +85,36 @@ export function SettingsForm({ initialSettings }: SettingsFormProps) {
                         />
                         <p className="text-xs text-muted-foreground">
                             Ingresa tu ID de medición para activar el seguimiento de visitas.
+                        </p>
+                    </div>
+
+                    <div className="pt-4 border-t space-y-2">
+                        <label className="text-sm font-bold flex items-center gap-2">
+                            <Search className="h-4 w-4 text-blue-500" /> Google Search Console (Meta Tag ID)
+                        </label>
+                        <input
+                            name="googleSearchConsoleId"
+                            defaultValue={initialSettings.googleSearchConsoleId}
+                            className="w-full bg-background border rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-primary/20 outline-none"
+                            placeholder="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+                        />
+                        <p className="text-xs text-muted-foreground">
+                            El ID del contenido de la etiqueta meta: <code>google-site-verification</code>.
+                        </p>
+                    </div>
+
+                    <div className="pt-4 border-t space-y-2">
+                        <label className="text-sm font-bold flex items-center gap-2">
+                            <ShieldCheck className="h-4 w-4 text-green-500" /> Google reCAPTCHA v3 (Site Key)
+                        </label>
+                        <input
+                            name="recaptchaSiteKey"
+                            defaultValue={initialSettings.recaptchaSiteKey}
+                            className="w-full bg-background border rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-primary/20 outline-none"
+                            placeholder="6Lxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                        />
+                        <p className="text-xs text-muted-foreground">
+                            La Clave del Sitio para habilitar la protección contra SPAM en formularios.
                         </p>
                     </div>
                 </div>
