@@ -447,7 +447,8 @@ export interface Settings {
         facebook: string;
         instagram: string;
         telegram: string;
-    }
+    };
+    googleAnalyticsId: string;
 }
 
 const DEFAULT_SETTINGS: Settings = {
@@ -455,7 +456,8 @@ const DEFAULT_SETTINGS: Settings = {
         facebook: "https://facebook.com",
         instagram: "https://instagram.com",
         telegram: "https://t.me"
-    }
+    },
+    googleAnalyticsId: ""
 };
 
 export const getSettings = cache(async (): Promise<Settings> => {
@@ -468,7 +470,10 @@ export const getSettings = cache(async (): Promise<Settings> => {
             .single();
 
         if (error && error.code !== 'PGRST116') throw error; // PGRST116 is "no rows returned"
-        return data ? { socials: data.socials } : DEFAULT_SETTINGS;
+        return data ? {
+            socials: data.socials,
+            googleAnalyticsId: data.googleAnalyticsId || ""
+        } : DEFAULT_SETTINGS;
     } catch (error) {
         console.error("Error fetching settings:", error);
         return DEFAULT_SETTINGS;
@@ -479,7 +484,12 @@ export async function saveSettings(settings: Settings) {
     const supabase = await createClient();
     const { error } = await supabase
         .from('Setting')
-        .upsert({ id: 'default', socials: settings.socials, updatedAt: new Date().toISOString() });
+        .upsert({
+            id: 'default',
+            socials: settings.socials,
+            googleAnalyticsId: settings.googleAnalyticsId,
+            updatedAt: new Date().toISOString()
+        });
 
     if (error) throw error;
 }

@@ -26,20 +26,6 @@ export default async function AdminDashboard() {
                     <h1 className="text-3xl font-bold tracking-tight">Estadísticas</h1>
                     <p className="text-muted-foreground text-sm">Bienvenido de nuevo. Aquí tienes un resumen de tu sitio.</p>
                 </div>
-                <div className="flex items-center gap-3">
-                    <Link
-                        href="/admin/firms"
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-muted border font-bold text-sm hover:bg-accent transition-colors"
-                    >
-                        <Building2 className="h-4 w-4" /> Gestionar Firmas
-                    </Link>
-                    <Link
-                        href="/admin/firms/new"
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground font-bold text-sm hover:bg-primary/90 transition-colors"
-                    >
-                        <PlusCircle className="h-4 w-4" /> Añadir Firma
-                    </Link>
-                </div>
             </div>
 
             {/* Stats Grid */}

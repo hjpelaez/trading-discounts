@@ -7,6 +7,7 @@ export async function saveSettingsAction(formData: FormData) {
     const facebook = formData.get("facebook") as string;
     const instagram = formData.get("instagram") as string;
     const telegram = formData.get("telegram") as string;
+    const googleAnalyticsId = formData.get("googleAnalyticsId") as string;
 
     const currentSettings = await getSettings();
 
@@ -16,7 +17,8 @@ export async function saveSettingsAction(formData: FormData) {
             facebook,
             instagram,
             telegram
-        }
+        },
+        googleAnalyticsId
     };
 
     await saveSettings(newSettings);

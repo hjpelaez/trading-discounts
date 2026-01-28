@@ -11,7 +11,7 @@ export default async function AdminLayout({
 }) {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
-    const t = await getTranslations("Admin");
+    const t = await getTranslations({ locale: 'es', namespace: 'Admin' });
 
     if (!user) {
         redirect('/auth/login');

@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { LazyMotionProvider } from "@/components/providers/lazy-motion-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
-import { GoogleAnalytics } from '@next/third-parties/google';
+import { getSettings } from '@/lib/db';
 import "../globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -18,6 +18,9 @@ export default async function LocaleLayout({
 }) {
   const { locale } = await params;
   const messages = await getMessages();
+  const settings = await getSettings();
+
+  const gaId = settings.googleAnalyticsId || process.env.NEXT_PUBLIC_GA_ID || "G-XXXXXXXXXX";
 
   return (
     <html lang={locale} suppressHydrationWarning>
@@ -38,7 +41,7 @@ export default async function LocaleLayout({
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>
-      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || "G-XXXXXXXXXX"} />
+      <GoogleAnalytics gaId={gaId} />
     </html>
   );
 }

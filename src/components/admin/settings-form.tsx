@@ -2,7 +2,7 @@
 
 import { saveSettingsAction } from "@/actions/settings-actions";
 import { useFormStatus } from "react-dom";
-import { Save, Facebook, Instagram, Send } from "lucide-react";
+import { Save, Facebook, Instagram, Send, LineChart } from "lucide-react";
 
 function SubmitButton() {
     const { pending } = useFormStatus();
@@ -25,7 +25,8 @@ interface SettingsFormProps {
             facebook: string;
             instagram: string;
             telegram: string;
-        }
+        };
+        googleAnalyticsId: string;
     }
 }
 
@@ -68,6 +69,21 @@ export function SettingsForm({ initialSettings }: SettingsFormProps) {
                             className="w-full bg-background border rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-primary/20 outline-none"
                             placeholder="https://t.me/..."
                         />
+                    </div>
+
+                    <div className="pt-4 border-t space-y-2">
+                        <label className="text-sm font-bold flex items-center gap-2">
+                            <LineChart className="h-4 w-4 text-orange-500" /> Google Analytics ID (GA4)
+                        </label>
+                        <input
+                            name="googleAnalyticsId"
+                            defaultValue={initialSettings.googleAnalyticsId}
+                            className="w-full bg-background border rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-primary/20 outline-none"
+                            placeholder="G-XXXXXXXXXX"
+                        />
+                        <p className="text-xs text-muted-foreground">
+                            Ingresa tu ID de medición para activar el seguimiento de visitas.
+                        </p>
                     </div>
                 </div>
 
