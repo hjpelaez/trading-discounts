@@ -11,6 +11,8 @@ import { useComparison } from "@/lib/hooks/use-comparison";
 import { useTranslations, useLocale } from "next-intl";
 import { m, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
 import { SuccessToast } from "./success-toast";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { usePathname } from "next/navigation";
 
 interface FirmCardProps {
     firm: PropFirm;
@@ -26,6 +28,8 @@ export function FirmCard({ firm, className }: FirmCardProps) {
     const { comparisonList, toggleComparison } = useComparison();
     const t = useTranslations('Common');
     const locale = useLocale();
+    const pathname = usePathname();
+    const isAdmin = pathname?.includes("/admin");
 
     // Random minutes for "Verified X min ago" urgency
     const [verifiedMin, setVerifiedMin] = useState(5);
@@ -162,17 +166,26 @@ export function FirmCard({ firm, className }: FirmCardProps) {
                                     <Sparkles className="h-3 w-3 mr-1" /> {t('featured')}
                                 </span>
                             )}
-                            <button
-                                onClick={(e) => { e.preventDefault(); toggleFavorite(firm.id); }}
-                                className={cn(
-                                    "h-10 w-10 rounded-full border flex items-center justify-center transition-all hover:scale-110 active:scale-95",
-                                    isFavorite(firm.id)
-                                        ? "bg-red-500 border-red-500 text-white shadow-lg shadow-red-500/20"
-                                        : "bg-background border-border text-muted-foreground hover:text-red-500 hover:border-red-500/50"
-                                )}
-                            >
-                                <Heart className={cn("h-5 w-5", isFavorite(firm.id) && "fill-current")} />
-                            </button>
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <button
+                                            onClick={(e) => { e.preventDefault(); toggleFavorite(firm.id); }}
+                                            className={cn(
+                                                "h-10 w-10 rounded-full border flex items-center justify-center transition-all hover:scale-110 active:scale-95",
+                                                isFavorite(firm.id)
+                                                    ? "bg-red-500 border-red-500 text-white shadow-lg shadow-red-500/20"
+                                                    : "bg-background border-border text-muted-foreground hover:text-red-500 hover:border-red-500/50"
+                                            )}
+                                        >
+                                            <Heart className={cn("h-5 w-5", isFavorite(firm.id) && "fill-current")} />
+                                        </button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        {!isAdmin && <p>{isFavorite(firm.id) ? t('removeFromFavorites') : t('addToFavorites')}</p>}
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
                         </div>
                     </div>
 
@@ -195,37 +208,57 @@ export function FirmCard({ firm, className }: FirmCardProps) {
                                 </div>
                                 <div className="flex flex-col items-end">
                                     <span className="text-[10px] text-muted-foreground uppercase font-black tracking-widest mb-1.5">{t('code')}</span>
-                                    <button
-                                        onClick={copyCode}
-                                        className={cn(
-                                            "flex items-center gap-2 text-sm font-black font-mono px-4 py-2.5 rounded-lg transition-all active:scale-95 shadow-lg relative overflow-hidden",
-                                            copied
-                                                ? "bg-green-500 text-white border-green-500 scale-105"
-                                                : "bg-foreground text-background border-foreground hover:bg-foreground/90"
-                                        )}
-                                    >
-                                        <span className="relative z-10">{firm.code}</span>
-                                        {copied ? <Check className="h-4 w-4 relative z-10" /> : <Copy className="h-4 w-4 relative z-10" />}
-                                    </button>
+                                    <TooltipProvider>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <button
+                                                    onClick={copyCode}
+                                                    className={cn(
+                                                        "flex items-center gap-2 text-sm font-black font-mono px-4 py-2.5 rounded-lg transition-all active:scale-95 shadow-lg relative overflow-hidden",
+                                                        copied
+                                                            ? "bg-green-500 text-white border-green-500 scale-105"
+                                                            : "bg-foreground text-background border-foreground hover:bg-foreground/90"
+                                                    )}
+                                                >
+                                                    <span className="relative z-10">{firm.code}</span>
+                                                    {copied ? <Check className="h-4 w-4 relative z-10" /> : <Copy className="h-4 w-4 relative z-10" />}
+                                                </button>
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                                {!isAdmin && <p>{copied ? t('copied') : t('copyCode')}</p>}
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
                                 </div>
                             </div>
                         </div>
 
                         <div className="flex items-center gap-3 py-1">
-                            <div className="relative flex items-center">
-                                <input
-                                    type="checkbox"
-                                    disabled={!comparisonList.includes(firm.id) && comparisonList.length >= 4}
-                                    checked={comparisonList.includes(firm.id)}
-                                    onChange={() => toggleComparison(firm.id)}
-                                    id={`compare-${firm.id}`}
-                                    className="peer h-5 w-5 rounded-md border-border bg-background text-primary focus:ring-primary cursor-pointer disabled:opacity-50 transition-all checked:bg-primary"
-                                />
-                                <Check className="absolute h-3.5 w-3.5 text-primary-foreground opacity-0 peer-checked:opacity-100 pointer-events-none left-[3px]" />
-                            </div>
-                            <label htmlFor={`compare-${firm.id}`} className="text-xs font-bold text-muted-foreground cursor-pointer select-none uppercase tracking-wider">
-                                Compare <span className="text-primary ml-1">{comparisonList.length}/4</span>
-                            </label>
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <div className="flex items-center gap-3">
+                                            <div className="relative flex items-center">
+                                                <input
+                                                    type="checkbox"
+                                                    disabled={!comparisonList.includes(firm.id) && comparisonList.length >= 4}
+                                                    checked={comparisonList.includes(firm.id)}
+                                                    onChange={() => toggleComparison(firm.id)}
+                                                    id={`compare-${firm.id}`}
+                                                    className="peer h-5 w-5 rounded-md border-border bg-background text-primary focus:ring-primary cursor-pointer disabled:opacity-50 transition-all checked:bg-primary"
+                                                />
+                                                <Check className="absolute h-3.5 w-3.5 text-primary-foreground opacity-0 peer-checked:opacity-100 pointer-events-none left-[3px]" />
+                                            </div>
+                                            <label htmlFor={`compare-${firm.id}`} className="text-xs font-bold text-muted-foreground cursor-pointer select-none uppercase tracking-wider">
+                                                Compare <span className="text-primary ml-1">{comparisonList.length}/4</span>
+                                            </label>
+                                        </div>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        {!isAdmin && <p>{comparisonList.includes(firm.id) ? t('removeFromCompare') : t('addToCompare')}</p>}
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
                         </div>
 
                         <div className="grid grid-cols-2 gap-3">

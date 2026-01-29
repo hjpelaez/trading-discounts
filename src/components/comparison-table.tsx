@@ -4,6 +4,7 @@ import { PropFirm } from "@/lib/data";
 import { Check, X, ExternalLink, ShieldCheck, Zap, DollarSign, Scale } from "lucide-react";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface ComparisonTableProps {
     firms: PropFirm[];
@@ -34,12 +35,21 @@ export function ComparisonTable({ firms, onRemove }: ComparisonTableProps) {
                         </th>
                         {firms.map((firm) => (
                             <th key={firm.id} className="p-6 text-center border-b border-l min-w-[200px] relative group">
-                                <button
-                                    onClick={() => onRemove(firm.id)}
-                                    className="absolute top-2 right-2 p-1 rounded-full hover:bg-destructive/10 text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity"
-                                >
-                                    <X className="h-4 w-4" />
-                                </button>
+                                <TooltipProvider>
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <button
+                                                onClick={() => onRemove(firm.id)}
+                                                className="absolute top-2 right-2 p-1 rounded-full hover:bg-destructive/10 text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity"
+                                            >
+                                                <X className="h-4 w-4" />
+                                            </button>
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <p>{t('removePropFirm')}</p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
                                 <div className="space-y-4">
                                     <div className="h-16 w-16 bg-primary/10 rounded-xl mx-auto flex items-center justify-center text-primary font-bold text-xl">
                                         {firm.name.substring(0, 2).toUpperCase()}
@@ -59,7 +69,16 @@ export function ComparisonTable({ firms, onRemove }: ComparisonTableProps) {
                             <td className="p-4 bg-muted/20 font-medium">
                                 <div className="flex items-center gap-2">
                                     {metric.icon && <metric.icon className="h-4 w-4 text-primary/60" />}
-                                    {metric.label}
+                                    <TooltipProvider>
+                                        <Tooltip>
+                                            <TooltipTrigger className="cursor-help underline decoration-dotted decoration-muted-foreground/30 underline-offset-4">
+                                                {metric.label}
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                                <p>{t(`tooltips.${metric.key}`)}</p>
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
                                 </div>
                             </td>
                             {firms.map((firm) => {

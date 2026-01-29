@@ -6,6 +6,7 @@ import { CourseDB } from "@/lib/db";
 import { CourseCard } from "@/components/course-card";
 import { fetchMoreCourses } from "@/actions/get-courses-action";
 import { Loader2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface CourseGridProps {
     initialCourses: CourseDB[];
@@ -18,6 +19,7 @@ interface CourseGridProps {
 }
 
 export function CourseGrid({ initialCourses, filters }: CourseGridProps) {
+    const t = useTranslations("Courses");
     const [courses, setCourses] = useState<CourseDB[]>(initialCourses);
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
@@ -62,8 +64,8 @@ export function CourseGrid({ initialCourses, filters }: CourseGridProps) {
     if (courses.length === 0) {
         return (
             <div className="text-center py-20 text-muted-foreground">
-                <p className="text-lg">No courses found matching your filters.</p>
-                <p className="text-sm mt-2">Try adjusting your category or price range.</p>
+                <p className="text-lg">{t('noResults')}</p>
+                <p className="text-sm mt-2">{t('tryAdjusting')}</p>
             </div>
         );
     }
@@ -87,7 +89,7 @@ export function CourseGrid({ initialCourses, filters }: CourseGridProps) {
 
             {!hasMore && courses.length > 0 && (
                 <div className="text-center py-8 text-muted-foreground text-sm">
-                    You&apos;ve reached the end. 🚀
+                    {t('endOfList')}
                 </div>
             )}
         </div>

@@ -6,6 +6,7 @@ import { Menu, X, Rocket, Sparkles } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 import { ModeToggle } from "@/components/mode-toggle";
 import { usePathname, useRouter, Link as LocalizedLink } from "@/i18n/routing";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 export function Navbar() {
     const pathname = usePathname();
@@ -60,33 +61,59 @@ export function Navbar() {
                 </nav>
                 <div className="flex items-center space-x-4">
                     <div className="flex items-center gap-2 text-sm font-medium border-r pr-4">
-                        <button
-                            onClick={() => switchLocale('en')}
-                            className={cn("hover:text-primary transition-colors", locale === 'en' ? "text-primary font-bold" : "text-muted-foreground")}
-                        >
-                            EN
-                        </button>
+                        <TooltipProvider>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <button
+                                        onClick={() => switchLocale('en')}
+                                        className={cn("hover:text-primary transition-colors", locale === 'en' ? "text-primary font-bold" : "text-muted-foreground")}
+                                    >
+                                        EN
+                                    </button>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>English</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
                         <span className="text-muted-foreground">/</span>
-                        <button
-                            onClick={() => switchLocale('es')}
-                            className={cn("hover:text-primary transition-colors", locale === 'es' ? "text-primary font-bold" : "text-muted-foreground")}
-                        >
-                            ES
-                        </button>
+                        <TooltipProvider>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <button
+                                        onClick={() => switchLocale('es')}
+                                        className={cn("hover:text-primary transition-colors", locale === 'es' ? "text-primary font-bold" : "text-muted-foreground")}
+                                    >
+                                        ES
+                                    </button>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>Español</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
                     </div>
                     <ModeToggle />
-                    <button
-                        onClick={() => {
-                            if (typeof window !== 'undefined') {
-                                window.dispatchEvent(new CustomEvent("open-ai-chat"));
-                            }
-                        }}
-                        className="hidden md:flex h-9 items-center justify-center rounded-md bg-primary/10 px-4 py-2 text-sm font-bold text-primary transition-all hover:bg-primary/20 active:scale-95"
-                        title={t('ai_tooltip') || "Ask AI Assistant"}
-                    >
-                        <Sparkles className="mr-2 h-4 w-4" />
-                        {t('ai')}
-                    </button>
+                    <TooltipProvider>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <button
+                                    onClick={() => {
+                                        if (typeof window !== 'undefined') {
+                                            window.dispatchEvent(new CustomEvent("open-ai-chat"));
+                                        }
+                                    }}
+                                    className="hidden md:flex h-9 items-center justify-center rounded-md bg-primary/10 px-4 py-2 text-sm font-bold text-primary transition-all hover:bg-primary/20 active:scale-95"
+                                >
+                                    <Sparkles className="mr-2 h-4 w-4" />
+                                    {t('ai')}
+                                </button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p>{t('ai_tooltip') || "Ask AI Assistant"}</p>
+                            </TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
                     <button
                         className="md:hidden p-2"
                         onClick={() => setIsOpen(!isOpen)}

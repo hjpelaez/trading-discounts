@@ -14,6 +14,7 @@ export default async function CoursesPage({
 }) {
     const tHome = await getTranslations("Home");
     const tCommon = await getTranslations("Common");
+    const tCourses = await getTranslations("Courses");
     const resolvedParams = await searchParams;
 
     const category = typeof resolvedParams.category === 'string' ? resolvedParams.category : undefined;
@@ -35,10 +36,10 @@ export default async function CoursesPage({
         <div className="container mx-auto py-24 px-4 md:px-6">
             <div className="mb-12">
                 <h1 className="text-4xl md:text-7xl font-black tracking-tighter mb-4">
-                    Trading <span className="text-primary">Courses</span>
+                    {tCourses('titlePart1')} <span className="text-primary">{tCourses('titlePart2')}</span>
                 </h1>
                 <p className="text-muted-foreground text-lg md:text-xl max-w-2xl">
-                    Master the markets with our curated selection of top-rated trading courses.
+                    {tCourses('description')}
                 </p>
             </div>
 

@@ -19,6 +19,7 @@ export default async function CryptoPage({ searchParams }: { searchParams: Promi
     const { q, platform, rating: ratingStr } = resolvedSearchParams;
     const allFirms = await getFirms();
     const tHome = await getTranslations("Home");
+    const tCrypto = await getTranslations("Crypto");
 
     const resultsKey = JSON.stringify(resolvedSearchParams);
     const searchQ = (q as string || "").toLowerCase();
@@ -45,10 +46,10 @@ export default async function CryptoPage({ searchParams }: { searchParams: Promi
         <div className="container mx-auto py-24 px-4 md:px-6">
             <FadeIn className="mb-12">
                 <h1 className="text-4xl md:text-7xl font-black tracking-tighter mb-4">
-                    Crypto Prop <span className="text-primary">Firms</span>
+                    {tCrypto('titlePart1')} <span className="text-primary">{tCrypto('titlePart2')}</span>
                 </h1>
                 <p className="text-muted-foreground text-lg md:text-xl max-w-2xl">
-                    Get funded with cryptocurrency. The best prop firms offering crypto payouts and trading pairs.
+                    {tCrypto('description')}
                 </p>
             </FadeIn>
 

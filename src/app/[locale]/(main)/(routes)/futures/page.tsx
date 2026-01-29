@@ -19,6 +19,7 @@ export default async function FuturesPage({ searchParams }: { searchParams: Prom
     const { q, platform, rating: ratingStr } = resolvedSearchParams;
     const allFirms = await getFirms();
     const tHome = await getTranslations("Home");
+    const tFutures = await getTranslations("Futures");
 
     const resultsKey = JSON.stringify(resolvedSearchParams);
     const searchQ = (q as string || "").toLowerCase();
@@ -45,10 +46,10 @@ export default async function FuturesPage({ searchParams }: { searchParams: Prom
         <div className="container mx-auto py-24 px-4 md:px-6">
             <FadeIn className="mb-12">
                 <h1 className="text-4xl md:text-7xl font-black tracking-tighter mb-4">
-                    Futures Prop <span className="text-primary">Firms</span>
+                    {tFutures('titlePart1')} <span className="text-primary">{tFutures('titlePart2')}</span>
                 </h1>
                 <p className="text-muted-foreground text-lg md:text-xl max-w-2xl">
-                    Trade futures contracts on CME, COMEX, and NYMEX. Best deals for futures evaluation accounts.
+                    {tFutures('description')}
                 </p>
             </FadeIn>
 

@@ -3,11 +3,13 @@
 import * as React from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
+import { useTranslations } from "next-intl";
 
 export function PriceRangeSlider() {
     const searchParams = useSearchParams();
     const router = useRouter();
     const pathname = usePathname();
+    const t = useTranslations("Common");
 
     // Default range: $0 to $1000
     const MIN_LIMIT = 0;
@@ -46,7 +48,7 @@ export function PriceRangeSlider() {
 
     return (
         <div className="w-full max-w-[200px] items-center gap-2">
-            <span className="text-sm font-bold text-muted-foreground mr-2 shrink-0">Price:</span>
+            <span className="text-sm font-bold text-muted-foreground mr-2 shrink-0">{t('filters.priceLabel')}</span>
             <div className="flex flex-col w-full gap-2">
                 <div className="flex items-center justify-between text-xs font-bold font-mono">
                     <span>${minPrice}</span>
@@ -70,7 +72,7 @@ export function PriceRangeSlider() {
                         max={MAX_LIMIT}
                         value={minPrice}
                         onChange={handleMinChange}
-                        className="pointer-events-none absolute h-full w-full appearance-none bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:shadow-sm"
+                        className="pointer-events-none absolute h-full w-full appearance-none bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:shadow-sm [&::-webkit-slider-thumb]:cursor-pointer"
                     />
                     <input
                         type="range"

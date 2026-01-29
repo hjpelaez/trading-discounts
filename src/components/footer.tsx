@@ -28,8 +28,7 @@ export function Footer({ settings }: { settings: Settings }) {
                             <span>Trading<span className="text-primary">Discounts</span></span>
                         </LocalizedLink>
                         <p className="text-sm text-muted-foreground leading-relaxed font-medium">
-                            The #1 aggregation platform for exclusive Prop Firm discounts.
-                            Stop paying full price for your funding challenges.
+                            {t('description')}
                         </p>
                     </div>
 

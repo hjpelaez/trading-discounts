@@ -19,7 +19,7 @@ export function PreFooter() {
             </div>
 
             <div className="container mx-auto px-4 md:px-6">
-                <div className="bg-card border-x border-y border-border/50 rounded-[40px] p-8 md:p-16 relative overflow-hidden shadow-2xl">
+                <div className="bg-card border-x border-y border-border rounded-[40px] p-8 md:p-16 relative overflow-hidden shadow-2xl">
                     {/* Glass Decor */}
                     <div className="absolute top-0 right-0 p-8 opacity-10">
                         <Sparkles className="h-40 w-40 text-primary" />
@@ -63,7 +63,7 @@ export function PreFooter() {
                                 { icon: Star, title: t("features.guideTitle"), desc: t("features.guideDesc") },
                             ].map((item, i) => (
                                 <FadeIn key={i} delay={i * 0.1}>
-                                    <div className="p-6 rounded-3xl bg-background/50 border border-border/50 backdrop-blur-sm group hover:border-primary/30 transition-colors">
+                                    <div className="p-6 rounded-3xl bg-background/50 border border-border backdrop-blur-sm group hover:border-primary/30 transition-colors">
                                         <div className="h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
                                             <item.icon className="h-6 w-6" />
                                         </div>

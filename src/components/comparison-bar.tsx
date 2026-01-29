@@ -6,6 +6,7 @@ import { X, ArrowRight, BarChart3 } from "lucide-react";
 import { AnimatePresence, m } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 export function ComparisonBar() {
     const { comparisonList, toggleComparison, clearComparison } = useComparison();
@@ -35,12 +36,21 @@ export function ComparisonBar() {
                                         <div className="h-10 w-10 rounded-full bg-background border-2 border-primary/20 flex items-center justify-center text-xs font-bold shadow-sm">
                                             {id.substring(0, 2).toUpperCase()}
                                         </div>
-                                        <button
-                                            onClick={() => toggleComparison(id)}
-                                            className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
-                                        >
-                                            <X className="h-3 w-3" />
-                                        </button>
+                                        <TooltipProvider>
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <button
+                                                        onClick={() => toggleComparison(id)}
+                                                        className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                                                    >
+                                                        <X className="h-3 w-3" />
+                                                    </button>
+                                                </TooltipTrigger>
+                                                <TooltipContent>
+                                                    <p>{t('remove')}</p>
+                                                </TooltipContent>
+                                            </Tooltip>
+                                        </TooltipProvider>
                                     </div>
                                 ))}
                             </div>
@@ -50,12 +60,21 @@ export function ComparisonBar() {
                         </div>
 
                         <div className="flex items-center gap-3">
-                            <button
-                                onClick={clearComparison}
-                                className="text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
-                            >
-                                {t('clear')}
-                            </button>
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <button
+                                            onClick={clearComparison}
+                                            className="text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
+                                        >
+                                            {t('clear')}
+                                        </button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>{t('clearAll')}</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
                             <LocalizedLink
                                 href="/compare"
                                 className="inline-flex h-10 items-center justify-center rounded-xl bg-primary px-6 text-sm font-bold text-primary-foreground shadow-lg hover:shadow-primary/20 transition-all hover:-translate-y-0.5"

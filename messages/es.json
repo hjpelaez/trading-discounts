@@ -97,6 +97,7 @@
         }
     },
     "Footer": {
+        "description": "La plataforma #1 de agregación de descuentos exclusivos para Prop Firms. Deja de pagar precio completo por tus desafíos de fondeo.",
         "education": "Educación",
         "blog": "Blog",
         "courses": "Cursos",
@@ -136,7 +137,53 @@
             "English": "Inglés",
             "Spanish": "Español",
             "Mixed": "Mixto"
+        },
+        "addToFavorites": "Añadir a Favoritos",
+        "removeFromFavorites": "Quitar de Favoritos",
+        "copyCode": "Copiar Código",
+        "copied": "¡Copiado!",
+        "addToCompare": "Añadir a Comparar",
+        "removeFromCompare": "Quitar de Comparar",
+        "filters": {
+            "categoryLabel": "Categoría:",
+            "languageLabel": "Idioma:",
+            "priceLabel": "Precio:",
+            "anyLanguage": "Cualquier Idioma",
+            "apps": "Plataformas",
+            "rating": "Puntuación",
+            "drawdown": "Drawdown"
         }
+    },
+    "Courses": {
+        "titlePart1": "Cursos de",
+        "titlePart2": "Trading",
+        "description": "Domina los mercados con nuestra selección curada de los mejores cursos de trading.",
+        "noResults": "No se encontraron cursos con esos filtros.",
+        "tryAdjusting": "Intenta ajustar la categoría o el rango de precio.",
+        "endOfList": "Has llegado al final. 🚀"
+    },
+    "CourseCard": {
+        "Level": {
+            "Beginner": "Principiante",
+            "Intermediate": "Intermedio",
+            "Advanced": "Avanzado",
+            "All Levels": "Todos los niveles"
+        },
+        "Category": {
+            "General": "General",
+            "Forex": "Forex",
+            "Crypto": "Cripto",
+            "Futures": "Futuros",
+            "Options": "Opciones",
+            "Stocks": "Acciones"
+        },
+        "Language": {
+            "English": "Inglés",
+            "Spanish": "Español",
+            "Mixed": "Mixto"
+        },
+        "viewCourse": "Ver Curso",
+        "by": "Por"
     },
     "Compare": {
         "title": "Comparar <highlight>Firmas</highlight> de Fondeo",
@@ -156,7 +203,16 @@
         "selected": "firmas seleccionadas",
         "clear": "Limpiar todo",
         "now": "Comparar Ahora",
-        "getDeal": "Obtener {discount}"
+        "getDeal": "Obtener {discount}",
+        "removePropFirm": "Eliminar Firma",
+        "tooltips": {
+            "rating": "Puntuación de la comunidad basada en Trustpilot y Reseñas",
+            "price": "Precio más bajo para la cuenta más pequeña",
+            "drawdown": "Cómo se calcula el drawdown (Trailing vs Estático)",
+            "leverage": "Apalancamiento máximo disponible",
+            "platforms": "Plataformas de trading soportadas",
+            "features": "Reglas y características clave"
+        }
     },
     "Blog": {
         "title": "Blog de <span class='text-primary'>Prop Trading</span>",
@@ -237,12 +293,14 @@
         "subtitle": "Obtén financiamiento con cripto. Las mejores firmas de fondeo que ofrecen pagos y pares de criptomonedas."
     },
     "Forex": {
-        "title": "Prop Firms de <highlight>Forex</highlight>",
-        "subtitle": "Opera pares mayores, menores y exóticos con alto apalancamiento. Descuentos exclusivos para traders de FX."
+        "titlePart1": "Prop Firms de",
+        "titlePart2": "Forex",
+        "description": "Opera pares mayores, menores y exóticos con alto apalancamiento. Descuentos exclusivos para traders de FX."
     },
     "Futures": {
-        "title": "Prop Firms de <highlight>Futuros</highlight>",
-        "subtitle": "Opera contratos de futuros en CME, COMEX y NYMEX. Las mejores ofertas para cuentas de evaluación de futuros."
+        "titlePart1": "Prop Firms de",
+        "titlePart2": "Futuros",
+        "description": "Opera contratos de futuros en CME, COMEX y NYMEX. Las mejores ofertas para cuentas de evaluación de futuros."
     },
     "CoursesPage": {
         "title": "Cursos de <highlight>Trading</highlight>",

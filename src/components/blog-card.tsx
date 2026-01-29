@@ -33,7 +33,7 @@ export function BlogCard({ post, locale, readMoreLabel }: BlogCardProps) {
 
     return (
         <Link href={`/${locale}/blog/${post.slug}`} className="group block h-full">
-            <article className="h-full bg-card rounded-[40px] border border-border/50 overflow-hidden hover:border-primary transition-all hover:shadow-[0_20px_80px_-15px_rgba(var(--primary-rgb),0.15)] flex flex-col group-hover:-translate-y-2 duration-500 relative">
+            <article className="h-full bg-card rounded-[40px] border border-border overflow-hidden hover:border-primary transition-all hover:shadow-[0_20px_80px_-15px_rgba(var(--primary-rgb),0.15)] flex flex-col group-hover:-translate-y-2 duration-500 relative">
                 <div className="aspect-[16/10] overflow-hidden relative bg-muted/20">
                     <Image
                         src={post.imageUrl}

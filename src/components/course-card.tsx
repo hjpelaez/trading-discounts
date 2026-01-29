@@ -125,7 +125,13 @@ export function CourseCard({ course, className }: CourseCardProps) {
                         </div>
                     ) : (
                         <div className="h-16 w-16 shrink-0 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-bold border border-primary/20 shadow-sm text-xl group-hover:scale-110 transition-transform">
-                            {title.substring(0, 1).toUpperCase()}
+                            {(() => {
+                                const words = title.trim().split(/\s+/);
+                                if (words.length >= 2) {
+                                    return (words[0][0] + words[1][0]).toUpperCase();
+                                }
+                                return title.substring(0, 2).toUpperCase();
+                            })()}
                         </div>
                     )}
 
