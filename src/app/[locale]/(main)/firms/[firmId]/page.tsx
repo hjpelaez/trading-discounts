@@ -75,18 +75,38 @@ export default async function FirmPage({ params }: PageProps) {
 
     const renderBilingual = (val: any) => {
         if (!val) return "";
-        if (typeof val === 'string') return val;
-        if (typeof val === 'object') {
-            return val[lang] || val.en || val.es || "";
+
+        let parsedVal = val;
+        if (typeof val === 'string' && (val.trim().startsWith('{') || val.trim().startsWith('['))) {
+            try {
+                parsedVal = JSON.parse(val);
+            } catch (e) {
+                // Not JSON, use original string
+            }
+        }
+
+        if (typeof parsedVal === 'string') return parsedVal;
+        if (typeof parsedVal === 'object') {
+            return parsedVal[lang] || parsedVal.en || parsedVal.es || "";
         }
         return String(val);
     };
 
     const renderBilingualArray = (val: any): string[] => {
         if (!val) return [];
-        if (Array.isArray(val)) return val;
-        if (typeof val === 'object') {
-            return val[lang] || val.en || val.es || [];
+
+        let parsedVal = val;
+        if (typeof val === 'string' && (val.trim().startsWith('{') || val.trim().startsWith('['))) {
+            try {
+                parsedVal = JSON.parse(val);
+            } catch (e) {
+                // Not JSON
+            }
+        }
+
+        if (Array.isArray(parsedVal)) return parsedVal;
+        if (typeof parsedVal === 'object') {
+            return parsedVal[lang] || parsedVal.en || parsedVal.es || [];
         }
         return [];
     };
@@ -94,6 +114,8 @@ export default async function FirmPage({ params }: PageProps) {
     const description = renderBilingual(firm.description);
     const features = renderBilingualArray(firm.features);
     const rules = renderBilingualArray(firm.rules);
+    const consistencyRules = renderBilingual(firm.consistencyRules);
+    const prohibitedPractices = renderBilingualArray(firm.prohibitedPractices);
 
     return (
         <div className="flex flex-col min-h-screen">
@@ -110,13 +132,25 @@ export default async function FirmPage({ params }: PageProps) {
                                     </span>
                                 )}
                             </div>
-                            <div className="flex items-center gap-4 text-muted-foreground">
+                            <div className="flex flex-wrap items-center gap-4 text-muted-foreground">
                                 <div className="flex items-center gap-1">
                                     <span className="text-orange-400 font-bold">★ {firm.trustpilotScore}</span>
                                     <span className="text-sm">Trustpilot</span>
                                 </div>
                                 <span>•</span>
                                 <span>{firm.categories.map(c => c.toUpperCase()).join(" / ")}</span>
+                                {firm.country && (
+                                    <>
+                                        <span>•</span>
+                                        <span>{firm.country}</span>
+                                    </>
+                                )}
+                                {firm.activeYears && (
+                                    <>
+                                        <span>•</span>
+                                        <span>{firm.activeYears} {t('yearsActive')}</span>
+                                    </>
+                                )}
                             </div>
                             <p className="text-xl text-muted-foreground">{description}</p>
                         </div>
@@ -177,12 +211,24 @@ export default async function FirmPage({ params }: PageProps) {
                                     <p className="text-xs text-muted-foreground">{t('platforms')}</p>
                                     <div className="flex flex-wrap gap-1 mt-1">
                                         {firm.platforms.map(p => (
-                                            <span key={p} className="text-xs font-medium bg-background px-2 py-0.5 rounded border">
+                                            <span key={p} className="text-xs font-medium bg-muted/50 px-2 py-0.5 rounded border">
                                                 {p}
                                             </span>
                                         ))}
                                     </div>
                                 </div>
+                                {firm.maxAllocation && (
+                                    <div className="p-4 rounded-lg bg-muted/40 border col-span-2">
+                                        <p className="text-xs text-muted-foreground">Max Allocation</p>
+                                        <p className="font-bold">{firm.maxAllocation}</p>
+                                    </div>
+                                )}
+                                {firm.drawdownType && (
+                                    <div className="p-4 rounded-lg bg-muted/40 border col-span-2">
+                                        <p className="text-xs text-muted-foreground">Drawdown Type</p>
+                                        <p className="font-bold">{firm.drawdownType}</p>
+                                    </div>
+                                )}
                             </div>
                         </section>
 
@@ -201,18 +247,109 @@ export default async function FirmPage({ params }: PageProps) {
                             </div>
                         </section>
 
-                        {/* Rules */}
+                        {/* Trading Environment Details */}
                         <section>
-                            <h2 className="text-2xl font-bold mb-6">{t('rulesTitle')}</h2>
-                            <div className="rounded-xl border bg-card overflow-hidden">
-                                {rules.map((rule, i) => (
-                                    <div key={i} className="flex items-center gap-4 p-4 border-b last:border-0 hover:bg-muted/50 transition-colors">
-                                        <ShieldCheck className="h-5 w-5 text-muted-foreground" />
-                                        <span className="font-medium">{rule}</span>
+                            <h2 className="text-2xl font-bold mb-6">{t('tradingEnv')}</h2>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-card border rounded-xl p-6">
+                                {firm.broker && (
+                                    <div>
+                                        <h3 className="text-sm font-semibold text-muted-foreground mb-1">{t('broker')}</h3>
+                                        <p className="font-medium">{firm.broker}</p>
                                     </div>
-                                ))}
+                                )}
+                                {firm.payoutFrequency && (
+                                    <div>
+                                        <h3 className="text-sm font-semibold text-muted-foreground mb-1">{t('payoutFreq')}</h3>
+                                        <p className="font-medium">{firm.payoutFrequency}</p>
+                                    </div>
+                                )}
+                                {firm.assets && firm.assets.length > 0 && (
+                                    <div className="sm:col-span-2">
+                                        <h3 className="text-sm font-semibold text-muted-foreground mb-2">{t('assets')}</h3>
+                                        <div className="flex flex-wrap gap-2">
+                                            {firm.assets.map(a => (
+                                                <span key={a} className="text-xs font-medium bg-muted/50 px-2 py-0.5 rounded border">{a}</span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </section>
+
+                        {/* Rules & Consistency */}
+                        <section>
+                            <h2 className="text-2xl font-bold mb-6">{t('tradingRulesTitle')}</h2>
+                            <div className="space-y-6">
+                                <div className="rounded-xl border bg-card overflow-hidden">
+                                    <div className="bg-muted/50 p-4 border-b">
+                                        <h3 className="font-semibold flex items-center gap-2">
+                                            <ShieldCheck className="h-4 w-4" />
+                                            {t('rulesTitle')}
+                                        </h3>
+                                    </div>
+                                    {rules.map((rule, i) => (
+                                        <div key={i} className="flex items-center gap-4 p-4 border-b last:border-0">
+                                            <span className="font-medium text-sm">{rule}</span>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                {consistencyRules && (
+                                    <div className="rounded-xl border bg-yellow-500/5 border-yellow-500/20 p-6">
+                                        <h3 className="font-bold text-yellow-600 mb-2">{t('consistency')}</h3>
+                                        <p className="text-sm">{consistencyRules}</p>
+                                    </div>
+                                )}
+
+                                {prohibitedPractices.length > 0 && (
+                                    <div className="rounded-xl border bg-red-500/5 border-red-500/20 p-6">
+                                        <h3 className="font-bold text-red-600 mb-3">{t('prohibited')}</h3>
+                                        <ul className="space-y-2">
+                                            {prohibitedPractices.map((practice, i) => (
+                                                <li key={i} className="flex items-start gap-2 text-sm">
+                                                    <span className="text-red-500 font-bold">•</span>
+                                                    {practice}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+                            </div>
+                        </section>
+
+                        {/* Payment & Funding */}
+                        {(firm.paymentMethods.length > 0 || (firm.payoutMethods && firm.payoutMethods.length > 0)) && (
+                            <section>
+                                <h2 className="text-2xl font-bold mb-6">{t('banking')}</h2>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                                    {firm.paymentMethods.length > 0 && (
+                                        <div>
+                                            <h3 className="font-semibold mb-3">{t('depositMethods')}</h3>
+                                            <div className="flex flex-wrap gap-2">
+                                                {firm.paymentMethods.map(pm => (
+                                                    <span key={pm} className="text-xs font-medium bg-muted/50 px-2 py-0.5 rounded border">
+                                                        {pm}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                    {firm.payoutMethods && firm.payoutMethods.length > 0 && (
+                                        <div>
+                                            <h3 className="font-semibold mb-3">{t('withdrawalMethods')}</h3>
+                                            <div className="flex flex-wrap gap-2">
+                                                {firm.payoutMethods.map(pm => (
+                                                    <span key={pm} className="text-xs font-medium bg-muted/50 px-2 py-0.5 rounded border">
+                                                        {pm}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </section>
+                        )}
+
 
                     </div>
 

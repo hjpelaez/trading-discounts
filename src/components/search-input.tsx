@@ -29,12 +29,12 @@ export function SearchInput({ className, placeholder }: { className?: string, pl
     }, 300);
 
     return (
-        <div className={cn("relative flex-1 max-w-sm", className)}>
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+        <div className={cn("relative flex-1 max-w-sm group", className)}>
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
             <input
                 type="search"
                 placeholder={placeholder || t('searchPlaceholder')}
-                className="w-full rounded-md border border-input bg-background pl-9 pr-4 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                className="w-full rounded-full border border-border bg-background pl-11 pr-5 py-3 text-sm ring-offset-background placeholder:text-muted-foreground transition-all focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/10 focus-visible:border-primary/50"
                 onChange={(e) => handleSearch(e.target.value)}
                 defaultValue={searchParams.get("q")?.toString()}
             />

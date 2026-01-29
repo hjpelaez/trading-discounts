@@ -4,33 +4,34 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 0 0% 3.9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 0 0% 3.9%;
     --primary: 221.2 83.2% 53.3%;
+    --primary-dark: 221.2 83.2% 35%;
     --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 94.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 94.1%;
-    --muted-foreground: 215.4 16.3% 40%;
-    --accent: 210 40% 94.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 85%;
-    --input: 214.3 31.8% 85%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
     --ring: 221.2 83.2% 53.3%;
-    --radius: 0.5rem;
+    --radius: 0.75rem;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 224 71% 4%;
     --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
+    --card: 224 71% 4%;
     --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
+    --popover: 224 71% 4%;
     --popover-foreground: 210 40% 98%;
     --primary: 217.2 91.2% 59.8%;
     --primary-foreground: 222.2 47.4% 11.2%;
@@ -59,6 +60,7 @@
   --color-popover-foreground: hsl(var(--popover-foreground));
 
   --color-primary: hsl(var(--primary));
+  --color-primary-dark: hsl(var(--primary-dark));
   --color-primary-foreground: hsl(var(--primary-foreground));
 
   --color-secondary: hsl(var(--secondary));
@@ -121,6 +123,18 @@
     --tw-prose-headings: white;
     --tw-prose-body: theme('colors.slate.300');
     --tw-prose-links: theme('colors.primary.DEFAULT');
+  }
+
+  .title-spacing {
+    @apply mb-4 md:mb-6;
+  }
+
+  .section-spacing {
+    @apply py-12 md:py-16;
+  }
+
+  .text-balance {
+    text-wrap: balance;
   }
 }
 

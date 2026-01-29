@@ -96,7 +96,7 @@ export function ContactForm({ privacyNote }: { privacyNote: string }) {
                                             <input
                                                 name="name"
                                                 required
-                                                className="w-full h-14 bg-muted/30 border-2 border-transparent focus:border-primary focus:bg-background rounded-2xl px-6 transition-all outline-none"
+                                                className="w-full h-14 bg-background border border-border focus:border-primary/50 focus:ring-4 focus:ring-primary/10 rounded-2xl px-6 transition-all outline-none"
                                                 placeholder="John Doe"
                                             />
                                         </div>
@@ -108,7 +108,7 @@ export function ContactForm({ privacyNote }: { privacyNote: string }) {
                                                 name="email"
                                                 type="email"
                                                 required
-                                                className="w-full h-14 bg-muted/30 border-2 border-transparent focus:border-primary focus:bg-background rounded-2xl px-6 transition-all outline-none"
+                                                className="w-full h-14 bg-background border border-border focus:border-primary/50 focus:ring-4 focus:ring-primary/10 rounded-2xl px-6 transition-all outline-none"
                                                 placeholder="john@example.com"
                                             />
                                         </div>
@@ -120,7 +120,7 @@ export function ContactForm({ privacyNote }: { privacyNote: string }) {
                                         <input
                                             name="subject"
                                             required
-                                            className="w-full h-14 bg-muted/30 border-2 border-transparent focus:border-primary focus:bg-background rounded-2xl px-6 transition-all outline-none"
+                                            className="w-full h-14 bg-background border border-border focus:border-primary/50 focus:ring-4 focus:ring-primary/10 rounded-2xl px-6 transition-all outline-none"
                                             placeholder="Prop Firm Inquiry"
                                         />
                                     </div>
@@ -132,7 +132,7 @@ export function ContactForm({ privacyNote }: { privacyNote: string }) {
                                             name="message"
                                             required
                                             rows={6}
-                                            className="w-full bg-muted/30 border-2 border-transparent focus:border-primary focus:bg-background rounded-2xl p-6 transition-all outline-none resize-none"
+                                            className="w-full bg-background border border-border focus:border-primary/50 focus:ring-4 focus:ring-primary/10 rounded-2xl p-6 transition-all outline-none resize-none"
                                             placeholder={t("messagePlaceholder")}
                                         />
                                     </div>

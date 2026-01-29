@@ -11,6 +11,8 @@ import { ScrollToTopOnPathChange } from "@/components/scroll-on-top";
 import { DecorativeSeparator } from "@/components/decorative-separator";
 import { getSettings } from "@/lib/db";
 
+import { PageTransition } from "@/components/page-transition";
+
 export default async function MainLayout({
     children,
 }: {
@@ -25,7 +27,7 @@ export default async function MainLayout({
                 {children}
 
                 {/* Newsletter Section */}
-                <section className="container mx-auto px-4 md:px-6 mb-24 mt-20 md:mt-32">
+                <section className="container mx-auto px-4 md:px-6 mb-16">
                     <Newsletter />
                 </section>
 

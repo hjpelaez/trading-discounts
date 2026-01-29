@@ -48,15 +48,15 @@ export function Testimonials({ locale, title, subtitle, testimonials }: Testimon
             <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {testimonialsData.map((testimonial) => (
                     <StaggerItem key={testimonial.id}>
-                        <div className="group relative h-full bg-card rounded-3xl border border-border/50 p-8 hover:border-primary/50 transition-all duration-500 hover:shadow-[0_20px_80px_-15px_rgba(var(--primary-rgb),0.15)] hover:-translate-y-2">
+                        <div className="group relative h-full bg-card rounded-3xl border border-border p-8 transition-all duration-500 hover:border-sky-500/50 hover:shadow-[0_20px_80px_-15px_rgba(14,165,233,0.15)] hover:-translate-y-2">
                             {/* Quote Icon */}
-                            <div className="absolute top-6 right-6 opacity-10 group-hover:opacity-20 transition-opacity">
-                                <Quote className="h-16 w-16 text-primary" />
+                            <div className="absolute top-6 right-6 opacity-30 group-hover:opacity-50 transition-opacity">
+                                <Quote className="h-16 w-16 text-sky-500/20" />
                             </div>
 
                             {/* Avatar and Info */}
                             <div className="flex items-center gap-4 mb-6 relative z-10">
-                                <div className="h-14 w-14 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center border-2 border-primary/20 font-bold text-primary text-lg">
+                                <div className="h-14 w-14 rounded-full bg-sky-500/10 flex items-center justify-center border border-sky-500/20 font-bold text-sky-600 text-lg">
                                     {testimonial.avatar}
                                 </div>
                                 <div>
@@ -83,7 +83,8 @@ export function Testimonials({ locale, title, subtitle, testimonials }: Testimon
                             </p>
 
                             {/* Gradient Overlay on Hover */}
-                            <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                            {/* Gradient Overlay on Hover */}
+                            <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-sky-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                         </div>
                     </StaggerItem>
                 ))}

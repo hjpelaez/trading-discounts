@@ -21,7 +21,7 @@ export function Footer({ settings }: { settings: Settings }) {
             <div className="absolute -top-24 -right-24 w-96 h-96 bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
 
             <div className="container mx-auto px-4 md:px-6 py-16 relative z-10">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-12">
                     <div className="space-y-6">
                         <LocalizedLink href="/" className="flex items-center space-x-2 font-black text-2xl tracking-tighter">
                             <Rocket className="h-8 w-8 text-primary" />
@@ -39,6 +39,14 @@ export function Footer({ settings }: { settings: Settings }) {
                             <li><LocalizedLink href="/crypto" className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-2">Crypto</LocalizedLink></li>
                             <li><LocalizedLink href="/forex" className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-2">Forex</LocalizedLink></li>
                             <li><LocalizedLink href="/futures" className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-2">Futures</LocalizedLink></li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h3 className="font-black text-xs uppercase tracking-[0.2em] mb-6 text-foreground/50">{t('education')}</h3>
+                        <ul className="space-y-4 text-sm font-bold">
+                            <li><LocalizedLink href="/blog" className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-2">{t('blog')}</LocalizedLink></li>
+                            <li><LocalizedLink href="/courses" className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-2">{t('courses')}</LocalizedLink></li>
                         </ul>
                     </div>
 

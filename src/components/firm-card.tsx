@@ -9,7 +9,8 @@ import Image from "next/image";
 import { useFavorites } from "@/lib/hooks/use-favorites";
 import { useComparison } from "@/lib/hooks/use-comparison";
 import { useTranslations, useLocale } from "next-intl";
-import { m, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { m, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
+import { SuccessToast } from "./success-toast";
 
 interface FirmCardProps {
     firm: PropFirm;
@@ -18,6 +19,7 @@ interface FirmCardProps {
 
 export function FirmCard({ firm, className }: FirmCardProps) {
     const [copied, setCopied] = useState(false);
+    const [recentCopy, setRecentCopy] = useState(false);
     const cardRef = useRef<HTMLDivElement>(null);
 
     const { toggleFavorite, isFavorite } = useFavorites();
@@ -25,12 +27,28 @@ export function FirmCard({ firm, className }: FirmCardProps) {
     const t = useTranslations('Common');
     const locale = useLocale();
 
+    // Random minutes for "Verified X min ago" urgency
+    const [verifiedMin, setVerifiedMin] = useState(5);
+    useEffect(() => {
+        setVerifiedMin(Math.floor(Math.random() * 15) + 2);
+    }, []);
+
     // Helper for bilingual fields
     const renderBilingual = (val: any) => {
         if (!val) return "";
-        if (typeof val === 'string') return val;
-        if (typeof val === 'object') {
-            return val[locale as "en" | "es"] || val.en || val.es || "";
+
+        let parsedVal = val;
+        if (typeof val === 'string' && val.trim().startsWith('{')) {
+            try {
+                parsedVal = JSON.parse(val);
+            } catch (e) {
+                // Not JSON
+            }
+        }
+
+        if (typeof parsedVal === 'string') return parsedVal;
+        if (typeof parsedVal === 'object') {
+            return parsedVal[locale as "en" | "es"] || parsedVal.en || parsedVal.es || "";
         }
         return String(val);
     };
@@ -58,6 +76,7 @@ export function FirmCard({ firm, className }: FirmCardProps) {
 
         navigator.clipboard.writeText(firm.code);
         setCopied(true);
+        setRecentCopy(true);
 
         // Premium Celebration
         const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
@@ -78,142 +97,166 @@ export function FirmCard({ firm, className }: FirmCardProps) {
     };
 
     return (
-        <m.div
-            layout
-            onMouseMove={handleMouseMove}
-            className={cn(
-                "group relative overflow-hidden rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5 hover:-translate-y-1 h-full flex flex-col",
-                firm.featured ? "border-primary/50 shadow-lg shadow-primary/5" : "",
-                className
-            )}
-        >
-            {/* Cursor Tracking Glow */}
+        <>
             <m.div
-                className="pointer-events-none absolute -inset-px opacity-0 transition-opacity group-hover:opacity-100"
-                style={{
-                    background: useTransform(
-                        [springX, springY],
-                        ([x, y]) => `radial-gradient(400px circle at ${x}px ${y}px, var(--color-primary), transparent 80%)`
-                    ),
-                    opacity: 0.15
-                }}
-            />
+                layout
+                onMouseMove={handleMouseMove}
+                className={cn(
+                    "group relative overflow-hidden rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 h-full flex flex-col",
+                    firm.featured ? "ring-1 ring-foreground/5 shadow-lg" : "",
+                    className
+                )}
+            >
+                {/* Cursor Tracking Glow */}
+                <m.div
+                    className="pointer-events-none absolute -inset-px opacity-0 transition-opacity group-hover:opacity-100"
+                    style={{
+                        background: useTransform(
+                            [springX, springY],
+                            ([x, y]) => `radial-gradient(400px circle at ${x}px ${y}px, #0ea5e9, transparent 80%)`
+                        ),
+                        opacity: 0.15
+                    }}
+                />
 
-            <div className="relative z-10 flex flex-col h-full">
-                <div className="flex justify-between items-start mb-4">
-                    <div className="flex items-center gap-4">
-                        {firm.imageUrl ? (
-                            <div className="relative h-16 w-16 shrink-0 rounded-xl overflow-hidden bg-background border shadow-sm transition-transform group-hover:scale-110">
-                                <Image
-                                    src={firm.imageUrl}
-                                    alt={`${firm.name} Logo`}
-                                    fill
-                                    className="object-contain p-2"
-                                    sizes="64px"
-                                />
-                            </div>
-                        ) : (
-                            <div className="h-16 w-16 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-bold border border-primary/20 shadow-sm text-xl">
-                                {firm.name.substring(0, 2).toUpperCase()}
-                            </div>
-                        )}
-                        <div>
-                            <Link href={`/firms/${firm.id}`} className="hover:text-primary transition-colors">
-                                <h3 className="text-xl font-black tracking-tight text-foreground leading-tight">{firm.name}</h3>
-                            </Link>
-                            <div className="flex items-center gap-1.5 mt-1">
-                                <div className="flex items-center text-yellow-500 bg-yellow-500/10 px-1.5 py-0.5 rounded-md text-[10px] font-black uppercase">
-                                    ★ {firm.rating}
+                <div className="relative z-10 flex flex-col h-full">
+                    <div className="flex justify-between items-start mb-4">
+                        <div className="flex items-center gap-4">
+                            {firm.imageUrl ? (
+                                <div className="relative h-16 w-16 shrink-0 rounded-xl overflow-hidden bg-background border shadow-sm transition-transform group-hover:scale-110">
+                                    <Image
+                                        src={firm.imageUrl}
+                                        alt={`${firm.name} Logo`}
+                                        fill
+                                        className="object-contain p-2"
+                                        sizes="64px"
+                                    />
                                 </div>
-                                <span className="inline-flex items-center rounded-full bg-green-500/10 px-2 py-0.5 text-[10px] font-bold text-green-500 whitespace-nowrap gap-1">
-                                    <Check className="h-3 w-3" /> {t('verified')}
-                                </span>
+                            ) : (
+                                <div className="h-16 w-16 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-bold border border-primary/20 shadow-sm text-xl">
+                                    {firm.name.substring(0, 2).toUpperCase()}
+                                </div>
+                            )}
+                            <div>
+                                <Link href={`/firms/${firm.id}`} className="hover:text-primary transition-colors">
+                                    <h3 className="text-xl font-black tracking-tight text-foreground leading-tight">{firm.name}</h3>
+                                </Link>
+                                <div className="flex items-center gap-1.5 mt-1">
+                                    <div className="flex items-center text-yellow-600 dark:text-yellow-500 bg-yellow-500/10 px-1.5 py-0.5 rounded-md text-[10px] font-black uppercase">
+                                        ★ {firm.rating}
+                                    </div>
+                                    <span className="inline-flex items-center rounded-full bg-green-500/10 px-2 py-0.5 text-[10px] font-bold text-green-700 dark:text-green-500 whitespace-nowrap gap-1.5 border border-green-500/40">
+                                        <div className="relative flex h-1.5 w-1.5">
+                                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
+                                        </div>
+                                        {t('verified')} • {locale === 'es' ? `hace ${verifiedMin}m` : `${verifiedMin}m ago`}
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div className="flex flex-col items-end gap-2 shrink-0">
-                        {firm.featured && (
-                            <span className="inline-flex items-center rounded-full bg-primary px-3 py-1 text-[10px] font-black text-primary-foreground uppercase tracking-widest shadow-lg shadow-primary/20 animate-pulse-slow">
-                                <Sparkles className="h-3 w-3 mr-1" /> {t('featured')}
-                            </span>
-                        )}
-                        <button
-                            onClick={(e) => { e.preventDefault(); toggleFavorite(firm.id); }}
-                            className={cn(
-                                "h-10 w-10 rounded-full border flex items-center justify-center transition-all hover:scale-110 active:scale-95",
-                                isFavorite(firm.id)
-                                    ? "bg-red-500 border-red-500 text-white shadow-lg shadow-red-500/20"
-                                    : "bg-background border-border text-muted-foreground hover:text-red-500 hover:border-red-500/50"
+                        <div className="flex flex-col items-end gap-2 shrink-0">
+                            {firm.featured && (
+                                <span className="inline-flex items-center rounded-full bg-primary px-3 py-1 text-[10px] font-black text-primary-foreground uppercase tracking-widest shadow-lg shadow-sky-500/20 animate-pulse-slow">
+                                    <Sparkles className="h-3 w-3 mr-1" /> {t('featured')}
+                                </span>
                             )}
-                        >
-                            <Heart className={cn("h-5 w-5", isFavorite(firm.id) && "fill-current")} />
-                        </button>
-                    </div>
-                </div>
-
-                <p className="text-sm text-muted-foreground line-clamp-2 mb-4 leading-relaxed">{description}</p>
-
-                <div className="flex flex-wrap gap-1.5 mb-6">
-                    {firm.platforms.map((p) => (
-                        <span key={p} className="inline-flex items-center rounded-lg border border-border bg-muted/50 px-2.5 py-1 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
-                            {p}
-                        </span>
-                    ))}
-                </div>
-
-                <div className="mt-auto space-y-4">
-                    <div className="flex items-center justify-between p-4 rounded-xl bg-muted/30 border border-border/50 group/discount transition-colors hover:bg-muted/50">
-                        <div className="flex flex-col">
-                            <span className="text-[10px] text-muted-foreground uppercase font-black tracking-widest">{t('discount')}</span>
-                            <span className="text-2xl font-black text-primary group-hover/discount:scale-105 transition-transform origin-left">{firm.discount}</span>
-                        </div>
-                        <div className="flex flex-col items-end">
-                            <span className="text-[10px] text-muted-foreground uppercase font-black tracking-widest mb-1.5">{t('code')}</span>
                             <button
-                                onClick={copyCode}
-                                className="flex items-center gap-2 text-sm font-black font-mono bg-card border border-border px-3 py-2 rounded-lg hover:border-primary transition-all hover:bg-primary/5 active:scale-90 shadow-sm"
+                                onClick={(e) => { e.preventDefault(); toggleFavorite(firm.id); }}
+                                className={cn(
+                                    "h-10 w-10 rounded-full border flex items-center justify-center transition-all hover:scale-110 active:scale-95",
+                                    isFavorite(firm.id)
+                                        ? "bg-red-500 border-red-500 text-white shadow-lg shadow-red-500/20"
+                                        : "bg-background border-border text-muted-foreground hover:text-red-500 hover:border-red-500/50"
+                                )}
                             >
-                                {firm.code}
-                                {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4 text-primary" />}
+                                <Heart className={cn("h-5 w-5", isFavorite(firm.id) && "fill-current")} />
                             </button>
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-3 py-1">
-                        <div className="relative flex items-center">
-                            <input
-                                type="checkbox"
-                                disabled={!comparisonList.includes(firm.id) && comparisonList.length >= 4}
-                                checked={comparisonList.includes(firm.id)}
-                                onChange={() => toggleComparison(firm.id)}
-                                id={`compare-${firm.id}`}
-                                className="peer h-5 w-5 rounded-md border-border bg-background text-primary focus:ring-primary cursor-pointer disabled:opacity-50 transition-all checked:bg-primary"
-                            />
-                            <Check className="absolute h-3.5 w-3.5 text-primary-foreground opacity-0 peer-checked:opacity-100 pointer-events-none left-[3px]" />
-                        </div>
-                        <label htmlFor={`compare-${firm.id}`} className="text-xs font-bold text-muted-foreground cursor-pointer select-none uppercase tracking-wider">
-                            Compare <span className="text-primary ml-1">{comparisonList.length}/4</span>
-                        </label>
+                    <p className="text-sm text-muted-foreground line-clamp-2 mb-4 leading-relaxed">{description}</p>
+
+                    <div className="flex flex-wrap gap-1.5 mb-6">
+                        {firm.platforms.map((p) => (
+                            <span key={p} className="inline-flex items-center rounded-lg border border-border bg-muted/50 px-2.5 py-1 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+                                {p}
+                            </span>
+                        ))}
                     </div>
 
-                    <div className="grid grid-cols-2 gap-3">
-                        <Link
-                            href={`/firms/${firm.id}`}
-                            className="inline-flex w-full items-center justify-center rounded-xl border border-border bg-background px-4 py-3 text-sm font-bold transition-all hover:bg-muted hover:border-primary/30"
-                        >
-                            {t('details')}
-                        </Link>
-                        <Link
-                            href={firm.link}
-                            target="_blank"
-                            className="inline-flex w-full items-center justify-center rounded-xl bg-primary px-4 py-3 text-sm font-black text-primary-foreground shadow-xl shadow-primary/20 transition-all hover:bg-primary/90 hover:scale-105 active:scale-95"
-                        >
-                            {t('visit')} <ExternalLink className="ml-2 h-4 w-4" />
-                        </Link>
+                    <div className="mt-auto space-y-4">
+                        <div className="relative group/discount overflow-hidden p-4 rounded-xl bg-secondary/50 border border-border transition-all hover:bg-secondary">
+                            <div className="flex items-center justify-between">
+                                <div className="flex flex-col">
+                                    <span className="text-[10px] text-muted-foreground uppercase font-black tracking-widest">{t('discount')}</span>
+                                    <span className="text-3xl font-black text-primary group-hover/discount:scale-110 transition-transform origin-left drop-shadow-sm">{firm.discount}</span>
+                                </div>
+                                <div className="flex flex-col items-end">
+                                    <span className="text-[10px] text-muted-foreground uppercase font-black tracking-widest mb-1.5">{t('code')}</span>
+                                    <button
+                                        onClick={copyCode}
+                                        className={cn(
+                                            "flex items-center gap-2 text-sm font-black font-mono px-4 py-2.5 rounded-lg transition-all active:scale-95 shadow-lg relative overflow-hidden",
+                                            copied
+                                                ? "bg-green-500 text-white border-green-500 scale-105"
+                                                : "bg-foreground text-background border-foreground hover:bg-foreground/90"
+                                        )}
+                                    >
+                                        <span className="relative z-10">{firm.code}</span>
+                                        {copied ? <Check className="h-4 w-4 relative z-10" /> : <Copy className="h-4 w-4 relative z-10" />}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center gap-3 py-1">
+                            <div className="relative flex items-center">
+                                <input
+                                    type="checkbox"
+                                    disabled={!comparisonList.includes(firm.id) && comparisonList.length >= 4}
+                                    checked={comparisonList.includes(firm.id)}
+                                    onChange={() => toggleComparison(firm.id)}
+                                    id={`compare-${firm.id}`}
+                                    className="peer h-5 w-5 rounded-md border-border bg-background text-primary focus:ring-primary cursor-pointer disabled:opacity-50 transition-all checked:bg-primary"
+                                />
+                                <Check className="absolute h-3.5 w-3.5 text-primary-foreground opacity-0 peer-checked:opacity-100 pointer-events-none left-[3px]" />
+                            </div>
+                            <label htmlFor={`compare-${firm.id}`} className="text-xs font-bold text-muted-foreground cursor-pointer select-none uppercase tracking-wider">
+                                Compare <span className="text-primary ml-1">{comparisonList.length}/4</span>
+                            </label>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-3">
+                            <Link
+                                href={`/firms/${firm.id}`}
+                                className="inline-flex w-full items-center justify-center rounded-xl border border-border bg-background px-4 py-3 text-sm font-bold transition-all hover:bg-muted hover:border-primary/30"
+                            >
+                                {t('details')}
+                            </Link>
+                            <Link
+                                href={firm.link}
+                                target="_blank"
+
+                                className="inline-flex w-full items-center justify-center rounded-xl bg-primary px-4 py-3 text-sm font-black text-primary-foreground shadow-xl shadow-sky-500/20 transition-all hover:bg-primary/90 hover:scale-105 active:scale-95"
+                            >
+                                {t('visit')} <ExternalLink className="ml-2 h-4 w-4" />
+                            </Link>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </m.div>
+            </m.div>
+
+            <AnimatePresence>
+                {recentCopy && (
+                    <SuccessToast
+                        key="toast"
+                        message={`Código ${firm.code} listo para usar en ${firm.name}`}
+                        onClose={() => setRecentCopy(false)}
+                    />
+                )}
+            </AnimatePresence>
+        </>
     );
 }

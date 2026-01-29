@@ -32,7 +32,12 @@ export async function saveFirmAction(formData: FormData) {
     };
 
     // Helper to parse array fields with optional fallback
-    const parseBilingualArray = (field: string) => ({
+    const getBilingualValue = (field: string) => ({
+        en: formData.get(`${field}_en`) as string || "",
+        es: formData.get(`${field}_es`) as string || "",
+    });
+
+    const getBilingualArray = (field: string) => ({
         en: parseArray(formData.get(`${field}_en`) as string),
         es: parseArray(formData.get(`${field}_es`) as string),
     });
@@ -41,7 +46,7 @@ export async function saveFirmAction(formData: FormData) {
         id,
         // Basic Info
         name: formData.get("name") as string,
-        description: (formData.get("description") as string) || "",
+        description: getBilingualValue("description"),
         link: formData.get("link") as string,
         imageUrl: (formData.get("imageUrl") as string) || null,
         discount: formData.get("discount") as string,
@@ -67,13 +72,13 @@ export async function saveFirmAction(formData: FormData) {
         // Trading Info
         minPrice: parseInt(formData.get("minPrice") as string, 10) || 0,
         maxLeverage: formData.get("maxLeverage") as string,
-        drawdownType: formData.get("drawdownType") as "Trailing" | "Static" | "Balance-based" | "Step-based",
+        drawdownType: formData.get("drawdownType") as "Trailing" | "Static" | "Balance-based" | "Step-based" | "Relative",
 
         // Features & Rules
-        features: parseArray(formData.get("features") as string),
-        rules: parseArray(formData.get("rules") as string),
-        consistencyRules: (formData.get("consistencyRules") as string) || "",
-        prohibitedPractices: parseArray(formData.get("prohibitedPractices") as string),
+        features: getBilingualArray("features"),
+        rules: getBilingualArray("rules"),
+        consistencyRules: getBilingualValue("consistencyRules"),
+        prohibitedPractices: getBilingualArray("prohibitedPractices"),
 
         // Payout Info
         paymentMethods: parseArray(formData.get("paymentMethods") as string),

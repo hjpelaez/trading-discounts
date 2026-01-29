@@ -53,14 +53,17 @@ export default async function CMSPage({ params }: { params: Promise<{ locale: st
             {/* Content Area */}
             <section className="container mx-auto px-4 pt-24 pb-0 md:pt-32 md:pb-8 relative">
                 <FadeIn delay={0.2}>
-                    <div className="bg-card/50 backdrop-blur-sm rounded-[40px] border border-border/50 p-8 md:p-16 shadow-2xl shadow-black/5 relative overflow-hidden">
+                    <div className="bg-card rounded-[40px] border border-border/50 p-8 md:p-16 shadow-2xl shadow-black/5 relative overflow-hidden">
                         {/* Decorative watermark icon */}
                         <FileText className="absolute -bottom-10 -right-10 h-64 w-64 text-primary/5 -rotate-12 pointer-events-none" />
 
                         <div
-                            className="prose prose-neutral dark:prose-invert max-w-none prose-lg md:prose-xl 
+                            className="prose prose-gray dark:prose-invert max-w-none prose-base md:prose-lg
                             prose-headings:font-black prose-headings:tracking-tighter 
-                            prose-p:text-muted-foreground prose-p:leading-relaxed
+                            prose-headings:mt-8 prose-headings:mb-4
+                            prose-headings:text-gray-900 dark:prose-headings:text-neutral-400
+                            prose-p:text-foreground prose-p:leading-relaxed prose-p:my-4
+                            prose-ul:my-4 prose-li:text-foreground prose-li:my-1
                             prose-strong:text-foreground prose-strong:font-black
                             relative z-10 w-full"
                             dangerouslySetInnerHTML={{ __html: content }}

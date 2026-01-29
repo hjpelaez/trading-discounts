@@ -18,7 +18,7 @@ export default async function AdminLayout({
     }
 
     return (
-        <div className="flex min-h-screen bg-muted/20">
+        <div className="dark flex min-h-screen bg-background text-foreground">
             {/* Sidebar */}
             <aside className="w-64 bg-card border-r hidden md:flex flex-col">
                 <div className="p-6 border-b">

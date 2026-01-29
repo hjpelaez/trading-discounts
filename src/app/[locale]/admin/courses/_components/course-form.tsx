@@ -35,39 +35,47 @@ const EMPTY_COURSE: CourseDB = {
 export function CourseForm({ initialData }: CourseFormProps) {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
+    const [langTab, setLangTab] = useState<"en" | "es">("en");
 
-    // Sanitize data for monolingual form
-    const sanitizeData = (data: any): CourseDB => {
-        if (!data) return EMPTY_COURSE;
-        const isEsp = data.language === 'Spanish' || data.language === 'Español';
-        const getS = (v: any) => typeof v === 'object' && v !== null ? (v.es || v.en || "") : (v || "");
+    // Initialize data ensuring bilingual structure
+    const initData = (data?: CourseDB): CourseDB => {
+        if (!data) return { ...EMPTY_COURSE, title: { en: "", es: "" }, description: { en: "", es: "" }, learningPoints: { en: [], es: [] } };
+
         return {
             ...data,
-            title: getS(data.title),
-            description: getS(data.description),
-            learningPoints: Array.isArray(data.learningPoints)
-                ? data.learningPoints
-                : (data.learningPoints?.es || data.learningPoints?.en || [])
+            title: typeof data.title === 'string' ? { en: data.title, es: data.title } : data.title,
+            description: typeof data.description === 'string' ? { en: data.description, es: data.description } : data.description,
+            learningPoints: Array.isArray(data.learningPoints) ? { en: data.learningPoints, es: data.learningPoints } : data.learningPoints
         };
     };
 
-    const [formData, setFormData] = useState<CourseDB>(sanitizeData(initialData));
+    const [formData, setFormData] = useState<CourseDB>(initData(initialData));
 
-    const handleChange = (field: keyof CourseDB, value: any) => {
+    const handleChange = (field: keyof CourseDB, value: any, lang?: "en" | "es") => {
         setFormData(prev => {
-            const newData = { ...prev, [field]: value };
+            const newData = { ...prev };
+
+            if (lang && (field === 'title' || field === 'description' || field === 'learningPoints')) {
+                const currentVal = (prev[field] as any) || (field === 'learningPoints' ? { en: [], es: [] } : { en: "", es: "" });
+                (newData[field] as any) = { ...currentVal, [lang]: value };
+            } else {
+                (newData[field] as any) = value;
+            }
 
             // Auto-generate ID from title for NEW courses if ID hasn't been manually set
             if (!initialData && field === 'title') {
-                const titleStr = value;
-                const autoId = (titleStr as string).toLowerCase()
-                    .replace(/[^a-z0-9]+/g, '-')
-                    .replace(/(^-|-$)/g, '');
+                const titleStr = typeof value === 'object' ? (value.en || value.es || "") : (value as string);
+                if (titleStr) {
+                    const autoId = titleStr.toLowerCase()
+                        .replace(/[^a-z0-9]+/g, '-')
+                        .replace(/(^-|-$)/g, '');
 
-                const currentAutoId = prev.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+                    const prevTitle = typeof prev.title === 'object' ? (prev.title.en || prev.title.es || "") : prev.title;
+                    const currentAutoId = prevTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
-                if (!prev.id || prev.id === currentAutoId) {
-                    newData.id = autoId;
+                    if (!prev.id || prev.id === currentAutoId) {
+                        newData.id = autoId;
+                    }
                 }
             }
             return newData;
@@ -75,33 +83,45 @@ export function CourseForm({ initialData }: CourseFormProps) {
     };
 
     // Learning Points Handlers
-    const updatePoint = (index: number, text: string) => {
+    const updatePoint = (index: number, text: string, lang: "en" | "es") => {
         setFormData(prev => {
-            const currentPoints = [...(prev.learningPoints || [])];
+            const pointsObj = { ...(prev.learningPoints as { en: string[]; es: string[] }) };
+            const currentPoints = [...(pointsObj[lang] || [])];
             currentPoints[index] = text;
+            pointsObj[lang] = currentPoints;
             return {
                 ...prev,
-                learningPoints: currentPoints
+                learningPoints: pointsObj
             };
         });
     };
 
-    const addPointSlot = () => {
-        setFormData(prev => ({
-            ...prev,
-            learningPoints: [...(prev.learningPoints || []), ""]
-        }));
+    const addPointSlot = (lang: "en" | "es") => {
+        setFormData(prev => {
+            const pointsObj = { ...(prev.learningPoints as { en: string[]; es: string[] }) };
+            pointsObj[lang] = [...(pointsObj[lang] || []), ""];
+            return {
+                ...prev,
+                learningPoints: pointsObj
+            };
+        });
     };
 
-    const removePointSlot = (index: number) => {
-        setFormData(prev => ({
-            ...prev,
-            learningPoints: (prev.learningPoints || []).filter((_, i) => i !== index)
-        }));
+    const removePointSlot = (index: number, lang: "en" | "es") => {
+        setFormData(prev => {
+            const pointsObj = { ...(prev.learningPoints as { en: string[]; es: string[] }) };
+            pointsObj[lang] = (pointsObj[lang] || []).filter((_, i) => i !== index);
+            return {
+                ...prev,
+                learningPoints: pointsObj
+            };
+        });
     };
 
-    // Ensure we have some default slots if empty
-    const displayPoints = formData.learningPoints.length > 0 ? formData.learningPoints : [""];
+    const getPoints = (lang: "en" | "es") => {
+        const points = (formData.learningPoints as { en: string[]; es: string[] })[lang];
+        return points.length > 0 ? points : [""];
+    };
 
     const [autoFillUrl, setAutoFillUrl] = useState("");
     const [isExtracting, setIsExtracting] = useState(false);
@@ -125,11 +145,18 @@ export function CourseForm({ initialData }: CourseFormProps) {
             const data = result.data;
             // Handle potentially bilingual data from AI by picking one or providing fallback
             const getStr = (val: any) => typeof val === 'object' ? (val.es || val.en || "") : (val || "");
+            const lpObj = formData.learningPoints as { en: string[]; es: string[] };
 
             setFormData(prev => ({
                 ...prev,
-                title: getStr(data.title) || prev.title,
-                description: getStr(data.description) || prev.description,
+                title: {
+                    en: getStr(data.title) || (prev.title as any).en || "",
+                    es: (prev.title as any).es || getStr(data.title) || ""
+                },
+                description: {
+                    en: getStr(data.description) || (prev.description as any).en || "",
+                    es: (prev.description as any).es || getStr(data.description) || ""
+                },
                 instructor: data.instructor || prev.instructor,
                 link: autoFillUrl,
                 imageUrl: data.imageUrl || prev.imageUrl,
@@ -142,9 +169,10 @@ export function CourseForm({ initialData }: CourseFormProps) {
                 priceLabel: data.priceLabel || prev.priceLabel,
                 priceMin: data.priceMin !== undefined ? data.priceMin : prev.priceMin,
                 priceMax: data.priceMax !== undefined ? data.priceMax : prev.priceMax,
-                learningPoints: Array.isArray(data.learningPoints)
-                    ? data.learningPoints
-                    : (data.learningPoints?.es || data.learningPoints?.en || [])
+                learningPoints: {
+                    en: Array.isArray(data.learningPoints) ? data.learningPoints : (lpObj.en || []),
+                    es: (lpObj.es && lpObj.es.length > 0) ? lpObj.es : (Array.isArray(data.learningPoints) ? data.learningPoints : [])
+                }
             }));
             alert("✨ Datos extraídos! Revisa los campos.");
         } catch (e: unknown) {
@@ -159,9 +187,13 @@ export function CourseForm({ initialData }: CourseFormProps) {
         e.preventDefault();
         setLoading(true);
 
+        const lp = formData.learningPoints as { en: string[]; es: string[] };
         const cleanFormData = {
             ...formData,
-            learningPoints: (formData.learningPoints || []).filter(p => p.trim() !== ""),
+            learningPoints: {
+                en: (lp.en || []).filter(p => p.trim() !== ""),
+                es: (lp.es || []).filter(p => p.trim() !== ""),
+            }
         };
 
         try {
@@ -184,9 +216,22 @@ export function CourseForm({ initialData }: CourseFormProps) {
                     <h2 className="text-2xl font-bold">
                         {initialData ? "Editar Curso" : "Crear Nuevo Curso"}
                     </h2>
-                    <p className="text-muted-foreground text-sm">
-                        Los cursos se gestionan en un solo idioma.
-                    </p>
+                    <div className="flex bg-muted rounded-lg p-1 mt-2 w-fit">
+                        <button
+                            type="button"
+                            onClick={() => setLangTab("en")}
+                            className={`px-4 py-1 text-xs rounded-md transition-all ${langTab === "en" ? "bg-background shadow-sm font-bold border" : "text-muted-foreground"}`}
+                        >
+                            Inglés
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setLangTab("es")}
+                            className={`px-4 py-1 text-xs rounded-md transition-all ${langTab === "es" ? "bg-background shadow-sm font-bold border" : "text-muted-foreground"}`}
+                        >
+                            Español
+                        </button>
+                    </div>
                 </div>
                 <div className="flex gap-2">
                     <button
@@ -231,54 +276,83 @@ export function CourseForm({ initialData }: CourseFormProps) {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="md:col-span-2 space-y-6">
                     <div className="space-y-4 bg-card p-6 rounded-xl border shadow-sm">
-                        <div className="space-y-2">
-                            <label className="text-sm font-bold">Título del Curso</label>
-                            <input
-                                type="text"
-                                value={formData.title}
-                                onChange={(e) => handleChange('title', e.target.value)}
-                                className="w-full text-lg p-3 font-semibold rounded-md border bg-background"
-                                placeholder="Ej. Algorithmic Trading Masterclass"
-                            />
+                        <div className={langTab === "en" ? "block" : "hidden"}>
+                            <div className="space-y-4">
+                                <div className="space-y-2">
+                                    <label className="text-sm font-bold text-muted-foreground">Title (EN)</label>
+                                    <input
+                                        type="text"
+                                        value={(formData.title as any).en || ""}
+                                        onChange={(e) => handleChange('title', e.target.value, 'en')}
+                                        className="w-full text-lg p-3 font-semibold rounded-md border bg-background"
+                                        placeholder="Algorithmic Trading..."
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="text-sm font-bold text-muted-foreground">Description (EN)</label>
+                                    <textarea
+                                        value={(formData.description as any).en || ""}
+                                        onChange={(e) => handleChange('description', e.target.value, 'en')}
+                                        className="w-full p-3 rounded-md border bg-background min-h-[150px]"
+                                        placeholder="Course summary in English..."
+                                    />
+                                </div>
+                            </div>
                         </div>
 
-                        <div className="space-y-2">
-                            <label className="text-sm font-bold">Descripción</label>
-                            <textarea
-                                value={formData.description}
-                                onChange={(e) => handleChange('description', e.target.value)}
-                                className="w-full p-3 rounded-md border bg-background min-h-[150px]"
-                                placeholder="Resumen del curso..."
-                            />
+                        <div className={langTab === "es" ? "block" : "hidden"}>
+                            <div className="space-y-4">
+                                <div className="space-y-2">
+                                    <label className="text-sm font-bold text-muted-foreground">Título (ES)</label>
+                                    <input
+                                        type="text"
+                                        value={(formData.title as any).es || ""}
+                                        onChange={(e) => handleChange('title', e.target.value, 'es')}
+                                        className="w-full text-lg p-3 font-semibold rounded-md border bg-background"
+                                        placeholder="Trading Algorítmico..."
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="text-sm font-bold text-muted-foreground">Descripción (ES)</label>
+                                    <textarea
+                                        value={(formData.description as any).es || ""}
+                                        onChange={(e) => handleChange('description', e.target.value, 'es')}
+                                        className="w-full p-3 rounded-md border bg-background min-h-[150px]"
+                                        placeholder="Resumen del curso en español..."
+                                    />
+                                </div>
+                            </div>
                         </div>
 
                         <div className="space-y-3 pt-4">
                             <div className="flex justify-between items-center gap-2">
                                 <div className="flex items-center gap-2">
                                     <Sparkles className="h-4 w-4 text-yellow-500" />
-                                    <span className="text-sm font-bold">Puntos Clave</span>
+                                    <span className="text-sm font-bold">Puntos Clave ({langTab.toUpperCase()})</span>
                                 </div>
                                 <button
                                     type="button"
-                                    onClick={addPointSlot}
+                                    onClick={() => addPointSlot(langTab)}
                                     className="p-1 text-primary hover:bg-primary/10 rounded-full transition-colors"
                                 >
                                     <Plus className="h-4 w-4" />
                                 </button>
                             </div>
                             <div className="space-y-3">
-                                {displayPoints.map((point, index) => (
+                                {getPoints(langTab).map((point, index) => (
                                     <div key={index} className="flex gap-3 items-center">
                                         <span className="text-xs font-mono text-muted-foreground w-4">{index + 1}.</span>
                                         <input
                                             value={point}
-                                            onChange={(e) => updatePoint(index, e.target.value)}
+                                            onChange={(e) => updatePoint(index, e.target.value, langTab)}
                                             className="flex-1 p-2 rounded-md border bg-background text-sm"
-                                            placeholder={`Punto clave #${index + 1}`}
+                                            placeholder={`Point #${index + 1}`}
                                         />
                                         <button
                                             type="button"
-                                            onClick={() => removePointSlot(index)}
+                                            onClick={() => removePointSlot(index, langTab)}
                                             className="p-1 text-muted-foreground hover:text-red-500 transition-colors"
                                         >
                                             <X className="h-4 w-4" />

@@ -47,18 +47,18 @@ export function FilterBar({ allFirms }: { allFirms: PropFirm[] }) {
         [allFirms]);
 
     return (
-        <div className="flex flex-col gap-6 py-4">
-            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-                <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium text-muted-foreground whitespace-nowrap">Apps:</span>
-                    <div className="flex gap-2 flex-wrap">
+        <div className="flex flex-col gap-10 py-6">
+            <div className="flex flex-col sm:flex-row gap-8 items-start sm:items-center">
+                <div className="flex items-center gap-4">
+                    <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.15em] whitespace-nowrap">Apps:</span>
+                    <div className="flex gap-2.5 flex-wrap">
                         <button
                             onClick={() => handleFilterChange("platform", null)}
                             className={cn(
-                                "inline-flex items-center rounded-full border px-3 py-1 text-xs font-bold transition-all",
+                                "inline-flex items-center rounded-full border px-4 py-1.5 text-xs font-bold transition-all",
                                 !activePlatform
-                                    ? "bg-primary text-primary-foreground border-transparent shadow-lg shadow-primary/20 scale-105"
-                                    : "bg-secondary text-secondary-foreground border-transparent hover:bg-secondary/80"
+                                    ? "bg-primary text-primary-foreground border-transparent shadow-xl shadow-sky-500/20 scale-110"
+                                    : "bg-secondary text-secondary-foreground border-border hover:bg-secondary/80"
                             )}
                         >
                             {t('all')}
@@ -68,10 +68,10 @@ export function FilterBar({ allFirms }: { allFirms: PropFirm[] }) {
                                 key={platform}
                                 onClick={() => handleFilterChange("platform", platform)}
                                 className={cn(
-                                    "inline-flex items-center rounded-full border px-3 py-1 text-xs font-bold transition-all",
+                                    "inline-flex items-center rounded-full border px-4 py-1.5 text-xs font-bold transition-all",
                                     activePlatform === platform
-                                        ? "bg-primary text-primary-foreground border-transparent shadow-lg shadow-primary/20 scale-105"
-                                        : "bg-secondary text-secondary-foreground border-transparent hover:bg-secondary/80"
+                                        ? "bg-primary text-primary-foreground border-transparent shadow-xl shadow-sky-500/20 scale-110"
+                                        : "bg-secondary text-secondary-foreground border-border hover:bg-secondary/80"
                                 )}
                             >
                                 {platform}
@@ -80,18 +80,18 @@ export function FilterBar({ allFirms }: { allFirms: PropFirm[] }) {
                     </div>
                 </div>
 
-                <div className="w-px h-6 bg-border hidden sm:block mx-1" />
+                <div className="w-px h-8 bg-border hidden sm:block mx-2" />
 
-                <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium text-muted-foreground whitespace-nowrap">Rating:</span>
-                    <div className="flex gap-2">
+                <div className="flex items-center gap-4">
+                    <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.15em] whitespace-nowrap">Rating:</span>
+                    <div className="flex gap-2.5">
                         <button
                             onClick={() => handleFilterChange("rating", null)}
                             className={cn(
-                                "inline-flex items-center rounded-full border px-3 py-1 text-xs font-bold transition-all",
+                                "inline-flex items-center rounded-full border px-4 py-1.5 text-xs font-bold transition-all",
                                 !activeRating
-                                    ? "bg-primary text-primary-foreground border-transparent shadow-lg shadow-primary/20 scale-105"
-                                    : "bg-secondary text-secondary-foreground border-transparent hover:bg-secondary/80"
+                                    ? "bg-primary text-primary-foreground border-transparent shadow-xl shadow-sky-500/20 scale-110"
+                                    : "bg-secondary text-secondary-foreground border-border hover:bg-secondary/80"
                             )}
                         >
                             {t('all')}
@@ -99,10 +99,10 @@ export function FilterBar({ allFirms }: { allFirms: PropFirm[] }) {
                         <button
                             onClick={() => handleFilterChange("rating", "4.5")}
                             className={cn(
-                                "inline-flex items-center rounded-full border px-3 py-1 text-xs font-bold transition-all",
+                                "inline-flex items-center rounded-full border px-4 py-1.5 text-xs font-bold transition-all",
                                 activeRating === "4.5"
-                                    ? "bg-primary text-primary-foreground border-transparent shadow-lg shadow-primary/20 scale-105"
-                                    : "bg-secondary text-secondary-foreground border-transparent hover:bg-secondary/80"
+                                    ? "bg-primary text-primary-foreground border-transparent shadow-xl shadow-sky-500/20 scale-110"
+                                    : "bg-secondary text-secondary-foreground border-border hover:bg-secondary/80"
                             )}
                         >
                             4.5+ ⭐
@@ -111,16 +111,16 @@ export function FilterBar({ allFirms }: { allFirms: PropFirm[] }) {
                 </div>
             </div>
 
-            <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-muted-foreground whitespace-nowrap">Drawdown:</span>
-                <div className="flex gap-2 flex-wrap">
+            <div className="flex items-center gap-4">
+                <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.15em] whitespace-nowrap">Drawdown:</span>
+                <div className="flex gap-2.5 flex-wrap">
                     <button
                         onClick={() => handleFilterChange("drawdown", null)}
                         className={cn(
-                            "inline-flex items-center rounded-full border px-3 py-1 text-xs font-bold transition-all",
+                            "inline-flex items-center rounded-full border px-4 py-1.5 text-xs font-bold transition-all",
                             !activeDrawdown
-                                ? "bg-primary text-primary-foreground border-transparent shadow-lg shadow-primary/20 scale-105"
-                                : "bg-secondary text-secondary-foreground border-transparent hover:bg-secondary/80"
+                                ? "bg-primary text-primary-foreground border-transparent shadow-xl scale-110"
+                                : "bg-secondary text-secondary-foreground border-border hover:bg-secondary/80"
                         )}
                     >
                         {t('all')}
@@ -130,10 +130,10 @@ export function FilterBar({ allFirms }: { allFirms: PropFirm[] }) {
                             key={type}
                             onClick={() => handleFilterChange("drawdown", type)}
                             className={cn(
-                                "inline-flex items-center rounded-full border px-3 py-1 text-xs font-bold transition-all whitespace-nowrap",
+                                "inline-flex items-center rounded-full border px-4 py-1.5 text-xs font-bold transition-all whitespace-nowrap",
                                 activeDrawdown === type
-                                    ? "bg-primary text-primary-foreground border-transparent shadow-lg shadow-primary/20 scale-105"
-                                    : "bg-secondary text-secondary-foreground border-transparent hover:bg-secondary/80"
+                                    ? "bg-primary text-primary-foreground border-transparent shadow-xl shadow-sky-500/20 scale-110"
+                                    : "bg-secondary text-secondary-foreground border-border hover:bg-secondary/80"
                             )}
                         >
                             {type}

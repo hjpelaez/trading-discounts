@@ -26,13 +26,14 @@ export interface PropFirm {
     // Trading Info
     minPrice: number;
     maxLeverage: string;
-    drawdownType: "Trailing" | "Static" | "Balance-based" | "Step-based";
+    drawdownType: "Trailing" | "Static" | "Balance-based" | "Step-based" | "Relative";
 
-    // Features & Rules
-    features: string[];
-    rules: string[];
-    consistencyRules?: string | null;
-    prohibitedPractices?: string[] | null;
+    // Features & Rules (Bilingual Support)
+    // Supports both array of strings (legacy) or bilingual object (new)
+    features: string[] | { en: string[]; es: string[] };
+    rules: string[] | { en: string[]; es: string[] };
+    consistencyRules?: string | { en: string; es: string } | null;
+    prohibitedPractices?: string[] | { en: string[]; es: string[] } | null;
 
     // Payout Info
     paymentMethods: string[];
@@ -47,7 +48,7 @@ export const PROP_FIRMS: PropFirm[] = [
         name: "Apex Trader Funding",
         description: "Best for Futures fanatics. High leverage, simple rules.",
         discount: "90% OFF",
-        code: "PFT",
+        code: "TIDI",
         link: "https://apextraderfunding.com/member/aff/go/propfirmtrader1",
         categories: ["futures", "crypto"],
         featured: true,

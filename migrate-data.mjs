@@ -5,8 +5,8 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-const firmsData = JSON.parse(readFileSync('./src/lib/firms.json', 'utf-8'))
-const blogData = JSON.parse(readFileSync('./src/lib/blog.json', 'utf-8'))
+const firmsData = JSON.parse(readFileSync('./src/lib/json_backup/firms.json', 'utf-8'))
+const blogData = JSON.parse(readFileSync('./src/lib/json_backup/blog.json', 'utf-8'))
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
@@ -55,7 +55,7 @@ async function migrateFirms() {
 
     const { data, error } = await supabase
         .from('Firm')
-        .insert(firms)
+        .upsert(firms)
         .select()
 
     if (error) {
@@ -84,7 +84,7 @@ async function migrateBlogPosts() {
 
     const { data, error } = await supabase
         .from('BlogPost')
-        .insert(posts)
+        .upsert(posts)
         .select()
 
     if (error) {

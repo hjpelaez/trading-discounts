@@ -340,8 +340,8 @@ export async function deleteDynamicTranslation(key: string) {
 
 export interface CourseDB {
     id: string;
-    title: string;
-    description: string;
+    title: string | { en: string; es: string };
+    description: string | { en: string; es: string };
     instructor: string;
     link: string;
     imageUrl?: string | null;
@@ -355,7 +355,7 @@ export interface CourseDB {
     priceLabel: string;
     priceMin?: number;
     priceMax?: number;
-    learningPoints: string[];
+    learningPoints: string[] | { en: string[]; es: string[] };
     curriculum?: unknown[]; // JSON
 }
 

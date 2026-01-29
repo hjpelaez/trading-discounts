@@ -13,8 +13,8 @@
     },
     "Hero": {
         "pill": "🚀 El Agregador #1 de Descuentos en Prop Firms",
-        "title": "Desbloquea Ofertas <highlight>Exclusivas</highlight>",
-        "subtitle": "Compara grandes descuentos en las mejores firmas de Cripto, Forex y Futuros. Deja de pagar precio completo por tus pruebas de fondeo.",
+        "title": "Ahorra hasta <highlight>90%</highlight> en tus Challenges",
+        "subtitle": "No pagues precio completo. Compara y desbloquea ofertas verificadas en las mejores firmas de Cripto, Forex y Futuros.",
         "exploreCrypto": "Ver Firmas Cripto",
         "exploreForex": "Ver Firmas Forex",
         "futuresDeals": "Ofertas de Futuros",
@@ -97,6 +97,9 @@
         }
     },
     "Footer": {
+        "education": "Educación",
+        "blog": "Blog",
+        "courses": "Cursos",
         "markets": "Mercados",
         "company": "Compañía",
         "terms": "Legales",
@@ -300,6 +303,17 @@
         "useCode": "Usa el Código al Pagar:",
         "claim": "Reclamar Descuento",
         "terms": "*Aplican términos y condiciones en el sitio web de la firma.",
-        "featuredChoice": "Elección Destacada"
+        "featuredChoice": "Elección Destacada",
+        "tradingEnv": "Entorno de Trading",
+        "broker": "Broker / Liquidez",
+        "payoutFreq": "Frecuencia de Pagos",
+        "assets": "Activos Operables",
+        "banking": "Pagos y Retiros",
+        "depositMethods": "Métodos de Depósito",
+        "withdrawalMethods": "Métodos de Retiro",
+        "consistency": "Reglas de Consistencia",
+        "prohibited": "Prácticas Prohibidas",
+        "tradingRulesTitle": "Reglas de Trading",
+        "yearsActive": "Años Activo"
     }
 }

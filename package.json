@@ -43,7 +43,6 @@
     "use-debounce": "^10.1.0"
   },
   "devDependencies": {
-    "@prisma/config": "^7.3.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

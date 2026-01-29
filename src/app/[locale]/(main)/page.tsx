@@ -86,34 +86,34 @@ export default async function Home({ searchParams, params }: { searchParams: Pro
         ]
       }} />
       {/* Hero Section */}
-      <section className="relative py-20 md:py-32 overflow-hidden">
+      <section className="relative section-spacing overflow-hidden border-b border-border/40">
         <BackgroundAurora />
         <FadeIn className="container mx-auto px-4 md:px-6 text-center">
-          <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm text-primary mb-6 animate-fade-in shadow-sm border border-primary/20">
+          <div className="inline-block rounded-full bg-primary/10 px-4 py-1.5 text-[10px] font-black uppercase tracking-widest text-primary-dark dark:text-primary mb-8 animate-fade-in shadow-sm border border-primary/20">
             {tHero('pill')}
           </div>
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70 mb-4 max-w-3xl mx-auto" dangerouslySetInnerHTML={{ __html: tHero.raw('title').replace('<highlight>', '<span class="text-primary">').replace('</highlight>', '</span>') }}>
+          <h1 className="text-4xl md:text-7xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/60 mb-12 max-w-4xl mx-auto leading-[1.1] text-balance py-2" dangerouslySetInnerHTML={{ __html: tHero.raw('title').replace('<highlight>', '<span class="text-primary italic">').replace('</highlight>', '</span>') }}>
           </h1>
-          <div className="flex items-center justify-center gap-2 mb-8 text-xs font-bold text-green-500 uppercase tracking-widest bg-green-500/5 py-2 px-4 rounded-full w-fit mx-auto border border-green-500/20 shadow-[0_0_20px_rgba(34,197,94,0.1)]">
-            <span className="relative flex h-2 w-2">
+          <div className="flex items-center justify-center gap-2 mb-12 text-[10px] font-black text-green-500 uppercase tracking-[0.2em] bg-green-500/5 py-2.5 px-6 rounded-full w-fit mx-auto border border-green-500/10 shadow-[0_0_30px_rgba(34,197,94,0.05)]">
+            <span className="relative flex h-1.5 w-1.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
             </span>
             {tHero('trustBadge', { date: new Date().toLocaleDateString(locale === 'es' ? 'es-ES' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric' }) })}
           </div>
-          <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl mb-10">
+          <p className="mx-auto max-w-[650px] text-muted-foreground md:text-lg mb-16 leading-relaxed text-balance font-medium opacity-80">
             {tHero('subtitle')}
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-5 justify-center">
             <Link
               href={`${prefix}/forex`}
-              className="inline-flex h-11 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+              className="inline-flex h-14 items-center justify-center rounded-xl bg-primary px-10 text-sm font-black text-primary-foreground shadow-2xl shadow-sky-500/20 transition-all hover:bg-primary/90 hover:scale-105 active:scale-95"
             >
               {tHero('exploreForex')} <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
             <Link
               href={`${prefix}/futures`}
-              className="inline-flex h-11 items-center justify-center rounded-md border border-input bg-background px-8 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+              className="inline-flex h-14 items-center justify-center rounded-xl border border-border bg-background px-10 text-sm font-bold shadow-sm transition-all hover:bg-accent hover:text-accent-foreground hover:border-primary/30"
             >
               {tHero('futuresDeals')}
             </Link>
@@ -122,18 +122,18 @@ export default async function Home({ searchParams, params }: { searchParams: Pro
       </section>
 
       {/* Firms Grid */}
-      <section className="container mx-auto px-4 md:px-6 py-12">
-        <FadeIn delay={0.2} className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
-          <h2 className="text-3xl font-bold tracking-tight">{tHome('topDeals')}</h2>
+      <section className="container mx-auto px-4 md:px-6 py-20">
+        <FadeIn delay={0.2} className="flex flex-col md:flex-row items-center justify-between gap-6 mb-12">
+          <h2 className="text-3xl md:text-4xl font-black tracking-tight">{tHome('topDeals')}</h2>
           <SearchInput />
         </FadeIn>
 
-        <FadeIn delay={0.3} className="mb-8">
+        <FadeIn delay={0.3} className="mb-12">
           <FilterBar allFirms={allFirms} />
         </FadeIn>
 
         {displayFirms.length > 0 ? (
-          <StaggerContainer key={resultsKey} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <StaggerContainer key={resultsKey} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {displayFirms.map((firm) => (
               <StaggerItem key={firm.id}>
                 <FirmCard firm={firm} />
@@ -141,22 +141,28 @@ export default async function Home({ searchParams, params }: { searchParams: Pro
             ))}
           </StaggerContainer>
         ) : (
-          <div className="text-center py-12">
-            <p className="text-lg text-muted-foreground">{tHome('noFirms')}</p>
-            <Link href={prefix} className="text-primary hover:underline mt-2 inline-block">
+          <div className="text-center py-20">
+            <p className="text-lg text-muted-foreground font-medium">{tHome('noFirms')}</p>
+            <Link href={prefix} className="text-primary font-bold hover:underline mt-4 inline-block">
               {tHome('clearFilters')}
             </Link>
           </div>
         )}
 
-        <AIPromo />
+        <div className="mt-20">
+          <AIPromo />
+        </div>
       </section>
 
+      <DecorativeSeparator />
+
       {/* Blog Preview */}
-      <section className="container mx-auto px-4 md:px-6 py-28 md:py-36 border-t border-border/50">
-        <div className="flex items-center justify-between mb-12">
-          <h2 className="text-3xl font-bold tracking-tight">{tHome('recentArticles')}</h2>
-          <Link href={`${prefix}/blog`} className="text-primary font-bold flex items-center hover:underline">
+      <section className="container mx-auto px-4 md:px-6 py-12 md:py-16">
+        <div className="flex flex-col md:flex-row items-center justify-between mb-16 gap-6">
+          <div className="text-center md:text-left">
+            <h2 className="text-3xl md:text-4xl font-black tracking-tight">{tHome('recentArticles')}</h2>
+          </div>
+          <Link href={`${prefix}/blog`} className="text-primary font-black flex items-center hover:opacity-80 transition-opacity">
             {tHome('viewAll')} <ArrowRight className="ml-2 h-4 w-4" />
           </Link>
         </div>
@@ -173,7 +179,7 @@ export default async function Home({ searchParams, params }: { searchParams: Pro
       </section>
 
       {/* Testimonials */}
-      <section className="border-t border-border/50 bg-muted/5">
+      <section className="bg-muted/5 py-12 md:py-16">
         <Testimonials
           locale={locale}
           title={tHome('testimonialsTitle')}
@@ -201,7 +207,9 @@ export default async function Home({ searchParams, params }: { searchParams: Pro
         />
       </section>
 
-      <section className="border-t border-border/50 bg-background">
+      <DecorativeSeparator />
+
+      <section className="bg-background py-12 md:py-16">
         <FAQ />
       </section>
     </div>

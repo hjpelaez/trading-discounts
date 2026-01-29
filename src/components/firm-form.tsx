@@ -24,6 +24,20 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
     const [activeTab, setActiveTab] = useState("basic");
     const [langTab, setLangTab] = useState<"en" | "es">("en");
     const [autoFillUrl, setAutoFillUrl] = useState("");
+
+    // Helpers for safety
+    const getVal = (v: any, lang: "en" | "es") => {
+        if (!v) return "";
+        if (typeof v === 'object') return v[lang] || "";
+        return v;
+    };
+
+    const getJoin = (v: any, lang: "en" | "es") => {
+        if (!v) return "";
+        if (Array.isArray(v)) return v.join(", ");
+        if (typeof v === 'object' && Array.isArray(v[lang])) return v[lang].join(", ");
+        return "";
+    };
     const [isExtracting, setIsExtracting] = useState(false);
     const formRef = useRef<HTMLFormElement>(null);
 
@@ -221,23 +235,63 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                 <div className={activeTab === "basic" ? "block" : "hidden"}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-4 rounded-lg border bg-card p-6">
-                            <h2 className="font-semibold text-lg border-b pb-2">Información Básica</h2>
-
-                            <div className="space-y-2">
-                                <label className="text-sm font-medium">Nombre de la Firma *</label>
-                                <input name="name" defaultValue={firm?.name} required className="w-full rounded-md border bg-background px-3 py-2" placeholder="ej. Apex Trader" />
+                            <div className="flex items-center justify-between border-b pb-2">
+                                <h2 className="font-semibold text-lg">Contenido</h2>
+                                <div className="flex bg-muted rounded-lg p-1">
+                                    <button
+                                        type="button"
+                                        onClick={() => setLangTab("en")}
+                                        className={`px-3 py-1 text-xs rounded-md transition-all ${langTab === "en" ? "bg-background shadow-sm font-bold" : "text-muted-foreground"}`}
+                                    >
+                                        Inglés
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => setLangTab("es")}
+                                        className={`px-3 py-1 text-xs rounded-md transition-all ${langTab === "es" ? "bg-background shadow-sm font-bold" : "text-muted-foreground"}`}
+                                    >
+                                        Español
+                                    </button>
+                                </div>
                             </div>
 
-                            <div className="space-y-2">
-                                <label className="text-sm font-medium">Descripción *</label>
-                                <textarea
-                                    name="description"
-                                    defaultValue={typeof firm?.description === 'string' ? firm.description : (firm?.description as { en: string; es: string })?.en || ""}
-                                    required
-                                    rows={3}
-                                    className="w-full rounded-md border bg-background px-3 py-2"
-                                    placeholder="resumen de marketing..."
-                                />
+                            <div className="space-y-4">
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium">Nombre de la Firma *</label>
+                                    <input name="name" defaultValue={firm?.name} required className="w-full rounded-md border bg-background px-3 py-2" placeholder="ej. Apex Trader" />
+                                </div>
+
+                                <div className={langTab === "en" ? "block" : "hidden"}>
+                                    <div className="space-y-4">
+                                        <div className="space-y-2">
+                                            <label className="text-sm font-medium">Description (EN) *</label>
+                                            <textarea
+                                                name="description_en"
+                                                defaultValue={typeof firm?.description === 'object' ? firm.description.en : (firm?.description || "")}
+                                                required={langTab === "en"}
+                                                rows={3}
+                                                className="w-full rounded-md border bg-background px-3 py-2"
+                                                placeholder="Marketing summary in English..."
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className={langTab === "es" ? "block" : "hidden"}>
+                                    <div className="space-y-4">
+                                        <div className="space-y-2">
+                                            <label className="text-sm font-medium">Descripción (ES) *</label>
+                                            <textarea
+                                                name="description_es"
+                                                defaultValue={typeof firm?.description === 'object' ? firm.description.es : (firm?.description || "")}
+                                                required={langTab === "es"}
+                                                rows={3}
+                                                className="w-full rounded-md border bg-background px-3 py-2"
+                                                placeholder="Resumen de marketing en español..."
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div className="space-y-2">
@@ -376,14 +430,56 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                         <div className="space-y-4 rounded-lg border bg-card p-6">
                             <h2 className="font-semibold text-lg border-b pb-2">Características y Reglas</h2>
 
-                            <div className="space-y-2">
-                                <label className="text-sm font-medium">Características *</label>
-                                <textarea name="features" defaultValue={firm?.features?.join(", ") || ""} rows={3} className="w-full rounded-md border bg-background px-3 py-2" placeholder="Características (separadas por comas)" />
+                            <div className={langTab === "en" ? "block" : "hidden"}>
+                                <div className="space-y-4">
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-medium">Features (EN) *</label>
+                                        <textarea
+                                            name="features_en"
+                                            defaultValue={getJoin(firm?.features, 'en')}
+                                            rows={3}
+                                            className="w-full rounded-md border bg-background px-3 py-2 text-sm"
+                                            placeholder="Feature 1, Feature 2..."
+                                        />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-medium">Rules (EN) *</label>
+                                        <textarea
+                                            name="rules_en"
+                                            defaultValue={getJoin(firm?.rules, 'en')}
+                                            rows={3}
+                                            className="w-full rounded-md border bg-background px-3 py-2 text-sm"
+                                            placeholder="Rule 1, Rule 2..."
+                                        />
+                                    </div>
+                                </div>
                             </div>
 
-                            <div className="space-y-2">
-                                <label className="text-sm font-medium">Reglas *</label>
-                                <textarea name="rules" defaultValue={firm?.rules?.join(", ") || ""} rows={3} className="w-full rounded-md border bg-background px-3 py-2" placeholder="Reglas (separadas por comas)" />
+                            <div className={langTab === "es" ? "block" : "hidden"}>
+                                <div className="space-y-4">
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-medium">Características (ES) *</label>
+                                        <textarea
+                                            name="features_es"
+                                            defaultValue={getJoin(firm?.features, 'es')}
+                                            rows={3}
+                                            className="w-full rounded-md border bg-background px-3 py-2 text-sm"
+                                            placeholder="Característica 1, Característica 2..."
+                                        />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-medium">Reglas (ES) *</label>
+                                        <textarea
+                                            name="rules_es"
+                                            defaultValue={getJoin(firm?.rules, 'es')}
+                                            rows={3}
+                                            className="w-full rounded-md border bg-background px-3 py-2 text-sm"
+                                            placeholder="Regla 1, Regla 2..."
+                                        />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -421,14 +517,56 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                         <div className="space-y-4 rounded-lg border bg-card p-6">
                             <h2 className="font-semibold text-lg border-b pb-2">Reglas Detalladas</h2>
 
-                            <div className="space-y-2">
-                                <label className="text-sm font-medium">Reglas de Consistencia</label>
-                                <textarea name="consistencyRules" defaultValue={firm?.consistencyRules || ""} rows={4} className="w-full rounded-md border bg-background px-3 py-2" placeholder="Reglas detalladas de consistencia..." />
+                            <div className={langTab === "en" ? "block" : "hidden"}>
+                                <div className="space-y-4">
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-medium">Consistency Rules (EN)</label>
+                                        <textarea
+                                            name="consistencyRules_en"
+                                            defaultValue={getVal(firm?.consistencyRules, 'en')}
+                                            rows={4}
+                                            className="w-full rounded-md border bg-background px-3 py-2 text-sm"
+                                            placeholder="Detailed consistency rules in English..."
+                                        />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-medium">Prohibited Practices (EN)</label>
+                                        <textarea
+                                            name="prohibitedPractices_en"
+                                            defaultValue={getJoin(firm?.prohibitedPractices, 'en')}
+                                            rows={4}
+                                            className="w-full rounded-md border bg-background px-3 py-2 text-sm"
+                                            placeholder="Practice 1, Practice 2..."
+                                        />
+                                    </div>
+                                </div>
                             </div>
 
-                            <div className="space-y-2">
-                                <label className="text-sm font-medium">Prácticas Prohibidas</label>
-                                <textarea name="prohibitedPractices" defaultValue={firm?.prohibitedPractices?.join(", ") || ""} rows={4} className="w-full rounded-md border bg-background px-3 py-2" placeholder="Prácticas prohibidas por la firma..." />
+                            <div className={langTab === "es" ? "block" : "hidden"}>
+                                <div className="space-y-4">
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-medium">Reglas de Consistencia (ES)</label>
+                                        <textarea
+                                            name="consistencyRules_es"
+                                            defaultValue={getVal(firm?.consistencyRules, 'es')}
+                                            rows={4}
+                                            className="w-full rounded-md border bg-background px-3 py-2 text-sm"
+                                            placeholder="Reglas detalladas de consistencia en español..."
+                                        />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-medium">Prácticas Prohibidas (ES)</label>
+                                        <textarea
+                                            name="prohibitedPractices_es"
+                                            defaultValue={getJoin(firm?.prohibitedPractices, 'es')}
+                                            rows={4}
+                                            className="w-full rounded-md border bg-background px-3 py-2 text-sm"
+                                            placeholder="Práctica 1, Práctica 2..."
+                                        />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

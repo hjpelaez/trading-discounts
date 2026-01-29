@@ -31,7 +31,7 @@ export function Newsletter() {
     };
 
     return (
-        <section className="bg-primary/5 py-24 rounded-3xl border border-primary/10 overflow-hidden relative">
+        <section className="bg-primary/5 py-12 md:py-16 rounded-3xl border border-primary/30 dark:border-primary/10 overflow-hidden relative">
             <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/3 w-96 h-96 bg-primary/10 rounded-full blur-3xl -z-10" />
             <div className="container mx-auto px-4 text-center max-w-3xl">
                 <AnimatePresence mode="wait">
@@ -64,7 +64,7 @@ export function Newsletter() {
                                         placeholder={t("namePlaceholder")}
                                         value={name}
                                         onChange={(e) => setName(e.target.value)}
-                                        className="flex-1 h-14 px-6 rounded-2xl border-2 border-primary/20 bg-background shadow-xl focus:border-primary focus:outline-none transition-all"
+                                        className="flex-1 h-14 px-6 rounded-2xl border border-border bg-background shadow-sm focus:border-primary/50 focus:ring-4 focus:ring-primary/10 focus:outline-none transition-all"
                                     />
                                     {/* Honeypot field - hidden from humans, visible to bots */}
                                     <input
@@ -83,7 +83,7 @@ export function Newsletter() {
                                         placeholder={t("placeholder")}
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
-                                        className="flex-1 h-14 px-6 rounded-2xl border-2 border-primary/20 bg-background shadow-xl focus:border-primary focus:outline-none transition-all"
+                                        className="flex-1 h-14 px-6 rounded-2xl border border-border bg-background shadow-sm focus:border-primary/50 focus:ring-4 focus:ring-primary/10 focus:outline-none transition-all"
                                     />
                                     <button
                                         type="submit"

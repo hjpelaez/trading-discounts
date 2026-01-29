@@ -80,7 +80,7 @@ export function ComparisonTable({ firms, onRemove }: ComparisonTableProps) {
                         {firms.map((firm) => (
                             <td key={firm.id} className="p-4 border-l text-left align-top">
                                 <ul className="space-y-2">
-                                    {firm.features.slice(0, 4).map((f: string, i: number) => (
+                                    {(Array.isArray(firm.features) ? firm.features : (firm.features as any)[locale] || []).slice(0, 4).map((f: string, i: number) => (
                                         <li key={i} className="flex items-start gap-2 text-xs font-medium">
                                             <div className="mt-0.5 rounded-full bg-green-500/10 p-0.5">
                                                 <Check className="h-3 w-3 text-green-500" />

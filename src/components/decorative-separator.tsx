@@ -10,7 +10,7 @@ interface DecorativeSeparatorProps {
 
 export function DecorativeSeparator({ className, icon }: DecorativeSeparatorProps) {
     return (
-        <div className={cn("relative py-12 flex items-center justify-center", className)}>
+        <div className={cn("relative py-2 flex items-center justify-center", className)}>
             {/* Background Glow */}
             <div className="absolute inset-0 flex items-center justify-center -z-10">
                 <div className="w-1/2 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent blur-sm" />

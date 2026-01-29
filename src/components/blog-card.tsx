@@ -63,7 +63,7 @@ export function BlogCard({ post, locale, readMoreLabel }: BlogCardProps) {
                     )}
 
                     <div className="absolute top-6 left-6 z-10">
-                        <span className="bg-background/90 backdrop-blur-md px-4 py-1.5 rounded-xl text-[10px] font-black text-foreground uppercase tracking-widest border border-border/50 shadow-sm">
+                        <span className="bg-background/95 backdrop-blur-md px-4 py-1.5 rounded-xl text-[10px] font-black text-foreground uppercase tracking-widest border border-border dark:border-border/50 shadow-md">
                             {post.category}
                         </span>
                     </div>
@@ -71,24 +71,24 @@ export function BlogCard({ post, locale, readMoreLabel }: BlogCardProps) {
 
                 <div className="p-8 md:p-10 flex flex-col flex-1 relative z-10">
                     <div className="flex items-center gap-5 text-[10px] font-black uppercase tracking-tighter text-muted-foreground mb-6">
-                        <span className="flex items-center gap-1.5 font-bold"><Calendar className="h-3 w-3 text-primary" /> {post.date}</span>
-                        <span className="flex items-center gap-1.5 font-bold"><User className="h-3 w-3 text-primary" /> {post.author}</span>
+                        <span className="flex items-center gap-1.5 font-bold"><Calendar className="h-3 w-3 text-primary-dark dark:text-primary" /> {post.date}</span>
+                        <span className="flex items-center gap-1.5 font-bold"><User className="h-3 w-3 text-primary-dark dark:text-primary" /> {post.author}</span>
                     </div>
 
                     <h2
-                        className="text-2xl md:text-3xl font-black mb-5 group-hover:text-primary transition-colors leading-tight line-clamp-2 min-h-[2.4em]"
+                        className="text-2xl md:text-3xl font-black mb-5 group-hover:text-primary-dark dark:group-hover:text-primary transition-colors leading-tight line-clamp-2 min-h-[2.4em]"
                         dangerouslySetInnerHTML={{ __html: title }}
                     />
 
-                    <p className="text-muted-foreground text-base line-clamp-3 mb-8 leading-relaxed font-medium opacity-80">
+                    <p className="text-muted-foreground text-base line-clamp-3 mb-8 leading-relaxed font-medium opacity-90">
                         {excerpt}
                     </p>
 
-                    <div className="mt-auto pt-6 border-t border-border/50 flex items-center justify-between">
-                        <span className="text-primary font-black text-sm uppercase tracking-widest flex items-center gap-2">
+                    <div className="mt-auto pt-6 border-t border-border flex items-center justify-between">
+                        <span className="text-primary-dark dark:text-primary font-black text-sm uppercase tracking-widest flex items-center gap-2">
                             {readMoreLabel} <ArrowRight className="h-4 w-4 group-hover:translate-x-2 transition-transform" />
                         </span>
-                        <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                        <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary-dark dark:text-primary group-hover:scale-110 transition-transform">
                             <Sparkles className="h-4 w-4" />
                         </div>
                     </div>

@@ -47,7 +47,7 @@ export function StaggerContainer({
             }}
             className={className}
         >
-            <AnimatePresence mode="popLayout" initial={false}>
+            <AnimatePresence mode="popLayout">
                 {children}
             </AnimatePresence>
         </m.div>

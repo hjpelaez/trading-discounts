@@ -13,8 +13,8 @@
     },
     "Hero": {
         "pill": "🚀 The #1 Prop Firm Discount Aggregator",
-        "title": "Unlock Exclusive <highlight>Prop Firm</highlight> Deals",
-        "subtitle": "Compare huge discounts on top Crypto, Forex, and Futures prop firms. Stop paying full price for your funding challenges.",
+        "title": "Save up to <highlight>90%</highlight> on Prop Challenges",
+        "subtitle": "Stop paying full price. Compare and unlock verified deals on top Crypto, Forex, and Futures prop firms.",
         "exploreCrypto": "Explore Crypto Firms",
         "exploreForex": "View Forex Firms",
         "futuresDeals": "Futures Deals",
@@ -97,6 +97,9 @@
         }
     },
     "Footer": {
+        "education": "Education",
+        "blog": "Blog",
+        "courses": "Courses",
         "markets": "Markets",
         "company": "Company",
         "terms": "Terms",
@@ -300,6 +303,17 @@
         "useCode": "Use Code at Checkout:",
         "claim": "Claim Discount",
         "terms": "*Terms and conditions apply on the firm's website.",
-        "featuredChoice": "Featured Choice"
+        "featuredChoice": "Featured Choice",
+        "tradingEnv": "Trading Environment",
+        "broker": "Broker / Liquidity",
+        "payoutFreq": "Payout Frequency",
+        "assets": "Tradable Assets",
+        "banking": "Banking",
+        "depositMethods": "Payment Methods (Deposit)",
+        "withdrawalMethods": "Payout Methods (Withdrawal)",
+        "consistency": "Consistency Rules",
+        "prohibited": "Prohibited Practices",
+        "tradingRulesTitle": "Trading Rules",
+        "yearsActive": "Years Active"
     }
 }
