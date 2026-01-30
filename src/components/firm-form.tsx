@@ -7,6 +7,7 @@ import { ChevronLeft, Save, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useRef } from "react";
+// import { parseBilingual, parseBilingualArray } from "@/lib/utils"; // Removed to use local robust version
 
 function SubmitButton({ loading }: { loading: boolean }) {
     return (
@@ -20,40 +21,108 @@ function SubmitButton({ loading }: { loading: boolean }) {
     );
 }
 
+// Local robust parser to handle stubborn JSON strings
+function safeParseBilingual(val: any, locale: string): string {
+    if (!val) return "";
+
+    let current = val;
+    let attempts = 0;
+
+    try {
+        while (attempts < 5) {
+            if (typeof current === 'string' && (current.trim().startsWith('{') || current.trim().startsWith('"'))) {
+                try {
+                    current = JSON.parse(current);
+                } catch {
+                    // JSON parse failed. Tries Regex fallback.
+                    // Handles:
+                    // 1. "en": "..."
+                    // 2. en: "..." (no key quotes)
+                    // 3. 'en': '...' (single quotes)
+                    // 4. Multiline content
+
+                    // Regex explanation:
+                    // (?:["']?) -> Optional opening quote for key
+                    // ${locale} -> The key (en/es)
+                    // (?:["']?) -> Optional closing quote for key
+                    // \s*:\s* -> Separator
+                    // (["']) -> Capture opening quote for value (group 1)
+                    // ([\s\S]*?) -> Capture content non-greedy (group 2)
+                    // \1 -> Match the same closing quote as group 1
+                    // (?=\s*(?:,|})) -> Lookahead for separator or end
+
+                    const regex = new RegExp(`(?:["']?)${locale}(?:["']?)\\s*:\\s*(["'])([\\s\\S]*?)\\1(?=\\s*(?:,|}|\\s$))`);
+                    const match = regex.exec(current);
+
+                    if (match && match[2]) {
+                        // Unescape basic stuff
+                        return match[2].replace(/\\"/g, '"').replace(/\\n/g, '\n').replace(/\\r/g, '');
+                    }
+                    break;
+                }
+            } else if (typeof current === 'object' && current !== null) {
+                const candidate = current[locale as "en" | "es"] || current.en || current.es;
+                if (candidate !== undefined) {
+                    current = candidate;
+                } else {
+                    break;
+                }
+            } else {
+                break;
+            }
+            attempts++;
+        }
+    } catch (e) {
+        console.error("Safe parser error:", e);
+    }
+
+    if (typeof current === 'object') return ""; // Never return object/JSON
+    return String(current);
+}
+
+function safeParseArray(val: any, locale: string): string[] {
+    // Reuse logic roughly but simpler for arrays
+    const res = safeParseBilingual(val, locale);
+    // If it returns a string that looks like a split list, fine. 
+    // But `safeParseBilingual` might have returned the ARRAY if it found it?
+    // No, the above logic converts to string at the end.
+    // We need inspection.
+
+    if (Array.isArray(val)) return val;
+
+    // Note: This matches the previous behavior but let's be careful.
+    // If val is {en: ["a","b"]}, safeParseBilingual returns "a,b" (join)? NO.
+
+    // Let's implement a specific array parser
+    let current = val;
+    if (!current) return [];
+
+    try {
+        // simplified peel
+        if (typeof current === 'string') {
+            try { current = JSON.parse(current); } catch { }
+        }
+        if (typeof current === 'string') {
+            try { current = JSON.parse(current); } catch { }
+        }
+
+        if (typeof current === 'object' && !Array.isArray(current) && current !== null) {
+            current = current[locale as "en" | "es"] || current.en || current.es;
+        }
+
+        if (Array.isArray(current)) return current;
+    } catch { }
+
+    return [];
+}
+
 export function FirmForm({ firm }: { firm?: PropFirm }) {
     const [activeTab, setActiveTab] = useState("basic");
     const [langTab, setLangTab] = useState<"en" | "es">("en");
     const [autoFillUrl, setAutoFillUrl] = useState("");
 
     // Helpers for safety
-    const parseValue = (val: any) => {
-        if (!val) return null;
-        if (typeof val === 'string') {
-            try {
-                const parsed = JSON.parse(val);
-                if (typeof parsed === 'object' && parsed !== null) return parsed;
-            } catch (e) {
-                return val;
-            }
-        }
-        return val;
-    };
-
-    const getVal = (v: any, lang: "en" | "es") => {
-        if (!v) return "";
-        const parsed = parseValue(v);
-        if (typeof parsed === 'object') return parsed[lang] || "";
-        return v;
-    };
-
-    const getJoin = (v: any, lang: "en" | "es") => {
-        if (!v) return "";
-        const parsed = parseValue(v);
-
-        if (Array.isArray(parsed)) return parsed.join(", ");
-        if (typeof parsed === 'object' && Array.isArray(parsed[lang])) return parsed[lang].join(", ");
-        return "";
-    };
+    // Removed local helpers in favor of robust utils
     const [isExtracting, setIsExtracting] = useState(false);
     const formRef = useRef<HTMLFormElement>(null);
 
@@ -94,12 +163,22 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
             // Helper for fields
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const setBilingualValue = (baseName: string, value: any) => {
-                if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-                    setValue(baseName, value.es || value.en || "");
-                } else if (Array.isArray(value)) {
-                    setValue(baseName, value.join(", "));
-                } else {
-                    setValue(baseName, value);
+                if (!value) return;
+
+                // Case 1: Value is a bilingual object { en: ..., es: ... }
+                if (typeof value === 'object' && !Array.isArray(value)) {
+                    if (value.en) setValue(`${baseName}_en`, value.en);
+                    if (value.es) setValue(`${baseName}_es`, value.es);
+                }
+                // Case 2: Value is a plain array (legacy or single-lang) -> assume English or both?
+                // Actually, for bilingual fields we expect the object. 
+                // But if we get a raw array, maybe just put it in EN as fallback?
+                else if (Array.isArray(value)) {
+                    setValue(`${baseName}_en`, value);
+                }
+                // Case 3: Simple string
+                else {
+                    setValue(`${baseName}_en`, value);
                 }
             };
 
@@ -169,6 +248,52 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
         }
     };
 
+    const descEnRef = useRef<HTMLTextAreaElement>(null);
+    const descEsRef = useRef<HTMLTextAreaElement>(null);
+
+    const handleCleanText = (locale: "en" | "es") => {
+        const ref = locale === "en" ? descEnRef : descEsRef;
+        if (!ref.current) return;
+
+        const currentVal = ref.current.value;
+        if (!currentVal) return;
+
+        // Aggressive cleanup: Extract content between "locale": "..." or just the value if simple
+        // Regex to find "en": "VALUE", capturing VALUE. Handles newlines.
+        const regex = new RegExp(`(?:["']?)${locale}(?:["']?)\\s*:\\s*(["'])([\\s\\S]*?)\\1(?=\\s*(?:,|}|\\s$))`);
+        const match = regex.exec(currentVal);
+
+        if (match && match[2]) {
+            // Clean up escaped chars
+            const clean = match[2].replace(/\\"/g, '"').replace(/\\n/g, '\n').replace(/\\r/g, '');
+            ref.current.value = clean;
+        } else {
+            // If regex fails, maybe it's Double JSON encoded? e.g. "{\"en\": ...}"
+            // Try to parse as JSON first then extract
+            try {
+                const parsed = JSON.parse(currentVal);
+                if (typeof parsed === 'object' && parsed !== null) {
+                    const candidate = parsed[locale] || parsed.en || parsed.es;
+                    if (candidate) {
+                        ref.current.value = candidate;
+                        return;
+                    }
+                } else if (typeof parsed === 'string') {
+                    // It was a stringified string? Try regex on that
+                    const match2 = regex.exec(parsed);
+                    if (match2 && match2[2]) {
+                        const clean = match2[2].replace(/\\"/g, '"').replace(/\\n/g, '\n').replace(/\\r/g, '');
+                        ref.current.value = clean;
+                        return;
+                    }
+                }
+            } catch { }
+
+            // If all else fails, do nothing (or maybe clear it? No, unsafe).
+            alert("No pude limpiar el texto automáticamente. ¿Quizás ya está limpio?");
+        }
+    };
+
     return (
         <form ref={formRef} onSubmit={handleSubmit} className="space-y-6 max-w-6xl">
             <input type="hidden" name="id" value={firm?.id || ""} />
@@ -221,13 +346,16 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                                 )}
                             </button>
                         </div>
-                        <p className="mt-2 text-xs text-muted-foreground">Ingresa la URL de la firma y la IA intentará rellenar los campos por ti.</p>
+                    </div>
+
+                    <div className="mt-2 flex items-center justify-between">
+                        <p className="text-xs text-muted-foreground w-full text-right">La IA usará su conocimiento si la web falla.</p>
                     </div>
                 </div>
             </div>
 
             {/* Tabs */}
-            <div className="border-b">
+            <div className="border-b flex items-center justify-between">
                 <nav className="flex gap-4">
                     {tabs.map((tab) => (
                         <button
@@ -243,6 +371,23 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                         </button>
                     ))}
                 </nav>
+
+                <div className="flex bg-muted rounded-lg p-1 mb-1">
+                    <button
+                        type="button"
+                        onClick={() => setLangTab("en")}
+                        className={`px-3 py-1 text-xs rounded-md transition-all ${langTab === "en" ? "bg-background shadow-sm font-bold text-primary" : "text-muted-foreground hover:text-primary/70"}`}
+                    >
+                        Inglés
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => setLangTab("es")}
+                        className={`px-3 py-1 text-xs rounded-md transition-all ${langTab === "es" ? "bg-background shadow-sm font-bold text-primary" : "text-muted-foreground hover:text-primary/70"}`}
+                    >
+                        Español
+                    </button>
+                </div>
             </div>
 
             {/* Tab Content */}
@@ -251,25 +396,7 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                 <div className={activeTab === "basic" ? "block" : "hidden"}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-4 rounded-lg border bg-card p-6">
-                            <div className="flex items-center justify-between border-b pb-2">
-                                <h2 className="font-semibold text-lg">Contenido</h2>
-                                <div className="flex bg-muted rounded-lg p-1">
-                                    <button
-                                        type="button"
-                                        onClick={() => setLangTab("en")}
-                                        className={`px-3 py-1 text-xs rounded-md transition-all ${langTab === "en" ? "bg-background shadow-sm font-bold" : "text-muted-foreground"}`}
-                                    >
-                                        Inglés
-                                    </button>
-                                    <button
-                                        type="button"
-                                        onClick={() => setLangTab("es")}
-                                        className={`px-3 py-1 text-xs rounded-md transition-all ${langTab === "es" ? "bg-background shadow-sm font-bold" : "text-muted-foreground"}`}
-                                    >
-                                        Español
-                                    </button>
-                                </div>
-                            </div>
+                            <h2 className="font-semibold text-lg border-b pb-2">Contenido</h2>
 
                             <div className="space-y-4">
                                 <div className="space-y-2">
@@ -280,12 +407,18 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                                 <div className={langTab === "en" ? "block" : "hidden"}>
                                     <div className="space-y-4">
                                         <div className="space-y-2">
-                                            <label className="text-sm font-medium">Description (EN) *</label>
+                                            <div className="flex justify-between items-center">
+                                                <label className="text-sm font-medium">Description (EN) *</label>
+                                                <button type="button" onClick={() => handleCleanText('en')} className="text-xs bg-secondary px-2 py-1 rounded hover:bg-secondary/80 flex items-center gap-1">
+                                                    🧹 Limpiar Texto
+                                                </button>
+                                            </div>
                                             <textarea
+                                                ref={descEnRef}
                                                 name="description_en"
-                                                defaultValue={typeof firm?.description === 'object' ? firm.description.en : (firm?.description || "")}
+                                                defaultValue={safeParseBilingual(firm?.description, 'en')}
                                                 required={langTab === "en"}
-                                                rows={3}
+                                                rows={8}
                                                 className="w-full rounded-md border bg-background px-3 py-2"
                                                 placeholder="Marketing summary in English..."
                                             />
@@ -296,12 +429,18 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                                 <div className={langTab === "es" ? "block" : "hidden"}>
                                     <div className="space-y-4">
                                         <div className="space-y-2">
-                                            <label className="text-sm font-medium">Descripción (ES) *</label>
+                                            <div className="flex justify-between items-center">
+                                                <label className="text-sm font-medium">Descripción (ES) *</label>
+                                                <button type="button" onClick={() => handleCleanText('es')} className="text-xs bg-secondary px-2 py-1 rounded hover:bg-secondary/80 flex items-center gap-1">
+                                                    🧹 Limpiar Texto
+                                                </button>
+                                            </div>
                                             <textarea
+                                                ref={descEsRef}
                                                 name="description_es"
-                                                defaultValue={typeof firm?.description === 'object' ? firm.description.es : (firm?.description || "")}
+                                                defaultValue={safeParseBilingual(firm?.description, 'es')}
                                                 required={langTab === "es"}
-                                                rows={3}
+                                                rows={8}
                                                 className="w-full rounded-md border bg-background px-3 py-2"
                                                 placeholder="Resumen de marketing en español..."
                                             />
@@ -452,7 +591,7 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                                         <label className="text-sm font-medium">Features (EN) *</label>
                                         <textarea
                                             name="features_en"
-                                            defaultValue={getJoin(firm?.features, 'en')}
+                                            defaultValue={safeParseArray(firm?.features, 'en').join(", ")}
                                             rows={3}
                                             className="w-full rounded-md border bg-background px-3 py-2 text-sm"
                                             placeholder="Feature 1, Feature 2..."
@@ -463,7 +602,7 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                                         <label className="text-sm font-medium">Rules (EN) *</label>
                                         <textarea
                                             name="rules_en"
-                                            defaultValue={getJoin(firm?.rules, 'en')}
+                                            defaultValue={safeParseArray(firm?.rules, 'en').join(", ")}
                                             rows={3}
                                             className="w-full rounded-md border bg-background px-3 py-2 text-sm"
                                             placeholder="Rule 1, Rule 2..."
@@ -478,7 +617,7 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                                         <label className="text-sm font-medium">Características (ES) *</label>
                                         <textarea
                                             name="features_es"
-                                            defaultValue={getJoin(firm?.features, 'es')}
+                                            defaultValue={safeParseArray(firm?.features, 'es').join(", ")}
                                             rows={3}
                                             className="w-full rounded-md border bg-background px-3 py-2 text-sm"
                                             placeholder="Característica 1, Característica 2..."
@@ -489,7 +628,7 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                                         <label className="text-sm font-medium">Reglas (ES) *</label>
                                         <textarea
                                             name="rules_es"
-                                            defaultValue={getJoin(firm?.rules, 'es')}
+                                            defaultValue={safeParseArray(firm?.rules, 'es').join(", ")}
                                             rows={3}
                                             className="w-full rounded-md border bg-background px-3 py-2 text-sm"
                                             placeholder="Regla 1, Regla 2..."
@@ -539,10 +678,10 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                                         <label className="text-sm font-medium">Consistency Rules (EN)</label>
                                         <textarea
                                             name="consistencyRules_en"
-                                            defaultValue={getVal(firm?.consistencyRules, 'en')}
+                                            defaultValue={safeParseArray(firm?.consistencyRules, 'en').join(", ")}
                                             rows={4}
                                             className="w-full rounded-md border bg-background px-3 py-2 text-sm"
-                                            placeholder="Detailed consistency rules in English..."
+                                            placeholder="Rule 1, Rule 2..."
                                         />
                                     </div>
 
@@ -550,7 +689,7 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                                         <label className="text-sm font-medium">Prohibited Practices (EN)</label>
                                         <textarea
                                             name="prohibitedPractices_en"
-                                            defaultValue={getJoin(firm?.prohibitedPractices, 'en')}
+                                            defaultValue={safeParseArray(firm?.prohibitedPractices, 'en').join(", ")}
                                             rows={4}
                                             className="w-full rounded-md border bg-background px-3 py-2 text-sm"
                                             placeholder="Practice 1, Practice 2..."
@@ -565,10 +704,10 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                                         <label className="text-sm font-medium">Reglas de Consistencia (ES)</label>
                                         <textarea
                                             name="consistencyRules_es"
-                                            defaultValue={getVal(firm?.consistencyRules, 'es')}
+                                            defaultValue={safeParseArray(firm?.consistencyRules, 'es').join(", ")}
                                             rows={4}
                                             className="w-full rounded-md border bg-background px-3 py-2 text-sm"
-                                            placeholder="Reglas detalladas de consistencia en español..."
+                                            placeholder="Regla 1, Regla 2..."
                                         />
                                     </div>
 
@@ -576,7 +715,7 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                                         <label className="text-sm font-medium">Prácticas Prohibidas (ES)</label>
                                         <textarea
                                             name="prohibitedPractices_es"
-                                            defaultValue={getJoin(firm?.prohibitedPractices, 'es')}
+                                            defaultValue={safeParseArray(firm?.prohibitedPractices, 'es').join(", ")}
                                             rows={4}
                                             className="w-full rounded-md border bg-background px-3 py-2 text-sm"
                                             placeholder="Práctica 1, Práctica 2..."
@@ -588,6 +727,6 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                     </div>
                 </div>
             </div>
-        </form>
+        </form >
     );
 }

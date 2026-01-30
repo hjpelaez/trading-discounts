@@ -77,7 +77,7 @@ export async function saveFirmAction(formData: FormData) {
         // Features & Rules
         features: getBilingualArray("features"),
         rules: getBilingualArray("rules"),
-        consistencyRules: getBilingualValue("consistencyRules"),
+        consistencyRules: getBilingualArray("consistencyRules"),
         prohibitedPractices: getBilingualArray("prohibitedPractices"),
 
         // Payout Info

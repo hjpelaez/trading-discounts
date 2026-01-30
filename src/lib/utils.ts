@@ -25,15 +25,15 @@ export function parseBilingual(val: any, locale: string) {
     let attempts = 0;
 
     // Recursive "Onion Peeler"
-    // Loop limited to 5 to prevent infinite loops (though unlikely)
     while (attempts < 5) {
         // 1. Try to parse if it looks like a JSON string
         if (typeof current === 'string' && (current.trim().startsWith('{') || current.trim().startsWith('"'))) {
             try {
                 const parsed = JSON.parse(current);
                 current = parsed;
+                // console.log(`[parseBilingual] parsed JSON depth ${attempts}`);
             } catch (e) {
-                // If it fails to parse, it's just a string, stop loop
+                // console.error(`[parseBilingual] parse error at depth ${attempts}:`, e);
                 break;
             }
         }
@@ -43,19 +43,12 @@ export function parseBilingual(val: any, locale: string) {
             const candidate = current[locale as "en" | "es"] || current.en || current.es;
 
             if (candidate !== undefined) {
-                // We found a candidate! But assume IT might be a stringified JSON too (nested)
-                // So set current = candidate and CONTINUE the loop to verify if it needs parsing
                 current = candidate;
+                // console.log(`[parseBilingual] found candidate at depth ${attempts}`);
             } else {
-                // Object but no locale keys? Might be end of line or random object.
-                // If we are deep in recursion, maybe this object IS the value? 
-                // But usually we expect a string at the end. 
-                // Let's break and return stringified object if needed.
                 break;
             }
         }
-
-        // 3. If it's a simple string that doesn't look like JSON, we are done
         else {
             break;
         }
@@ -63,7 +56,7 @@ export function parseBilingual(val: any, locale: string) {
         attempts++;
     }
 
-    if (typeof current === 'object') return ""; // Should have resolved to string
+    if (typeof current === 'object') return ""; // Safety fallback: prevent returning raw JSON if extraction failed
     return String(current);
 }
 
@@ -96,5 +89,11 @@ export function parseBilingualArray(val: any, locale: string): string[] {
     }
 
     if (Array.isArray(current)) return current;
+
+    // Fallback: If it resolved to a string, try to split by comma
+    if (typeof current === 'string' && current.trim().length > 0) {
+        return current.split(',').map(s => s.trim()).filter(Boolean);
+    }
+
     return [];
 }

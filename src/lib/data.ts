@@ -32,7 +32,7 @@ export interface PropFirm {
     // Supports both array of strings (legacy) or bilingual object (new)
     features: string[] | { en: string[]; es: string[] };
     rules: string[] | { en: string[]; es: string[] };
-    consistencyRules?: string | { en: string; es: string } | null;
+    consistencyRules?: string[] | { en: string[]; es: string[] } | null;
     prohibitedPractices?: string[] | { en: string[]; es: string[] } | null;
 
     // Payout Info

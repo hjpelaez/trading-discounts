@@ -68,7 +68,7 @@ export default async function FirmPage({ params }: PageProps) {
     const description = parseBilingual(firm.description, locale);
     const features = parseBilingualArray(firm.features, locale);
     const rules = parseBilingualArray(firm.rules, locale);
-    const consistencyRules = parseBilingual(firm.consistencyRules, locale);
+    const consistencyRules = parseBilingualArray(firm.consistencyRules, locale);
     const prohibitedPractices = parseBilingualArray(firm.prohibitedPractices, locale);
 
     return (
@@ -248,10 +248,17 @@ export default async function FirmPage({ params }: PageProps) {
                                     ))}
                                 </div>
 
-                                {consistencyRules && (
+                                {consistencyRules && consistencyRules.length > 0 && (
                                     <div className="rounded-xl border bg-yellow-500/5 border-yellow-500/20 p-6">
                                         <h3 className="font-bold text-yellow-600 mb-2">{t('consistency')}</h3>
-                                        <p className="text-sm">{consistencyRules}</p>
+                                        <ul className="space-y-2">
+                                            {consistencyRules.map((rule, i) => (
+                                                <li key={i} className="flex items-start gap-2 text-sm">
+                                                    <span className="text-yellow-500 font-bold">•</span>
+                                                    {rule}
+                                                </li>
+                                            ))}
+                                        </ul>
                                     </div>
                                 )}
 

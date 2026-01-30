@@ -12,6 +12,8 @@ export default async function EditFirmPage({ params }: { params: Promise<{ id: s
         notFound();
     }
 
+    console.log('DEBUG FIRM DESCRIPTION:', JSON.stringify(firm.description, null, 2));
+
     return (
         <FirmForm firm={firm} />
     );
