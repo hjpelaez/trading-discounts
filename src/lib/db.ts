@@ -238,7 +238,7 @@ export interface Subscriber {
 
 export const getSubscribers = cache(async (): Promise<Subscriber[]> => {
     try {
-        const supabase = createStaticClient();
+        const supabase = await createClient(); // Use authenticated client for RLS
         const { data, error } = await supabase
             .from('Subscriber')
             .select('*')

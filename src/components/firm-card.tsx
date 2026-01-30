@@ -13,6 +13,7 @@ import { m, useMotionValue, useSpring, useTransform, AnimatePresence } from "fra
 import { SuccessToast } from "./success-toast";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { usePathname } from "next/navigation";
+import { parseBilingual } from "@/lib/utils";
 
 interface FirmCardProps {
     firm: PropFirm;
@@ -37,27 +38,7 @@ export function FirmCard({ firm, className }: FirmCardProps) {
         setVerifiedMin(Math.floor(Math.random() * 15) + 2);
     }, []);
 
-    // Helper for bilingual fields
-    const renderBilingual = (val: any) => {
-        if (!val) return "";
-
-        let parsedVal = val;
-        if (typeof val === 'string' && val.trim().startsWith('{')) {
-            try {
-                parsedVal = JSON.parse(val);
-            } catch (e) {
-                // Not JSON
-            }
-        }
-
-        if (typeof parsedVal === 'string') return parsedVal;
-        if (typeof parsedVal === 'object') {
-            return parsedVal[locale as "en" | "es"] || parsedVal.en || parsedVal.es || "";
-        }
-        return String(val);
-    };
-
-    const description = renderBilingual(firm.description);
+    const description = parseBilingual(firm.description, locale);
 
     // Mouse Tracking Glow
     const mouseX = useMotionValue(0);

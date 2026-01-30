@@ -26,16 +26,32 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
     const [autoFillUrl, setAutoFillUrl] = useState("");
 
     // Helpers for safety
+    const parseValue = (val: any) => {
+        if (!val) return null;
+        if (typeof val === 'string') {
+            try {
+                const parsed = JSON.parse(val);
+                if (typeof parsed === 'object' && parsed !== null) return parsed;
+            } catch (e) {
+                return val;
+            }
+        }
+        return val;
+    };
+
     const getVal = (v: any, lang: "en" | "es") => {
         if (!v) return "";
-        if (typeof v === 'object') return v[lang] || "";
+        const parsed = parseValue(v);
+        if (typeof parsed === 'object') return parsed[lang] || "";
         return v;
     };
 
     const getJoin = (v: any, lang: "en" | "es") => {
         if (!v) return "";
-        if (Array.isArray(v)) return v.join(", ");
-        if (typeof v === 'object' && Array.isArray(v[lang])) return v[lang].join(", ");
+        const parsed = parseValue(v);
+
+        if (Array.isArray(parsed)) return parsed.join(", ");
+        if (typeof parsed === 'object' && Array.isArray(parsed[lang])) return parsed[lang].join(", ");
         return "";
     };
     const [isExtracting, setIsExtracting] = useState(false);

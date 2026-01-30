@@ -5,6 +5,7 @@ import { Check, ExternalLink, TrendingUp, DollarSign, Monitor, ShieldCheck } fro
 import Link from "next/link";
 import { CopyButton } from "@/components/copy-button";
 import { getTranslations } from "next-intl/server";
+import { parseBilingual, parseBilingualArray } from "@/lib/utils";
 
 const locales = ['en', 'es'];
 
@@ -22,16 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
     if (!firm) return { title: 'Trading Discounts' };
 
-    const renderBilingual = (val: any) => {
-        if (!val) return "";
-        if (typeof val === 'string') return val;
-        if (typeof val === 'object') {
-            return val[locale as "en" | "es"] || val.en || val.es || "";
-        }
-        return String(val);
-    };
-
-    const description = renderBilingual(firm.description);
+    const description = parseBilingual(firm.description, locale);
 
     return {
         title: `${firm.name} Discount Code | Trading Discounts`,
@@ -56,7 +48,7 @@ export async function generateStaticParams() {
 
 export default async function FirmPage({ params }: PageProps) {
     const { firmId, locale } = await params;
-    const lang = locale as "en" | "es";
+    // const lang = locale as "en" | "es"; // Not needed anymore
 
     const firm = await getFirmById(firmId);
 
@@ -73,49 +65,11 @@ export default async function FirmPage({ params }: PageProps) {
         .filter(f => f.categories.some(c => firm.categories.includes(c)) && f.id !== firm.id)
         .slice(0, 3);
 
-    const renderBilingual = (val: any) => {
-        if (!val) return "";
-
-        let parsedVal = val;
-        if (typeof val === 'string' && (val.trim().startsWith('{') || val.trim().startsWith('['))) {
-            try {
-                parsedVal = JSON.parse(val);
-            } catch (e) {
-                // Not JSON, use original string
-            }
-        }
-
-        if (typeof parsedVal === 'string') return parsedVal;
-        if (typeof parsedVal === 'object') {
-            return parsedVal[lang] || parsedVal.en || parsedVal.es || "";
-        }
-        return String(val);
-    };
-
-    const renderBilingualArray = (val: any): string[] => {
-        if (!val) return [];
-
-        let parsedVal = val;
-        if (typeof val === 'string' && (val.trim().startsWith('{') || val.trim().startsWith('['))) {
-            try {
-                parsedVal = JSON.parse(val);
-            } catch (e) {
-                // Not JSON
-            }
-        }
-
-        if (Array.isArray(parsedVal)) return parsedVal;
-        if (typeof parsedVal === 'object') {
-            return parsedVal[lang] || parsedVal.en || parsedVal.es || [];
-        }
-        return [];
-    };
-
-    const description = renderBilingual(firm.description);
-    const features = renderBilingualArray(firm.features);
-    const rules = renderBilingualArray(firm.rules);
-    const consistencyRules = renderBilingual(firm.consistencyRules);
-    const prohibitedPractices = renderBilingualArray(firm.prohibitedPractices);
+    const description = parseBilingual(firm.description, locale);
+    const features = parseBilingualArray(firm.features, locale);
+    const rules = parseBilingualArray(firm.rules, locale);
+    const consistencyRules = parseBilingual(firm.consistencyRules, locale);
+    const prohibitedPractices = parseBilingualArray(firm.prohibitedPractices, locale);
 
     return (
         <div className="flex flex-col min-h-screen">
