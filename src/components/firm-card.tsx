@@ -88,7 +88,7 @@ export function FirmCard({ firm, className }: FirmCardProps) {
                 layout
                 onMouseMove={handleMouseMove}
                 className={cn(
-                    "group relative overflow-hidden rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 h-full flex flex-col",
+                    "group relative overflow-hidden rounded-2xl border border-border bg-card p-4 md:p-6 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 h-full flex flex-col",
                     firm.featured ? "ring-1 ring-foreground/5 shadow-lg" : "",
                     className
                 )}
@@ -106,10 +106,10 @@ export function FirmCard({ firm, className }: FirmCardProps) {
                 />
 
                 <div className="relative z-10 flex flex-col h-full">
-                    <div className="flex justify-between items-start mb-4">
-                        <div className="flex items-center gap-4">
+                    <div className="grid grid-cols-[1fr_auto] gap-4 mb-4">
+                        <div className="flex items-center gap-3 md:gap-4 min-w-0">
                             {firm.imageUrl ? (
-                                <div className="relative h-16 w-16 shrink-0 rounded-xl overflow-hidden bg-background border shadow-sm transition-transform group-hover:scale-110">
+                                <div className="relative h-12 w-12 md:h-16 md:w-16 shrink-0 rounded-xl overflow-hidden bg-background border shadow-sm transition-transform group-hover:scale-110">
                                     <Image
                                         src={firm.imageUrl}
                                         alt={`${firm.name} Logo`}
@@ -119,24 +119,24 @@ export function FirmCard({ firm, className }: FirmCardProps) {
                                     />
                                 </div>
                             ) : (
-                                <div className="h-16 w-16 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-bold border border-primary/20 shadow-sm text-xl">
+                                <div className="h-12 w-12 md:h-16 md:w-16 shrink-0 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-bold border border-primary/20 shadow-sm text-lg md:text-xl">
                                     {firm.name.substring(0, 2).toUpperCase()}
                                 </div>
                             )}
-                            <div>
-                                <Link href={`/firms/${firm.id}`} className="hover:text-primary transition-colors">
-                                    <h3 className="text-xl font-black tracking-tight text-foreground leading-tight">{firm.name}</h3>
+                            <div className="min-w-0">
+                                <Link href={`/firms/${firm.id}`} className="hover:text-primary transition-colors block">
+                                    <h3 className="text-lg md:text-xl font-black tracking-tight text-foreground leading-tight line-clamp-2 md:line-clamp-none">{firm.name}</h3>
                                 </Link>
-                                <div className="flex items-center gap-1.5 mt-1">
-                                    <div className="flex items-center text-yellow-600 dark:text-yellow-500 bg-yellow-500/10 px-1.5 py-0.5 rounded-md text-[10px] font-black uppercase">
+                                <div className="flex flex-wrap items-center gap-1.5 mt-1">
+                                    <div className="flex items-center text-yellow-600 dark:text-yellow-500 bg-yellow-500/10 px-1.5 py-0.5 rounded-md text-[10px] font-black uppercase shrink-0">
                                         ★ {firm.rating}
                                     </div>
-                                    <span className="inline-flex items-center rounded-full bg-green-500/10 px-2 py-0.5 text-[10px] font-bold text-green-700 dark:text-green-500 whitespace-nowrap gap-1.5 border border-green-500/40">
-                                        <div className="relative flex h-1.5 w-1.5">
+                                    <span className="inline-flex items-center rounded-full bg-green-500/10 px-2 py-0.5 text-[10px] font-bold text-green-700 dark:text-green-500 whitespace-nowrap gap-1.5 border border-green-500/40 shrink-0">
+                                        <div className="relative flex h-1.5 w-1.5 shrink-0">
                                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                                             <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
                                         </div>
-                                        {t('verified')} • {locale === 'es' ? `hace ${verifiedMin}m` : `${verifiedMin}m ago`}
+                                        {t('verified')}
                                     </span>
                                 </div>
                             </div>
@@ -154,16 +154,16 @@ export function FirmCard({ firm, className }: FirmCardProps) {
                                         <button
                                             onClick={(e) => { e.preventDefault(); toggleFavorite(firm.id); }}
                                             className={cn(
-                                                "h-10 w-10 rounded-full border flex items-center justify-center transition-all hover:scale-110 active:scale-95",
+                                                "h-8 w-8 rounded-full border flex items-center justify-center transition-all hover:scale-110 active:scale-95",
                                                 isFavorite(firm.id)
                                                     ? "bg-red-500 border-red-500 text-white shadow-lg shadow-red-500/20"
                                                     : "bg-background border-border text-muted-foreground hover:text-red-500 hover:border-red-500/50"
                                             )}
                                         >
-                                            <Heart className={cn("h-5 w-5", isFavorite(firm.id) && "fill-current")} />
+                                            <Heart className={cn("h-4 w-4", isFavorite(firm.id) && "fill-current")} />
                                         </button>
                                     </TooltipTrigger>
-                                    <TooltipContent>
+                                    <TooltipContent side="left" sideOffset={10}>
                                         {!isAdmin && <p>{isFavorite(firm.id) ? t('removeFromFavorites') : t('addToFavorites')}</p>}
                                     </TooltipContent>
                                 </Tooltip>
@@ -184,12 +184,12 @@ export function FirmCard({ firm, className }: FirmCardProps) {
                     <div className="mt-auto space-y-4">
                         {firm.code ? (
                             <div className="relative group/discount overflow-hidden p-4 rounded-xl bg-secondary/50 border border-border transition-all hover:bg-secondary">
-                                <div className="flex items-center justify-between">
+                                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
                                     <div className="flex flex-col">
                                         <span className="text-[10px] text-muted-foreground uppercase font-black tracking-widest">{t('discount')}</span>
                                         <span className="text-3xl font-black text-primary group-hover/discount:scale-110 transition-transform origin-left drop-shadow-sm">{firm.discount}</span>
                                     </div>
-                                    <div className="flex flex-col items-end">
+                                    <div className="flex flex-col items-start sm:items-end w-full sm:w-auto">
                                         <span className="text-[10px] text-muted-foreground uppercase font-black tracking-widest mb-1.5">{t('code')}</span>
                                         <TooltipProvider>
                                             <Tooltip>
@@ -197,7 +197,7 @@ export function FirmCard({ firm, className }: FirmCardProps) {
                                                     <button
                                                         onClick={copyCode}
                                                         className={cn(
-                                                            "flex items-center gap-2 text-sm font-black font-mono px-4 py-2.5 rounded-lg transition-all active:scale-95 shadow-lg relative overflow-hidden",
+                                                            "flex items-center justify-between sm:justify-center gap-2 text-sm font-black font-mono px-4 py-2.5 rounded-lg transition-all active:scale-95 shadow-lg relative overflow-hidden w-full sm:w-auto min-h-[44px]",
                                                             copied
                                                                 ? "bg-green-500 text-white border-green-500 scale-105"
                                                                 : "bg-foreground text-background border-foreground hover:bg-foreground/90"
@@ -221,15 +221,15 @@ export function FirmCard({ firm, className }: FirmCardProps) {
                                 target="_blank"
                                 className="relative group/discount overflow-hidden p-4 rounded-xl bg-secondary/50 border border-border transition-all hover:bg-secondary block"
                             >
-                                <div className="flex items-center justify-between">
+                                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
                                     <div className="flex flex-col">
                                         <span className="text-[10px] text-muted-foreground uppercase font-black tracking-widest">{t('discount')}</span>
                                         <span className="text-3xl font-black text-primary group-hover/discount:scale-110 transition-transform origin-left drop-shadow-sm">{firm.discount}</span>
                                     </div>
-                                    <div className="flex flex-col items-end">
-                                        <span className="text-[10px] text-muted-foreground uppercase font-black tracking-widest mb-1.5 opacity-0">Link</span>
+                                    <div className="flex flex-col items-start sm:items-end w-full sm:w-auto">
+                                        <span className="text-[10px] text-muted-foreground uppercase font-black tracking-widest mb-1.5 opacity-0 hidden sm:block">Link</span>
                                         <div
-                                            className="flex items-center gap-2 text-sm font-black font-mono px-4 py-2.5 rounded-lg transition-all shadow-lg relative overflow-hidden bg-foreground text-background border-foreground hover:bg-foreground/90"
+                                            className="flex items-center justify-between sm:justify-center gap-2 text-sm font-black font-mono px-4 py-2.5 rounded-lg transition-all shadow-lg relative overflow-hidden bg-foreground text-background border-foreground hover:bg-foreground/90 w-full sm:w-auto min-h-[44px]"
                                         >
                                             <span className="relative z-10">LINK</span>
                                             <ExternalLink className="h-4 w-4 relative z-10" />
@@ -243,7 +243,7 @@ export function FirmCard({ firm, className }: FirmCardProps) {
                             <TooltipProvider>
                                 <Tooltip>
                                     <TooltipTrigger asChild>
-                                        <div className="flex items-center gap-3">
+                                        <div className="flex items-center gap-3 min-h-[24px]">
                                             <div className="relative flex items-center">
                                                 <input
                                                     type="checkbox"
@@ -270,7 +270,7 @@ export function FirmCard({ firm, className }: FirmCardProps) {
                         <div className="grid grid-cols-2 gap-3">
                             <Link
                                 href={`/firms/${firm.id}`}
-                                className="inline-flex w-full items-center justify-center rounded-xl border border-border bg-background px-4 py-3 text-sm font-bold transition-all hover:bg-muted hover:border-primary/30"
+                                className="inline-flex w-full items-center justify-center rounded-xl border border-border bg-background px-4 py-3 text-sm font-bold transition-all hover:bg-muted hover:border-primary/30 min-h-[48px]"
                             >
                                 {t('details')}
                             </Link>
@@ -278,7 +278,7 @@ export function FirmCard({ firm, className }: FirmCardProps) {
                                 href={firm.link}
                                 target="_blank"
 
-                                className="inline-flex w-full items-center justify-center rounded-xl bg-primary px-4 py-3 text-sm font-black text-primary-foreground shadow-xl shadow-sky-500/20 transition-all hover:bg-primary/90 hover:scale-105 active:scale-95"
+                                className="inline-flex w-full items-center justify-center rounded-xl bg-primary px-4 py-3 text-sm font-black text-primary-foreground shadow-xl shadow-sky-500/20 transition-all hover:bg-primary/90 hover:scale-105 active:scale-95 min-h-[48px]"
                             >
                                 {t('visit')} <ExternalLink className="ml-2 h-4 w-4" />
                             </Link>

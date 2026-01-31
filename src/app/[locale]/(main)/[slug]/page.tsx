@@ -37,7 +37,7 @@ export default async function CMSPage({ params }: { params: Promise<{ locale: st
                         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-[0.3em] border border-primary/20 mb-10 animate-fade-in">
                             <ShieldCheck className="h-4 w-4" /> Official Document
                         </div>
-                        <h1 className="text-5xl md:text-8xl font-black tracking-tighter leading-none mb-10 bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/50">
+                        <h1 className="text-5xl md:text-8xl font-black tracking-tighter leading-none mb-10 text-foreground/80">
                             {title}
                         </h1>
                         <div className="flex items-center justify-center gap-6 text-muted-foreground">
@@ -61,7 +61,7 @@ export default async function CMSPage({ params }: { params: Promise<{ locale: st
                             className="prose prose-gray dark:prose-invert max-w-none prose-base md:prose-lg
                             prose-headings:font-black prose-headings:tracking-tighter 
                             prose-headings:mt-8 prose-headings:mb-4
-                            prose-headings:text-gray-900 dark:prose-headings:text-neutral-400
+                            prose-headings:text-foreground/80
                             prose-p:text-foreground prose-p:leading-relaxed prose-p:my-4
                             prose-ul:my-4 prose-li:text-foreground prose-li:my-1
                             prose-strong:text-foreground prose-strong:font-black

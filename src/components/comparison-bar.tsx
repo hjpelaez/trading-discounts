@@ -23,7 +23,7 @@ export function ComparisonBar() {
                     initial={{ y: 100, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: 100, opacity: 0 }}
-                    className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-2xl"
+                    className="fixed bottom-24 md:bottom-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-2xl"
                 >
                     <div className="bg-card/95 backdrop-blur-md border border-primary/20 shadow-2xl rounded-2xl p-4 flex items-center justify-between gap-4">
                         <div className="flex items-center gap-3 overflow-hidden">

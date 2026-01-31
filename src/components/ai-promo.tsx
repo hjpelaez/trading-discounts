@@ -38,10 +38,10 @@ export function AIPromo() {
                         </p>
                     </div>
 
-                    <div className="flex-shrink-0">
+                    <div className="flex-shrink-0 w-full md:w-auto">
                         <button
                             onClick={openChat}
-                            className="inline-flex h-12 items-center justify-center rounded-xl bg-primary px-8 text-sm font-bold text-primary-foreground shadow-xl shadow-sky-500/20 transition-all hover:scale-105 active:scale-95 hover:bg-primary/90"
+                            className="w-full md:w-auto inline-flex h-12 items-center justify-center rounded-xl bg-primary px-8 text-sm font-bold text-primary-foreground shadow-xl shadow-sky-500/20 transition-all hover:scale-105 active:scale-95 hover:bg-primary/90"
                         >
                             {t("button")} <ArrowRight className="ml-2 h-4 w-4" />
                         </button>

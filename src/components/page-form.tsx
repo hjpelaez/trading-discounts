@@ -59,19 +59,21 @@ export function PageForm({ page }: { page?: Page }) {
             <input type="hidden" name="content_en" value={contentEn} />
             <input type="hidden" name="content_es" value={contentEs} />
 
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0">
                 <div className="flex items-center gap-4">
-                    <Link href="/admin/pages" className="h-10 w-10 flex items-center justify-center bg-card border rounded-full hover:bg-muted transition-colors">
+                    <Link href="/admin/pages" className="h-10 w-10 flex items-center justify-center bg-card border rounded-full hover:bg-muted transition-colors shrink-0">
                         <ChevronLeft className="h-5 w-5" />
                     </Link>
                     <div>
-                        <h1 className="text-3xl font-black tracking-tight">{page ? `Edit Page` : "New Page"}</h1>
+                        <h1 className="text-2xl sm:text-3xl font-black tracking-tight">{page ? `Edit Page` : "New Page"}</h1>
                         <p className="text-muted-foreground text-sm flex items-center gap-2">
                             <Globe className="h-3 w-3" /> Multi-language Content
                         </p>
                     </div>
                 </div>
-                <SubmitButton />
+                <div className="w-full sm:w-auto">
+                    <SubmitButton />
+                </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

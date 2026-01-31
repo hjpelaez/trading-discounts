@@ -52,19 +52,21 @@ export function BlogForm({ post, categories = ["Education", "Proptrading", "Stra
             <input type="hidden" name="content_en" value={contentEn} />
             <input type="hidden" name="content_es" value={contentEs} />
 
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0">
                 <div className="flex items-center gap-4">
-                    <Link href="/admin/blog" className="h-10 w-10 flex items-center justify-center bg-card border rounded-full hover:bg-muted transition-colors">
+                    <Link href="/admin/blog" className="h-10 w-10 flex items-center justify-center bg-card border rounded-full hover:bg-muted transition-colors shrink-0">
                         <ChevronLeft className="h-5 w-5" />
                     </Link>
                     <div>
-                        <h1 className="text-3xl font-black tracking-tight">{post ? `Editar Post` : "Nuevo Post"}</h1>
+                        <h1 className="text-2xl sm:text-3xl font-black tracking-tight">{post ? `Editar Post` : "Nuevo Post"}</h1>
                         <p className="text-muted-foreground text-sm flex items-center gap-2">
                             <Sparkles className="h-3 w-3 text-primary" /> Contenido de Educación y Noticias
                         </p>
                     </div>
                 </div>
-                <SubmitButton />
+                <div className="w-full sm:w-auto">
+                    <SubmitButton />
+                </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -115,7 +117,7 @@ export function BlogForm({ post, categories = ["Education", "Proptrading", "Stra
                                     required
                                     rows={3}
                                     placeholder="Breve resumen del artículo para las tarjetas de la web..."
-                                    className="w-full rounded-xl border bg-background px-5 py-4 text-sm focus:ring-2 focus:ring-primary/20 outline-none transition-all border-border/50 resize-none"
+                                    className="w-full rounded-xl border bg-background px-5 py-4 text-base focus:ring-2 focus:ring-primary/20 outline-none transition-all border-border/50 resize-none"
                                 />
                             </div>
                             <div className="space-y-3">
@@ -149,7 +151,7 @@ export function BlogForm({ post, categories = ["Education", "Proptrading", "Stra
                                     required
                                     rows={3}
                                     placeholder="Breve resumen en inglés..."
-                                    className="w-full rounded-xl border bg-background px-5 py-4 text-sm focus:ring-2 focus:ring-primary/20 outline-none transition-all border-border/50 resize-none"
+                                    className="w-full rounded-xl border bg-background px-5 py-4 text-base focus:ring-2 focus:ring-primary/20 outline-none transition-all border-border/50 resize-none"
                                 />
                             </div>
                             <div className="space-y-3">
@@ -182,7 +184,7 @@ export function BlogForm({ post, categories = ["Education", "Proptrading", "Stra
                                     onChange={(e) => setCurrentSlug(e.target.value)}
                                     required
                                     placeholder="e.j. guia-trading-fondeado"
-                                    className="w-full rounded-xl border bg-muted/30 px-4 py-2.5 font-mono text-xs focus:ring-2 focus:ring-primary/20 outline-none transition-all border-border/50"
+                                    className="w-full rounded-xl border bg-muted/30 px-4 py-2.5 font-mono text-base focus:ring-2 focus:ring-primary/20 outline-none transition-all border-border/50"
                                 />
                                 <p className="text-[10px] text-muted-foreground">Esto también se usará como nombre de archivo para las imágenes.</p>
                             </div>
@@ -202,7 +204,7 @@ export function BlogForm({ post, categories = ["Education", "Proptrading", "Stra
                                     value={coverImage}
                                     onChange={(e) => setCoverImage(e.target.value)}
                                     required
-                                    className="w-full rounded-xl border bg-background px-4 py-2.5 text-xs focus:ring-2 focus:ring-primary/20 outline-none transition-all border-border/50 text-muted-foreground"
+                                    className="w-full rounded-xl border bg-background px-4 py-2.5 text-base focus:ring-2 focus:ring-primary/20 outline-none transition-all border-border/50 text-muted-foreground"
                                     placeholder="Esperando subida..."
                                 />
                             </div>
@@ -215,7 +217,7 @@ export function BlogForm({ post, categories = ["Education", "Proptrading", "Stra
                                     name="author"
                                     defaultValue={post?.author || "PFT Team"}
                                     required
-                                    className="w-full rounded-xl border bg-background px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 outline-none transition-all border-border/50"
+                                    className="w-full rounded-xl border bg-background px-4 py-2.5 text-base focus:ring-2 focus:ring-primary/20 outline-none transition-all border-border/50"
                                 />
                             </div>
 
@@ -226,7 +228,7 @@ export function BlogForm({ post, categories = ["Education", "Proptrading", "Stra
                                 <select
                                     name="category"
                                     defaultValue={post?.category || categories[0]}
-                                    className="w-full rounded-xl border bg-background px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 outline-none transition-all border-border/50 appearance-none"
+                                    className="w-full rounded-xl border bg-background px-4 py-2.5 text-base focus:ring-2 focus:ring-primary/20 outline-none transition-all border-border/50 appearance-none"
                                 >
                                     {categories.map((cat) => (
                                         <option key={cat} value={cat}>{cat}</option>
@@ -243,7 +245,7 @@ export function BlogForm({ post, categories = ["Education", "Proptrading", "Stra
                                     type="date"
                                     defaultValue={post?.date || new Date().toISOString().split('T')[0]}
                                     required
-                                    className="w-full rounded-xl border bg-background px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 outline-none transition-all border-border/50"
+                                    className="w-full rounded-xl border bg-background px-4 py-2.5 text-base focus:ring-2 focus:ring-primary/20 outline-none transition-all border-border/50"
                                 />
                             </div>
                         </div>

@@ -47,15 +47,15 @@ export function PriceRangeSlider() {
     };
 
     return (
-        <div className="w-full max-w-[200px] items-center gap-2">
-            <span className="text-sm font-bold text-muted-foreground mr-2 shrink-0">{t('filters.priceLabel')}</span>
-            <div className="flex flex-col w-full gap-2">
-                <div className="flex items-center justify-between text-xs font-bold font-mono">
+        <div className="w-full sm:max-w-[200px] flex flex-col gap-3">
+            <span className="text-sm font-bold text-muted-foreground">{t('filters.priceLabel')}</span>
+            <div className="flex flex-col w-full gap-3 bg-card p-3 rounded-xl border border-border">
+                <div className="flex items-center justify-between text-xs font-bold font-mono text-foreground">
                     <span>${minPrice}</span>
                     <span>${maxPrice}{maxPrice >= MAX_LIMIT && "+"}</span>
                 </div>
 
-                <div className="relative h-2 w-full rounded-full bg-secondary">
+                <div className="relative h-2 w-full rounded-full bg-secondary mb-1">
                     {/* Track fill */}
                     <div
                         className="absolute h-full rounded-full bg-primary"
@@ -72,7 +72,7 @@ export function PriceRangeSlider() {
                         max={MAX_LIMIT}
                         value={minPrice}
                         onChange={handleMinChange}
-                        className="pointer-events-none absolute h-full w-full appearance-none bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:shadow-sm [&::-webkit-slider-thumb]:cursor-pointer"
+                        className="pointer-events-none absolute h-full w-full appearance-none bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-background [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:hover:scale-110 [&::-webkit-slider-thumb]:transition-transform"
                     />
                     <input
                         type="range"
@@ -80,7 +80,7 @@ export function PriceRangeSlider() {
                         max={MAX_LIMIT}
                         value={maxPrice}
                         onChange={handleMaxChange}
-                        className="pointer-events-none absolute h-full w-full appearance-none bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:shadow-sm"
+                        className="pointer-events-none absolute h-full w-full appearance-none bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-background [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:hover:scale-110 [&::-webkit-slider-thumb]:transition-transform"
                     />
                 </div>
             </div>

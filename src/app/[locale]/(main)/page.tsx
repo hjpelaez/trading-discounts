@@ -92,7 +92,7 @@ export default async function Home({ searchParams, params }: { searchParams: Pro
           <div className="inline-block rounded-full bg-primary/10 px-4 py-1.5 text-[10px] font-black uppercase tracking-widest text-primary-dark dark:text-primary mb-8 animate-fade-in shadow-sm border border-primary/20">
             {tHero('pill')}
           </div>
-          <h1 className="text-4xl md:text-7xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/60 mb-12 max-w-4xl mx-auto leading-[1.1] text-balance py-2" dangerouslySetInnerHTML={{ __html: tHero.raw('title').replace('<highlight>', '<span class="text-primary italic">').replace('</highlight>', '</span>') }}>
+          <h1 className="text-3xl md:text-5xl lg:text-7xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/60 mb-12 max-w-4xl mx-auto leading-[1.1] text-balance py-2" dangerouslySetInnerHTML={{ __html: tHero.raw('title').replace('<highlight>', '<span class="text-primary italic">').replace('</highlight>', '</span>') }}>
           </h1>
           <div className="flex items-center justify-center gap-2 mb-12 text-[10px] font-black text-green-500 uppercase tracking-[0.2em] bg-green-500/5 py-2.5 px-6 rounded-full w-fit mx-auto border border-green-500/10 shadow-[0_0_30px_rgba(34,197,94,0.05)]">
             <span className="relative flex h-1.5 w-1.5">

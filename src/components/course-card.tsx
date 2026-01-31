@@ -1,6 +1,8 @@
 "use client";
 
-import { ExternalLink, Check, Sparkles, Clock, BarChart, Globe, Tag } from "lucide-react";
+import { ExternalLink, Check, Sparkles, Clock, BarChart, Globe, Tag, Heart } from "lucide-react";
+import { useFavorites } from "@/lib/hooks/use-favorites";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { CourseDB } from "@/lib/db";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -13,6 +15,7 @@ interface CourseCardProps {
 }
 
 export function CourseCard({ course, className }: CourseCardProps) {
+    const { toggleFavorite, isFavorite } = useFavorites();
     const isSpanish = course.language === 'Spanish' || course.language === 'Español' || (typeof course.language === 'object' && ((course.language as any).es || (course.language as any).en) === 'Spanish');
 
     // Helper to handle legacy bilingual objects or direct strings
@@ -63,8 +66,7 @@ export function CourseCard({ course, className }: CourseCardProps) {
             },
             Language: {
                 'English': { es: 'Inglés', en: 'English' },
-                'Spanish': { es: 'Español', en: 'Spanish' },
-                'Mixed': { es: 'Mixto', en: 'Mixed' }
+                'Spanish': { es: 'Español', en: 'Spanish' }
             },
             Button: {
                 'View': { es: 'Ver Curso', en: 'View Course' }
@@ -135,13 +137,37 @@ export function CourseCard({ course, className }: CourseCardProps) {
                         </div>
                     )}
 
-                    <div className="space-y-1">
-                        {course.featured && (
-                            <span className="inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-black text-primary uppercase tracking-widest border border-primary/20 mb-2">
-                                <Sparkles className="h-3 w-3 mr-1" /> Featured
-                            </span>
-                        )}
-                        <h3 className="text-xl font-black tracking-tight text-foreground leading-tight group-hover:text-primary transition-colors">
+                    <div className="flex-1 min-w-0 space-y-1">
+                        <div className="flex items-start justify-between gap-2">
+                            {course.featured && (
+                                <span className="inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-black text-primary uppercase tracking-widest border border-primary/20 mb-2">
+                                    <Sparkles className="h-3 w-3 mr-1" /> Featured
+                                </span>
+                            )}
+                            <div className="ml-auto">
+                                <TooltipProvider>
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <button
+                                                onClick={(e) => { e.preventDefault(); toggleFavorite(course.id); }}
+                                                className={cn(
+                                                    "h-8 w-8 rounded-full border flex items-center justify-center transition-all hover:scale-110 active:scale-95",
+                                                    isFavorite(course.id)
+                                                        ? "bg-red-500 border-red-500 text-white shadow-lg shadow-red-500/20"
+                                                        : "bg-background border-border text-muted-foreground hover:text-red-500 hover:border-red-500/50"
+                                                )}
+                                            >
+                                                <Heart className={cn("h-4 w-4", isFavorite(course.id) && "fill-current")} />
+                                            </button>
+                                        </TooltipTrigger>
+                                        <TooltipContent side="left" sideOffset={10}>
+                                            <p>{isFavorite(course.id) ? (isSpanish ? 'Quitar de favoritos' : 'Remove from favorites') : (isSpanish ? 'Añadir a favoritos' : 'Add to favorites')}</p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
+                            </div>
+                        </div>
+                        <h3 className="text-xl font-black tracking-tight text-foreground leading-tight group-hover:text-primary transition-colors pr-8">
                             <Link href={course.link} target="_blank">{title}</Link>
                         </h3>
                         <div className="flex items-center gap-2 text-sm text-muted-foreground font-medium">

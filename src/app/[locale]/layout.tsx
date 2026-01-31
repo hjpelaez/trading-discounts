@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { getSettings } from '@/lib/db';
 import "../globals.css";
+import { ScrollToTop } from "@/components/scroll-to-top";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -59,6 +60,7 @@ export default async function LocaleLayout({
             <LazyMotionProvider>
               {children}
             </LazyMotionProvider>
+            <ScrollToTop />
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

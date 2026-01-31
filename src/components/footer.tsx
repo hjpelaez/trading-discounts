@@ -52,17 +52,17 @@ export function Footer({ settings }: { settings: Settings }) {
                     <div>
                         <h3 className="font-black text-xs uppercase tracking-[0.2em] mb-6 text-foreground/50">{t('company')}</h3>
                         <ul className="space-y-4 text-sm font-bold">
-                            <li><LocalizedLink href="/about-us" className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-2"><Info className="h-3.5 w-3.5" /> {locale === 'es' ? 'Sobre Nosotros' : 'About Us'}</LocalizedLink></li>
-                            <li><LocalizedLink href="/contact" className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-2"><Mail className="h-3.5 w-3.5" /> {locale === 'es' ? 'Contacto' : 'Contact'}</LocalizedLink></li>
+                            <li><LocalizedLink href="/about-us" className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-2">{locale === 'es' ? 'Sobre Nosotros' : 'About Us'}</LocalizedLink></li>
+                            <li><LocalizedLink href="/contact" className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-2">{locale === 'es' ? 'Contacto' : 'Contact'}</LocalizedLink></li>
                         </ul>
                     </div>
 
                     <div>
                         <h3 className="font-black text-xs uppercase tracking-[0.2em] mb-6 text-foreground/50">{t('terms')}</h3>
                         <ul className="space-y-4 text-sm font-bold">
-                            <li><LocalizedLink href="/privacy-policy" className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-2"><FileText className="h-3.5 w-3.5" /> {locale === 'es' ? 'Privacidad' : 'Privacy'}</LocalizedLink></li>
-                            <li><LocalizedLink href="/terms-of-service" className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-2"><FileText className="h-3.5 w-3.5" /> {locale === 'es' ? 'Términos' : 'Terms'}</LocalizedLink></li>
-                            <li><LocalizedLink href="/disclaimer" className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-2"><ShieldAlert className="h-3.5 w-3.5" /> {locale === 'es' ? 'Aviso Legal' : 'Disclaimer'}</LocalizedLink></li>
+                            <li><LocalizedLink href="/privacy-policy" className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-2">{locale === 'es' ? 'Privacidad' : 'Privacy'}</LocalizedLink></li>
+                            <li><LocalizedLink href="/terms-of-service" className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-2">{locale === 'es' ? 'Términos' : 'Terms'}</LocalizedLink></li>
+                            <li><LocalizedLink href="/disclaimer" className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-2">{locale === 'es' ? 'Aviso Legal' : 'Disclaimer'}</LocalizedLink></li>
                         </ul>
                     </div>
                 </div>

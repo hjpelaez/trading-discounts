@@ -97,7 +97,7 @@ export default function ComingSoonPage() {
                                 placeholder={t('namePlaceholder')}
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
-                                className="flex-1 px-6 py-4 bg-white/10 border border-white/20 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent backdrop-blur-sm"
+                                className="w-full md:flex-1 h-14 px-6 text-base bg-white/10 border border-white/20 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent backdrop-blur-sm"
                             />
                             {/* Honeypot field - hidden from humans */}
                             <input
@@ -116,12 +116,12 @@ export default function ComingSoonPage() {
                                 placeholder={t('emailPlaceholder')}
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="flex-[2] px-6 py-4 bg-white/10 border border-white/20 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent backdrop-blur-sm"
+                                className="w-full md:flex-[2] h-14 px-6 text-base bg-white/10 border border-white/20 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent backdrop-blur-sm"
                             />
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold rounded-2xl transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-purple-500/50 whitespace-nowrap"
+                                className="w-full md:w-auto h-14 px-8 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white text-base font-bold rounded-2xl shadow-xl shadow-sky-500/20 transition-all hover:scale-105 active:scale-95 whitespace-nowrap"
                             >
                                 {loading ? t('sending') : t('notifyButton')}
                             </button>

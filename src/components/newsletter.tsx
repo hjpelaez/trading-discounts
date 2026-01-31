@@ -64,7 +64,7 @@ export function Newsletter() {
                                         placeholder={t("namePlaceholder")}
                                         value={name}
                                         onChange={(e) => setName(e.target.value)}
-                                        className="flex-1 h-14 px-6 rounded-2xl border border-border bg-background shadow-sm focus:border-primary/50 focus:ring-4 focus:ring-primary/10 focus:outline-none transition-all"
+                                        className="w-full md:flex-1 h-14 px-6 text-base rounded-2xl border border-border bg-background shadow-sm focus:border-primary/50 focus:ring-4 focus:ring-primary/10 focus:outline-none transition-all placeholder:text-muted-foreground/50"
                                     />
                                     {/* Honeypot field - hidden from humans, visible to bots */}
                                     <input
@@ -83,12 +83,12 @@ export function Newsletter() {
                                         placeholder={t("placeholder")}
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
-                                        className="flex-1 h-14 px-6 rounded-2xl border border-border bg-background shadow-sm focus:border-primary/50 focus:ring-4 focus:ring-primary/10 focus:outline-none transition-all"
+                                        className="w-full md:flex-1 h-14 px-6 text-base rounded-2xl border border-border bg-background shadow-sm focus:border-primary/50 focus:ring-4 focus:ring-primary/10 focus:outline-none transition-all placeholder:text-muted-foreground/50"
                                     />
                                     <button
                                         type="submit"
                                         disabled={status === "loading"}
-                                        className="h-14 px-8 rounded-2xl bg-primary text-primary-foreground font-bold flex items-center justify-center gap-2 hover:bg-primary/90 transition-all disabled:opacity-50 shadow-xl whitespace-nowrap"
+                                        className="w-full md:w-auto h-14 px-8 rounded-2xl bg-primary text-primary-foreground text-base font-bold flex items-center justify-center gap-2 shadow-xl shadow-sky-500/20 transition-all hover:scale-105 active:scale-95 hover:bg-primary/90 whitespace-nowrap"
                                     >
                                         {status === "loading" ? "..." : t("button")} <Send className={"h-4 w-4 " + (status === "error" ? "text-red-500" : "")} />
                                     </button>

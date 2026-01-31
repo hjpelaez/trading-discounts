@@ -35,41 +35,45 @@ export function CourseFilterBar() {
 
     return (
         <div className="flex flex-col gap-4 mb-8">
-            <div className="flex flex-wrap items-center gap-2">
-                <span className="text-sm font-bold text-muted-foreground mr-2">{t('filters.categoryLabel')}</span>
-                {["All", "Forex", "Crypto", "Futures", "Options", "Stocks"].map((cat) => (
-                    <button
-                        key={cat}
-                        onClick={() => handleFilter("category", cat)}
-                        className={cn(
-                            "px-3 py-1.5 rounded-full text-xs font-bold transition-all border cursor-pointer",
-                            activeCategory === cat
-                                ? "bg-primary text-primary-foreground border-primary"
-                                : "bg-card text-muted-foreground border-border hover:border-primary/50"
-                        )}
-                    >
-                        {cat === "All" ? t('all') : t(`Categories.${cat}`)}
-                    </button>
-                ))}
-            </div>
-
-            <div className="flex flex-wrap items-center gap-6">
-                <div className="flex items-center gap-2">
-                    <span className="text-sm font-bold text-muted-foreground mr-2">{t('filters.languageLabel')}</span>
-                    {["All", "English", "Spanish", "Mixed"].map((lang) => (
+            <div className="flex flex-col gap-3">
+                <span className="text-sm font-bold text-muted-foreground">{t('filters.categoryLabel')}</span>
+                <div className="flex flex-wrap gap-2">
+                    {["All", "Forex", "Crypto", "Futures", "Options", "Stocks"].map((cat) => (
                         <button
-                            key={lang}
-                            onClick={() => handleFilter("language", lang)}
+                            key={cat}
+                            onClick={() => handleFilter("category", cat)}
                             className={cn(
-                                "px-3 py-1.5 rounded-full text-xs font-bold transition-all border",
-                                activeLanguage === lang
-                                    ? "bg-primary text-primary-foreground border-primary"
-                                    : "bg-card text-muted-foreground border-border hover:border-primary/50"
+                                "h-10 px-4 rounded-xl text-sm font-bold transition-all border cursor-pointer flex items-center justify-center",
+                                activeCategory === cat
+                                    ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/20"
+                                    : "bg-card text-muted-foreground border-border hover:border-primary/50 hover:bg-muted/50"
                             )}
                         >
-                            {lang === "All" ? t('filters.anyLanguage') : t(`Languages.${lang}`)}
+                            {cat === "All" ? t('all') : t(`Categories.${cat}`)}
                         </button>
                     ))}
+                </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-6 w-full">
+                <div className="flex flex-col gap-3 w-full sm:w-auto">
+                    <span className="text-sm font-bold text-muted-foreground">{t('filters.languageLabel')}</span>
+                    <div className="flex flex-wrap gap-2">
+                        {["All", "English", "Spanish"].map((lang) => (
+                            <button
+                                key={lang}
+                                onClick={() => handleFilter("language", lang)}
+                                className={cn(
+                                    "h-10 px-4 rounded-xl text-sm font-bold transition-all border cursor-pointer flex items-center justify-center",
+                                    activeLanguage === lang
+                                        ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/20"
+                                        : "bg-card text-muted-foreground border-border hover:border-primary/50 hover:bg-muted/50"
+                                )}
+                            >
+                                {lang === "All" ? t('filters.anyLanguage') : t(`Languages.${lang}`)}
+                            </button>
+                        ))}
+                    </div>
                 </div>
 
                 <div className="w-px h-6 bg-border hidden sm:block" />

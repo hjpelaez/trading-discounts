@@ -42,13 +42,13 @@ export function PreFooter() {
                             <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
                                 <Link
                                     href="/forex"
-                                    className="h-14 px-10 rounded-2xl bg-primary text-primary-foreground font-black text-lg flex items-center gap-2 hover:scale-105 transition-all shadow-xl shadow-primary/20"
+                                    className="w-full sm:w-auto h-14 px-10 rounded-2xl bg-primary text-primary-foreground font-black text-lg flex items-center justify-center gap-2 hover:scale-105 transition-all shadow-xl shadow-primary/20"
                                 >
                                     {t("explore")} <ArrowRight className="h-5 w-5" />
                                 </Link>
                                 <button
                                     onClick={() => window.dispatchEvent(new CustomEvent('open-ai-chat'))}
-                                    className="h-14 px-8 rounded-2xl bg-muted border border-border font-bold flex items-center gap-2 hover:bg-muted/80 transition-all"
+                                    className="w-full sm:w-auto h-14 px-8 rounded-2xl bg-muted border border-border font-bold flex items-center justify-center gap-2 hover:bg-muted/80 transition-all"
                                 >
                                     {t("askAi")}
                                 </button>

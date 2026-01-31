@@ -82,7 +82,7 @@ export interface Course {
     duration?: string;
     featured?: boolean;
     level: "Beginner" | "Intermediate" | "Advanced" | "All Levels";
-    language: "English" | "Spanish" | "Mixed";
+    language: "English" | "Spanish";
     longDescription?: string;
     learningPoints?: string[];
     curriculum?: { title: string; lessons: string[] }[];

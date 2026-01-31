@@ -27,7 +27,7 @@ export async function autoFillCourseFromUrl(url: string): Promise<Partial<Course
         
         CRITICAL: 
         1. You MUST generate content in BOTH English (en) and Spanish (es). Translate accuratey.
-        2. Detect the "Language" of the audio/video content (English, Spanish, or Mixed).
+        2. Detect the "Language" of the audio/video content (English or Spanish).
         3. Guess the "Category" from: [General, Forex, Crypto, Futures, Options, Stocks].
         4. "Level": Beginner, Intermediate, Advanced, or All Levels.
         
@@ -40,7 +40,7 @@ export async function autoFillCourseFromUrl(url: string): Promise<Partial<Course
            "rating": 4.8, (Estimate if not found)
            "duration": "...", (e.g. 10h 30m)
            "level": "...",
-           "language": "...",
+           "language": "English" | "Spanish",
            "category": "...",
            "priceLabel": "...", (e.g. "$497", "Free", "$49/mo")
            "priceMin": 0, (Numeric value of price)

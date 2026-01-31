@@ -9,7 +9,8 @@
         "contact": "Contacto",
         "courses": "Cursos",
         "ai": "Preguntar a Tidi",
-        "ai_tooltip": "Preguntar al Asistente IA Tidi"
+        "ai_tooltip": "Preguntar al Asistente IA Tidi",
+        "language": "Idioma"
     },
     "Hero": {
         "pill": "🚀 El Agregador #1 de Descuentos en Prop Firms",

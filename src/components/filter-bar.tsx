@@ -49,15 +49,15 @@ export function FilterBar({ allFirms }: { allFirms: PropFirm[] }) {
     return (
         <div className="flex flex-col gap-10 py-6">
             <div className="flex flex-col sm:flex-row gap-8 items-start sm:items-center">
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 overflow-hidden w-full">
                     <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.15em] whitespace-nowrap">{t('filters.apps')}:</span>
-                    <div className="flex gap-2.5 flex-wrap">
+                    <div className="flex gap-2.5 overflow-x-auto pb-2 scrollbar-hide w-full sm:w-auto -mx-4 px-4 sm:mx-0 sm:px-0">
                         <button
                             onClick={() => handleFilterChange("platform", null)}
                             className={cn(
-                                "inline-flex items-center rounded-full border px-4 py-1.5 text-xs font-bold transition-all cursor-pointer",
+                                "h-10 px-4 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 flex items-center justify-center border",
                                 !activePlatform
-                                    ? "bg-primary text-primary-foreground border-transparent shadow-xl shadow-sky-500/20 scale-110"
+                                    ? "bg-primary text-primary-foreground border-transparent shadow-lg shadow-sky-500/20 scale-105"
                                     : "bg-secondary text-secondary-foreground border-input hover:border-primary/50 hover:bg-secondary/80"
                             )}
                         >
@@ -68,9 +68,9 @@ export function FilterBar({ allFirms }: { allFirms: PropFirm[] }) {
                                 key={platform}
                                 onClick={() => handleFilterChange("platform", platform)}
                                 className={cn(
-                                    "inline-flex items-center rounded-full border px-4 py-1.5 text-xs font-bold transition-all cursor-pointer",
+                                    "h-10 px-4 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 flex items-center justify-center border",
                                     activePlatform === platform
-                                        ? "bg-primary text-primary-foreground border-transparent shadow-xl shadow-sky-500/20 scale-110"
+                                        ? "bg-primary text-primary-foreground border-transparent shadow-lg shadow-sky-500/20 scale-105"
                                         : "bg-secondary text-secondary-foreground border-input hover:border-primary/50 hover:bg-secondary/80"
                                 )}
                             >
@@ -82,15 +82,15 @@ export function FilterBar({ allFirms }: { allFirms: PropFirm[] }) {
 
                 <div className="w-px h-8 bg-border hidden sm:block mx-2" />
 
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 overflow-hidden w-full">
                     <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.15em] whitespace-nowrap">{t('filters.rating')}:</span>
-                    <div className="flex gap-2.5">
+                    <div className="flex gap-2.5 overflow-x-auto pb-2 scrollbar-hide w-full sm:w-auto -mx-4 px-4 sm:mx-0 sm:px-0">
                         <button
                             onClick={() => handleFilterChange("rating", null)}
                             className={cn(
-                                "inline-flex items-center rounded-full border px-4 py-1.5 text-xs font-bold transition-all cursor-pointer",
+                                "h-10 px-4 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 flex items-center justify-center border",
                                 !activeRating
-                                    ? "bg-primary text-primary-foreground border-transparent shadow-xl shadow-sky-500/20 scale-110"
+                                    ? "bg-primary text-primary-foreground border-transparent shadow-lg shadow-sky-500/20 scale-105"
                                     : "bg-secondary text-secondary-foreground border-input hover:border-primary/50 hover:bg-secondary/80"
                             )}
                         >
@@ -99,9 +99,9 @@ export function FilterBar({ allFirms }: { allFirms: PropFirm[] }) {
                         <button
                             onClick={() => handleFilterChange("rating", "4.5")}
                             className={cn(
-                                "inline-flex items-center rounded-full border px-4 py-1.5 text-xs font-bold transition-all cursor-pointer",
+                                "h-10 px-4 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 flex items-center justify-center border",
                                 activeRating === "4.5"
-                                    ? "bg-primary text-primary-foreground border-transparent shadow-xl shadow-sky-500/20 scale-110"
+                                    ? "bg-primary text-primary-foreground border-transparent shadow-lg shadow-sky-500/20 scale-105"
                                     : "bg-secondary text-secondary-foreground border-input hover:border-primary/50 hover:bg-secondary/80"
                             )}
                         >
@@ -111,15 +111,15 @@ export function FilterBar({ allFirms }: { allFirms: PropFirm[] }) {
                 </div>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 overflow-hidden w-full">
                 <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.15em] whitespace-nowrap">{t('filters.drawdown')}:</span>
-                <div className="flex gap-2.5 flex-wrap">
+                <div className="flex gap-2.5 overflow-x-auto pb-2 scrollbar-hide w-full sm:w-auto -mx-4 px-4 sm:mx-0 sm:px-0">
                     <button
                         onClick={() => handleFilterChange("drawdown", null)}
                         className={cn(
-                            "inline-flex items-center rounded-full border px-4 py-1.5 text-xs font-bold transition-all cursor-pointer",
+                            "h-10 px-4 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 flex items-center justify-center border",
                             !activeDrawdown
-                                ? "bg-primary text-primary-foreground border-transparent shadow-xl scale-110"
+                                ? "bg-primary text-primary-foreground border-transparent shadow-lg scale-105"
                                 : "bg-secondary text-secondary-foreground border-input hover:border-primary/50 hover:bg-secondary/80"
                         )}
                     >
@@ -130,9 +130,9 @@ export function FilterBar({ allFirms }: { allFirms: PropFirm[] }) {
                             key={type}
                             onClick={() => handleFilterChange("drawdown", type)}
                             className={cn(
-                                "inline-flex items-center rounded-full border px-4 py-1.5 text-xs font-bold transition-all whitespace-nowrap cursor-pointer",
+                                "h-10 px-4 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer shrink-0 flex items-center justify-center border",
                                 activeDrawdown === type
-                                    ? "bg-primary text-primary-foreground border-transparent shadow-xl shadow-sky-500/20 scale-110"
+                                    ? "bg-primary text-primary-foreground border-transparent shadow-lg shadow-sky-500/20 scale-105"
                                     : "bg-secondary text-secondary-foreground border-input hover:border-primary/50 hover:bg-secondary/80"
                             )}
                         >
