@@ -47,15 +47,16 @@ export function PriceRangeSlider() {
     };
 
     return (
-        <div className="w-full sm:max-w-[200px] flex flex-col gap-3">
-            <span className="text-sm font-bold text-muted-foreground">{t('filters.priceLabel')}</span>
-            <div className="flex flex-col w-full gap-3 bg-card p-3 rounded-xl border border-border">
-                <div className="flex items-center justify-between text-xs font-bold font-mono text-foreground">
-                    <span>${minPrice}</span>
-                    <span>${maxPrice}{maxPrice >= MAX_LIMIT && "+"}</span>
-                </div>
+        <div className="w-full sm:w-auto flex flex-col gap-3">
+            <span className="text-sm font-bold text-gray-500">{t('filters.priceLabel')}</span>
 
-                <div className="relative h-2 w-full rounded-full bg-secondary mb-1">
+            <div className="w-full sm:w-auto bg-card p-3 rounded-xl border border-border min-w-[300px] flex items-center gap-3">
+                <span className="text-xs font-bold font-mono text-foreground min-w-[30px] text-right">${minPrice}</span>
+
+                <div
+                    className="relative h-2 w-full rounded-full grow"
+                    style={{ backgroundColor: '#D1D5DB' }}
+                >
                     {/* Track fill */}
                     <div
                         className="absolute h-full rounded-full bg-primary"
@@ -72,7 +73,8 @@ export function PriceRangeSlider() {
                         max={MAX_LIMIT}
                         value={minPrice}
                         onChange={handleMinChange}
-                        className="pointer-events-none absolute h-full w-full appearance-none bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-background [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:hover:scale-110 [&::-webkit-slider-thumb]:transition-transform"
+                        style={{ background: 'transparent' }}
+                        className="pointer-events-none absolute h-full w-full appearance-none bg-transparent focus:outline-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-background [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:hover:scale-110 [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-runnable-track]:bg-transparent [&::-moz-range-track]:bg-transparent [&::-webkit-slider-runnable-track]:appearance-none"
                     />
                     <input
                         type="range"
@@ -80,9 +82,12 @@ export function PriceRangeSlider() {
                         max={MAX_LIMIT}
                         value={maxPrice}
                         onChange={handleMaxChange}
-                        className="pointer-events-none absolute h-full w-full appearance-none bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-background [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:hover:scale-110 [&::-webkit-slider-thumb]:transition-transform"
+                        style={{ background: 'transparent' }}
+                        className="pointer-events-none absolute h-full w-full appearance-none bg-transparent focus:outline-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-background [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:hover:scale-110 [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-runnable-track]:bg-transparent [&::-moz-range-track]:bg-transparent [&::-webkit-slider-runnable-track]:appearance-none"
                     />
                 </div>
+
+                <span className="text-xs font-bold font-mono text-foreground min-w-[30px]">${maxPrice}{maxPrice >= MAX_LIMIT && "+"}</span>
             </div>
         </div>
     );

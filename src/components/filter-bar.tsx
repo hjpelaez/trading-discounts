@@ -47,15 +47,15 @@ export function FilterBar({ allFirms }: { allFirms: PropFirm[] }) {
         [allFirms]);
 
     return (
-        <div className="flex flex-col gap-10 py-6">
-            <div className="flex flex-col sm:flex-row gap-8 items-start sm:items-center">
-                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 overflow-hidden w-full">
-                    <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.15em] whitespace-nowrap">{t('filters.apps')}:</span>
-                    <div className="flex gap-2.5 overflow-x-auto pb-2 scrollbar-hide w-full sm:w-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+        <div className="flex flex-col gap-8 py-6">
+            <div className="flex flex-col sm:flex-row gap-8 items-start w-full">
+                <div className="flex flex-col gap-3 w-full">
+                    <span className="text-sm font-bold text-muted-foreground">{t('filters.apps')}</span>
+                    <div className="flex flex-wrap gap-2">
                         <button
                             onClick={() => handleFilterChange("platform", null)}
                             className={cn(
-                                "h-10 px-4 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 flex items-center justify-center border",
+                                "h-10 px-4 rounded-xl text-sm font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 flex items-center justify-center border",
                                 !activePlatform
                                     ? "bg-primary text-primary-foreground border-transparent shadow-lg shadow-sky-500/20 scale-105"
                                     : "bg-secondary text-secondary-foreground border-input hover:border-primary/50 hover:bg-secondary/80"
@@ -68,7 +68,7 @@ export function FilterBar({ allFirms }: { allFirms: PropFirm[] }) {
                                 key={platform}
                                 onClick={() => handleFilterChange("platform", platform)}
                                 className={cn(
-                                    "h-10 px-4 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 flex items-center justify-center border",
+                                    "h-10 px-4 rounded-xl text-sm font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 flex items-center justify-center border",
                                     activePlatform === platform
                                         ? "bg-primary text-primary-foreground border-transparent shadow-lg shadow-sky-500/20 scale-105"
                                         : "bg-secondary text-secondary-foreground border-input hover:border-primary/50 hover:bg-secondary/80"
@@ -80,15 +80,13 @@ export function FilterBar({ allFirms }: { allFirms: PropFirm[] }) {
                     </div>
                 </div>
 
-                <div className="w-px h-8 bg-border hidden sm:block mx-2" />
-
-                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 overflow-hidden w-full">
-                    <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.15em] whitespace-nowrap">{t('filters.rating')}:</span>
-                    <div className="flex gap-2.5 overflow-x-auto pb-2 scrollbar-hide w-full sm:w-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+                <div className="flex flex-col gap-3 sm:w-auto min-w-[200px]">
+                    <span className="text-sm font-bold text-muted-foreground">{t('filters.rating')}</span>
+                    <div className="flex flex-wrap gap-2">
                         <button
                             onClick={() => handleFilterChange("rating", null)}
                             className={cn(
-                                "h-10 px-4 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 flex items-center justify-center border",
+                                "h-10 px-4 rounded-xl text-sm font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 flex items-center justify-center border",
                                 !activeRating
                                     ? "bg-primary text-primary-foreground border-transparent shadow-lg shadow-sky-500/20 scale-105"
                                     : "bg-secondary text-secondary-foreground border-input hover:border-primary/50 hover:bg-secondary/80"
@@ -99,7 +97,7 @@ export function FilterBar({ allFirms }: { allFirms: PropFirm[] }) {
                         <button
                             onClick={() => handleFilterChange("rating", "4.5")}
                             className={cn(
-                                "h-10 px-4 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 flex items-center justify-center border",
+                                "h-10 px-4 rounded-xl text-sm font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 flex items-center justify-center border",
                                 activeRating === "4.5"
                                     ? "bg-primary text-primary-foreground border-transparent shadow-lg shadow-sky-500/20 scale-105"
                                     : "bg-secondary text-secondary-foreground border-input hover:border-primary/50 hover:bg-secondary/80"
@@ -111,13 +109,13 @@ export function FilterBar({ allFirms }: { allFirms: PropFirm[] }) {
                 </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 overflow-hidden w-full">
-                <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.15em] whitespace-nowrap">{t('filters.drawdown')}:</span>
-                <div className="flex gap-2.5 overflow-x-auto pb-2 scrollbar-hide w-full sm:w-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+            <div className="flex flex-col gap-3 w-full">
+                <span className="text-sm font-bold text-muted-foreground">{t('filters.drawdown')}</span>
+                <div className="flex flex-wrap gap-2">
                     <button
                         onClick={() => handleFilterChange("drawdown", null)}
                         className={cn(
-                            "h-10 px-4 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 flex items-center justify-center border",
+                            "h-10 px-4 rounded-xl text-sm font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 flex items-center justify-center border",
                             !activeDrawdown
                                 ? "bg-primary text-primary-foreground border-transparent shadow-lg scale-105"
                                 : "bg-secondary text-secondary-foreground border-input hover:border-primary/50 hover:bg-secondary/80"
@@ -130,7 +128,7 @@ export function FilterBar({ allFirms }: { allFirms: PropFirm[] }) {
                             key={type}
                             onClick={() => handleFilterChange("drawdown", type)}
                             className={cn(
-                                "h-10 px-4 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer shrink-0 flex items-center justify-center border",
+                                "h-10 px-4 rounded-xl text-sm font-bold transition-all whitespace-nowrap cursor-pointer shrink-0 flex items-center justify-center border",
                                 activeDrawdown === type
                                     ? "bg-primary text-primary-foreground border-transparent shadow-lg shadow-sky-500/20 scale-105"
                                     : "bg-secondary text-secondary-foreground border-input hover:border-primary/50 hover:bg-secondary/80"

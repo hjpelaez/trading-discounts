@@ -76,7 +76,7 @@ export function CourseFilterBar() {
                     </div>
                 </div>
 
-                <div className="w-px h-6 bg-border hidden sm:block" />
+                <div className="w-px h-8 bg-border hidden sm:block mt-8" />
 
                 <PriceRangeSlider />
             </div>

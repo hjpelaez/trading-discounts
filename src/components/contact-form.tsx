@@ -99,6 +99,14 @@ export function ContactForm({ privacyNote }: { privacyNote: string }) {
                                                 className="w-full h-14 bg-background border border-border focus:border-primary/50 focus:ring-4 focus:ring-primary/10 rounded-2xl px-6 transition-all outline-none"
                                                 placeholder="John Doe"
                                             />
+                                            {/* Honeypot field (hidden) */}
+                                            <input
+                                                type="text"
+                                                name="website"
+                                                className="absolute opacity-0 pointer-events-none"
+                                                tabIndex={-1}
+                                                autoComplete="off"
+                                            />
                                         </div>
                                         <div className="space-y-2">
                                             <label className="text-sm font-bold uppercase tracking-wider text-muted-foreground pl-1">

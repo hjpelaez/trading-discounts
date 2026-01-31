@@ -5,6 +5,12 @@ export async function sendContactEmailAction(formData: FormData) {
     const email = formData.get("email");
     const subject = formData.get("subject");
     const message = formData.get("message");
+    const honeypot = formData.get("website");
+
+    // Honeypot check: If filled, it's a bot. Return success to fool them.
+    if (honeypot) {
+        return { success: true };
+    }
 
     // console.log("Contact Form Submission:", { name, email, subject, message });
 

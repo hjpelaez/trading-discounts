@@ -290,8 +290,9 @@
         "footer": "© 2025 Trading Discounts. Todos los derechos reservados."
     },
     "Crypto": {
-        "title": "Prop Firms de <highlight>Criptomonedas</highlight>",
-        "subtitle": "Obtén financiamiento con cripto. Las mejores firmas de fondeo que ofrecen pagos y pares de criptomonedas."
+        "titlePart1": "Prop Firms de",
+        "titlePart2": "Criptomonedas",
+        "description": "Obtén financiamiento con cripto. Las mejores firmas de fondeo que ofrecen pagos y pares de criptomonedas."
     },
     "Forex": {
         "titlePart1": "Prop Firms de",
