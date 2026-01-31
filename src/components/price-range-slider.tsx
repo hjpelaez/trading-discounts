@@ -51,7 +51,7 @@ export function PriceRangeSlider() {
             <span className="text-sm font-bold text-gray-500">{t('filters.priceLabel')}</span>
 
             <div className="w-full sm:w-auto bg-card px-7 py-3 rounded-xl border border-border min-w-[300px] flex items-center gap-3">
-                <span className="text-xs font-bold font-mono text-foreground min-w-[30px] text-right">${minPrice}</span>
+                <span className="text-xs font-bold font-mono text-foreground min-w-[50px] text-right">${minPrice}</span>
 
                 <div
                     className="relative h-2 w-full rounded-full grow"
@@ -87,7 +87,9 @@ export function PriceRangeSlider() {
                     />
                 </div>
 
-                <span className="text-xs font-bold font-mono text-foreground min-w-[30px]">${maxPrice}{maxPrice >= MAX_LIMIT && "+"}</span>
+                <span className="text-xs font-bold font-mono text-foreground min-w-[50px] text-left">
+                    ${maxPrice}{maxPrice >= MAX_LIMIT && "+"}
+                </span>
             </div>
         </div>
     );
