@@ -50,7 +50,7 @@ export function PriceRangeSlider() {
         <div className="w-full sm:w-auto flex flex-col gap-3">
             <span className="text-sm font-bold text-gray-500">{t('filters.priceLabel')}</span>
 
-            <div className="w-full sm:w-auto bg-card px-5 py-3 rounded-xl border border-border min-w-[300px] flex items-center gap-3">
+            <div className="w-full sm:w-auto bg-card px-7 py-3 rounded-xl border border-border min-w-[300px] flex items-center gap-3">
                 <span className="text-xs font-bold font-mono text-foreground min-w-[30px] text-right">${minPrice}</span>
 
                 <div
