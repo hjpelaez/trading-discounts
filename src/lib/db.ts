@@ -5,17 +5,27 @@ import { cache } from "react";
 
 // --- FIRMS ---
 
-export const getFirms = cache(async (): Promise<PropFirm[]> => {
+export const getFirms = cache(async (options?: { admin?: boolean }): Promise<PropFirm[]> => {
     try {
         const supabase = createStaticClient();
-        const { data, error } = await supabase
+        let query = supabase
             .from('Firm')
             .select('*')
             .order('featured', { ascending: false })
             .order('rating', { ascending: false });
 
+        const { data, error } = await query;
+
         if (error) throw error;
-        return data || [];
+
+        let firms = data || [];
+
+        // Filter out hidden firms unless admin mode is requested
+        if (!options?.admin) {
+            firms = firms.filter(f => f.isVisible !== false);
+        }
+
+        return firms;
     } catch (error) {
         console.error("Error fetching firms from DB:", error);
         return [];

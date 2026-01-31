@@ -59,6 +59,7 @@ export function FirmCard({ firm, className }: FirmCardProps) {
         // Lazy load confetti
         const confetti = (await import("canvas-confetti")).default;
 
+        if (!firm.code) return;
         navigator.clipboard.writeText(firm.code);
         setCopied(true);
         setRecentCopy(true);
@@ -181,38 +182,62 @@ export function FirmCard({ firm, className }: FirmCardProps) {
                     </div>
 
                     <div className="mt-auto space-y-4">
-                        <div className="relative group/discount overflow-hidden p-4 rounded-xl bg-secondary/50 border border-border transition-all hover:bg-secondary">
-                            <div className="flex items-center justify-between">
-                                <div className="flex flex-col">
-                                    <span className="text-[10px] text-muted-foreground uppercase font-black tracking-widest">{t('discount')}</span>
-                                    <span className="text-3xl font-black text-primary group-hover/discount:scale-110 transition-transform origin-left drop-shadow-sm">{firm.discount}</span>
-                                </div>
-                                <div className="flex flex-col items-end">
-                                    <span className="text-[10px] text-muted-foreground uppercase font-black tracking-widest mb-1.5">{t('code')}</span>
-                                    <TooltipProvider>
-                                        <Tooltip>
-                                            <TooltipTrigger asChild>
-                                                <button
-                                                    onClick={copyCode}
-                                                    className={cn(
-                                                        "flex items-center gap-2 text-sm font-black font-mono px-4 py-2.5 rounded-lg transition-all active:scale-95 shadow-lg relative overflow-hidden",
-                                                        copied
-                                                            ? "bg-green-500 text-white border-green-500 scale-105"
-                                                            : "bg-foreground text-background border-foreground hover:bg-foreground/90"
-                                                    )}
-                                                >
-                                                    <span className="relative z-10">{firm.code}</span>
-                                                    {copied ? <Check className="h-4 w-4 relative z-10" /> : <Copy className="h-4 w-4 relative z-10" />}
-                                                </button>
-                                            </TooltipTrigger>
-                                            <TooltipContent>
-                                                {!isAdmin && <p>{copied ? t('copied') : t('copyCode')}</p>}
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    </TooltipProvider>
+                        {firm.code ? (
+                            <div className="relative group/discount overflow-hidden p-4 rounded-xl bg-secondary/50 border border-border transition-all hover:bg-secondary">
+                                <div className="flex items-center justify-between">
+                                    <div className="flex flex-col">
+                                        <span className="text-[10px] text-muted-foreground uppercase font-black tracking-widest">{t('discount')}</span>
+                                        <span className="text-3xl font-black text-primary group-hover/discount:scale-110 transition-transform origin-left drop-shadow-sm">{firm.discount}</span>
+                                    </div>
+                                    <div className="flex flex-col items-end">
+                                        <span className="text-[10px] text-muted-foreground uppercase font-black tracking-widest mb-1.5">{t('code')}</span>
+                                        <TooltipProvider>
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <button
+                                                        onClick={copyCode}
+                                                        className={cn(
+                                                            "flex items-center gap-2 text-sm font-black font-mono px-4 py-2.5 rounded-lg transition-all active:scale-95 shadow-lg relative overflow-hidden",
+                                                            copied
+                                                                ? "bg-green-500 text-white border-green-500 scale-105"
+                                                                : "bg-foreground text-background border-foreground hover:bg-foreground/90"
+                                                        )}
+                                                    >
+                                                        <span className="relative z-10">{firm.code}</span>
+                                                        {copied ? <Check className="h-4 w-4 relative z-10" /> : <Copy className="h-4 w-4 relative z-10" />}
+                                                    </button>
+                                                </TooltipTrigger>
+                                                <TooltipContent>
+                                                    {!isAdmin && <p>{copied ? t('copied') : t('copyCode')}</p>}
+                                                </TooltipContent>
+                                            </Tooltip>
+                                        </TooltipProvider>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        ) : (
+                            <Link
+                                href={firm.link}
+                                target="_blank"
+                                className="relative group/discount overflow-hidden p-4 rounded-xl bg-secondary/50 border border-border transition-all hover:bg-secondary block"
+                            >
+                                <div className="flex items-center justify-between">
+                                    <div className="flex flex-col">
+                                        <span className="text-[10px] text-muted-foreground uppercase font-black tracking-widest">{t('discount')}</span>
+                                        <span className="text-3xl font-black text-primary group-hover/discount:scale-110 transition-transform origin-left drop-shadow-sm">{firm.discount}</span>
+                                    </div>
+                                    <div className="flex flex-col items-end">
+                                        <span className="text-[10px] text-muted-foreground uppercase font-black tracking-widest mb-1.5 opacity-0">Link</span>
+                                        <div
+                                            className="flex items-center gap-2 text-sm font-black font-mono px-4 py-2.5 rounded-lg transition-all shadow-lg relative overflow-hidden bg-foreground text-background border-foreground hover:bg-foreground/90"
+                                        >
+                                            <span className="relative z-10">LINK</span>
+                                            <ExternalLink className="h-4 w-4 relative z-10" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </Link>
+                        )}
 
                         <div className="flex items-center gap-3 py-1">
                             <TooltipProvider>
@@ -266,7 +291,7 @@ export function FirmCard({ firm, className }: FirmCardProps) {
                 {recentCopy && (
                     <SuccessToast
                         key="toast"
-                        message={`Código ${firm.code} listo para usar en ${firm.name}`}
+                        message={`Código ${firm.code || ''} listo para usar en ${firm.name}`}
                         onClose={() => setRecentCopy(false)}
                     />
                 )}

@@ -15,6 +15,19 @@ export async function deleteFirmAction(id: string) {
     }
 }
 
+export async function toggleFirmVisibilityAction(id: string, currentVisibility: boolean) {
+    try {
+        const firm = await import("@/lib/db").then(mod => mod.getFirmById(id));
+        if (!firm) throw new Error("Firm not found");
+
+        await saveFirm({ ...firm, isVisible: !currentVisibility });
+        revalidatePath("/", "layout");
+    } catch (error) {
+        console.error("Error toggling firm visibility:", error);
+        throw error;
+    }
+}
+
 export async function saveFirmAction(formData: FormData) {
     const id = formData.get("id") as string || randomUUID(); // Use randomUUID from import
 

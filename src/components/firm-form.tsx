@@ -470,7 +470,7 @@ export function FirmForm({ firm }: { firm?: PropFirm }) {
                                 </div>
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium">Código *</label>
-                                    <input name="code" defaultValue={firm?.code} required className="w-full rounded-md border bg-background px-3 py-2 font-mono" />
+                                    <input name="code" defaultValue={firm?.code} className="w-full rounded-md border bg-background px-3 py-2 font-mono" />
                                 </div>
                             </div>
 

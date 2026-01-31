@@ -117,13 +117,15 @@ export default async function FirmPage({ params }: PageProps) {
                                     <p className="text-4xl font-bold text-primary mt-1">{firm.discount}</p>
                                 </div>
 
-                                <div className="p-3 bg-muted rounded-lg border border-dashed border-primary/30">
-                                    <p className="text-xs text-muted-foreground mb-1">{t('useCode')}</p>
-                                    <div className="flex items-center justify-center gap-2">
-                                        <code className="text-lg font-mono font-bold">{firm.code}</code>
-                                        <CopyButton code={firm.code} />
+                                {firm.code && (
+                                    <div className="p-3 bg-muted rounded-lg border border-dashed border-primary/30">
+                                        <p className="text-xs text-muted-foreground mb-1">{t('useCode')}</p>
+                                        <div className="flex items-center justify-center gap-2">
+                                            <code className="text-lg font-mono font-bold">{firm.code}</code>
+                                            <CopyButton code={firm.code} />
+                                        </div>
                                     </div>
-                                </div>
+                                )}
 
                                 <Link
                                     href={firm.link}

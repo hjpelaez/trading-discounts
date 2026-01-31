@@ -4,10 +4,11 @@ export interface PropFirm {
     name: string;
     description: string | { en: string; es: string };
     discount: string;
-    code: string;
+    code?: string;
     link: string;
     imageUrl?: string | null;
     featured?: boolean;
+    isVisible?: boolean;
     rating: number; // 1-5
     trustpilotScore?: number | null;
 

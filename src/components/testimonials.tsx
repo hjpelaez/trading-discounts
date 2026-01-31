@@ -15,6 +15,15 @@ interface TestimonialsProps {
 export function Testimonials({ locale, title, subtitle, testimonials }: TestimonialsProps) {
     const lang = locale as "en" | "es";
 
+    const REALISTIC_AVATARS = [
+        "https://randomuser.me/api/portraits/women/44.jpg",
+        "https://randomuser.me/api/portraits/men/32.jpg",
+        "https://randomuser.me/api/portraits/men/86.jpg",
+        "https://randomuser.me/api/portraits/women/68.jpg",
+        "https://randomuser.me/api/portraits/men/45.jpg",
+        "https://randomuser.me/api/portraits/women/90.jpg"
+    ];
+
     // Build testimonials array from translation keys
     const testimonialsData = [];
     for (let i = 1; i <= 6; i++) {
@@ -28,7 +37,7 @@ export function Testimonials({ locale, title, subtitle, testimonials }: Testimon
                 name,
                 role,
                 text,
-                avatar: name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2),
+                avatar: REALISTIC_AVATARS[i - 1] || name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2),
                 rating: 5
             });
         }
@@ -56,8 +65,13 @@ export function Testimonials({ locale, title, subtitle, testimonials }: Testimon
 
                             {/* Avatar and Info */}
                             <div className="flex items-center gap-4 mb-6 relative z-10">
-                                <div className="h-14 w-14 rounded-full bg-sky-500/10 flex items-center justify-center border border-sky-500/20 font-bold text-sky-600 text-lg">
-                                    {testimonial.avatar}
+                                <div className="h-14 w-14 rounded-full bg-sky-500/10 flex items-center justify-center border border-sky-500/20 font-bold text-sky-600 text-lg overflow-hidden relative">
+                                    {testimonial.avatar.startsWith('http') ? (
+                                        // eslint-disable-next-line @next/next/no-img-element
+                                        <img src={testimonial.avatar} alt={testimonial.name} className="h-full w-full object-cover" />
+                                    ) : (
+                                        testimonial.avatar
+                                    )}
                                 </div>
                                 <div>
                                     <h3 className="font-bold text-lg">{testimonial.name}</h3>

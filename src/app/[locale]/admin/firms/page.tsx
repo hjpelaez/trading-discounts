@@ -3,11 +3,12 @@ import { deleteFirmAction } from "@/actions/firm-actions";
 import Link from "next/link";
 import { Pencil, Trash2, PlusCircle, Building2, ExternalLink } from "lucide-react";
 import { FadeIn } from "@/components/animations";
+import { FirmVisibilityToggle } from "@/components/firm-visibility-toggle";
 
 export const dynamic = 'force-dynamic';
 
 export default async function AdminFirmsPage() {
-    const firms = await getFirms();
+    const firms = await getFirms({ admin: true });
 
     return (
         <div className="space-y-10">
@@ -32,6 +33,7 @@ export default async function AdminFirmsPage() {
                                 <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Nombre</th>
                                 <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Código</th>
                                 <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Descuento</th>
+                                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Estado</th>
                                 <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Puntuación</th>
                                 <th className="h-12 px-4 text-right align-middle font-medium text-muted-foreground">Acciones</th>
                             </tr>
@@ -42,6 +44,15 @@ export default async function AdminFirmsPage() {
                                     <td className="p-4 align-middle font-bold">{firm.name}</td>
                                     <td className="p-4 align-middle"><span className="bg-muted px-2 py-1 rounded font-mono text-xs text-muted-foreground">{firm.code}</span></td>
                                     <td className="p-4 align-middle text-primary font-black">{firm.discount}</td>
+                                    <td className="p-4 align-middle">
+                                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium border ${firm.isVisible !== false ? "bg-green-500/10 text-green-600 border-green-500/20" : "bg-muted text-muted-foreground border-border"}`}>
+                                            <span className={`relative flex h-1.5 w-1.5`}>
+                                                {firm.isVisible !== false && <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>}
+                                                <span className={`relative inline-flex rounded-full h-1.5 w-1.5 ${firm.isVisible !== false ? "bg-green-500" : "bg-muted-foreground"}`}></span>
+                                            </span>
+                                            {firm.isVisible !== false ? "Visible" : "Oculto"}
+                                        </span>
+                                    </td>
                                     <td className="p-4 align-middle">
                                         <div className="flex items-center text-yellow-500 font-bold">★ {firm.rating}</div>
                                     </td>
@@ -55,6 +66,7 @@ export default async function AdminFirmsPage() {
                                             >
                                                 <ExternalLink className="h-4 w-4" />
                                             </Link>
+                                            <FirmVisibilityToggle id={firm.id} isVisible={firm.isVisible !== false} />
                                             <Link
                                                 href={`/admin/firms/${firm.id}`}
                                                 className="p-2 text-blue-500 hover:bg-blue-50 rounded-md transition-colors"
