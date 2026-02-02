@@ -13,7 +13,8 @@ export function BlogFilter({ categories }: BlogFilterProps) {
     const searchParams = useSearchParams();
     const router = useRouter();
     const pathname = usePathname();
-    const t = useTranslations('Common');
+    const tCommon = useTranslations('Common');
+    const tBlog = useTranslations('Blog');
 
     const activeCategory = searchParams.get("category");
 
@@ -46,7 +47,7 @@ export function BlogFilter({ categories }: BlogFilterProps) {
                         : "bg-background text-muted-foreground border-border/50 hover:bg-muted/50 hover:text-foreground"
                 )}
             >
-                {t('all')}
+                {tCommon('all')}
             </button>
             {categories.map((cat, i) => (
                 <button
@@ -59,7 +60,7 @@ export function BlogFilter({ categories }: BlogFilterProps) {
                             : "bg-background text-muted-foreground border-border/50 hover:bg-muted/50 hover:text-foreground"
                     )}
                 >
-                    {cat}
+                    {tBlog(`categories.${cat}`) || cat}
                 </button>
             ))}
         </div>

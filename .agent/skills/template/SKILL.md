@@ -21,4 +21,4 @@ Esta skill- **Objetivo Visual**: Cómo esta skill impacta en la identidad visual
 4. Se pueden añadir carpetas `scripts/`, `examples/` y `resources/` si es 
 necesario.
 
-**IMPORTANTE**: nO QUIERO MODO CLARO EN EL ADMIN.
+**IMPORTANTE**: NO QUIERO MODO CLARO EN EL ADMIN.

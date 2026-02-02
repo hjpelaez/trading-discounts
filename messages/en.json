@@ -214,7 +214,13 @@
         "backToList": "Back to listing",
         "noPosts": "No articles found matching your criteria.",
         "relatedPostsTitle": "Related Articles",
-        "relatedPostsSubtitle": "Continue reading"
+        "relatedPostsSubtitle": "Continue reading",
+        "categories": {
+            "Education": "Education",
+            "Proptrading": "Proptrading",
+            "Strategy": "Strategy",
+            "News": "News"
+        }
     },
     "Contact": {
         "title": "Get in <span class='text-primary'>Touch</span>",

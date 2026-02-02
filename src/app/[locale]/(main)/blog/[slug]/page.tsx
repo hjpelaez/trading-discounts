@@ -46,6 +46,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
         .filter(p => p.category === post.category && p.id !== post.id)
         .slice(0, 3);
 
+    // Format date safely
+    const formattedDate = post.date ? new Intl.DateTimeFormat(locale === 'es' ? 'es-ES' : 'en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    }).format(new Date(post.date)) : "";
+
     return (
         <article className="min-h-screen">
             {/* Header */}
@@ -57,7 +64,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
                     <FadeIn>
                         <div className="flex items-center gap-3 mb-6">
                             <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-                                {post.category}
+                                {t(`categories.${post.category}`) || post.category}
                             </span>
                         </div>
                         <h1
@@ -71,7 +78,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
                                 </div>
                                 <span className="font-semibold text-foreground">{post.author}</span>
                             </div>
-                            <span className="flex items-center gap-2"><Calendar className="h-4 w-4 text-primary" /> {post.date}</span>
+                            <span className="flex items-center gap-2"><Calendar className="h-4 w-4 text-primary" /> {formattedDate}</span>
                         </div>
                     </FadeIn>
                 </div>
@@ -92,7 +99,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
                             />
                         </div>
                         <div
-                            className="p-8 md:p-16 lg:p-20 prose prose-slate md:prose-lg lg:prose-xl max-w-none dark:prose-invert prose-headings:font-bold prose-a:text-primary prose-a:no-underline hover:prose-a:underline"
+                            className="p-8 md:p-16 lg:p-20 md:prose-lg lg:prose-xl prose-custom"
                             dangerouslySetInnerHTML={{ __html: content }}
                         />
                         <div className="px-8 md:px-16 lg:px-20 pb-12">

@@ -2,7 +2,7 @@
 
 import { saveBlogPostAction } from "@/actions/blog-actions";
 import { BlogPost } from "@/lib/db";
-import { ChevronLeft, Save, Globe, FileText, Image as ImageIcon, User, Calendar, Tag, Sparkles } from "lucide-react";
+import { ChevronLeft, Save, Globe, FileText, Image as ImageIcon, User, Calendar, Tag, Sparkles, X, Wand2, RefreshCcw } from "lucide-react";
 import Link from "next/link";
 import { useFormStatus } from "react-dom";
 import { RichTextEditor } from "./rich-text-editor";
@@ -32,18 +32,20 @@ export function BlogForm({ post, categories = ["Education", "Proptrading", "Stra
     const [currentSlug, setCurrentSlug] = useState(post?.slug || "");
     const [coverImage, setCoverImage] = useState(post?.imageUrl || "");
 
-    // Auto-generate slug from English title if empty
-    const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (!currentSlug && !post) {
-            setCurrentSlug(slugify(e.target.value));
+    const [titleEn, setTitleEn] = useState(post?.title.en || "");
+    const [titleEs, setTitleEs] = useState(post?.title.es || "");
+
+    // Auto-generate slug from title if empty
+    const handleTitleChange = (newTitle: string) => {
+        // If it's a new post or the current slug is dirty/empty, auto-update
+        if (!post || !currentSlug || currentSlug.includes("<") || currentSlug.includes(" ")) {
+            setCurrentSlug(slugify(newTitle, true));
         }
     };
 
-    // Also try to generate from Spanish title if English is empty and no slug exists
-    const handleTitleChangeEs = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (!currentSlug && !post) {
-            setCurrentSlug(slugify(e.target.value));
-        }
+    const syncSlug = () => {
+        const activeTitle = activeTab === "es" ? titleEs : titleEn;
+        setCurrentSlug(slugify(activeTitle, false));
     };
 
     return (
@@ -64,7 +66,18 @@ export function BlogForm({ post, categories = ["Education", "Proptrading", "Stra
                         </p>
                     </div>
                 </div>
-                <div className="w-full sm:w-auto">
+                <div className="flex items-center gap-4 w-full sm:w-auto">
+                    <div className="flex items-center gap-2 bg-muted/50 px-4 py-2 rounded-xl border border-border/50">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Visibilidad</span>
+                        <select
+                            name="isVisible"
+                            defaultValue={String(post?.isVisible ?? true)}
+                            className="bg-transparent text-sm font-bold focus:outline-none cursor-pointer"
+                        >
+                            <option value="true">Público</option>
+                            <option value="false">Oculto</option>
+                        </select>
+                    </div>
                     <SubmitButton />
                 </div>
             </div>
@@ -102,8 +115,11 @@ export function BlogForm({ post, categories = ["Education", "Proptrading", "Stra
                                 <label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Title (Spanish)</label>
                                 <input
                                     name="title_es"
-                                    defaultValue={post?.title.es}
-                                    onChange={handleTitleChangeEs}
+                                    value={titleEs}
+                                    onChange={(e) => {
+                                        setTitleEs(e.target.value);
+                                        handleTitleChange(e.target.value);
+                                    }}
                                     required
                                     placeholder="e.g. Cómo elegir la mejor Prop Firm"
                                     className="w-full rounded-xl border bg-background px-5 py-4 text-xl font-bold focus:ring-2 focus:ring-primary/20 outline-none transition-all border-border/50"
@@ -136,9 +152,12 @@ export function BlogForm({ post, categories = ["Education", "Proptrading", "Stra
                                 <label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Título (Inglés)</label>
                                 <input
                                     name="title_en"
-                                    defaultValue={post?.title.en}
+                                    value={titleEn}
+                                    onChange={(e) => {
+                                        setTitleEn(e.target.value);
+                                        handleTitleChange(e.target.value);
+                                    }}
                                     required
-                                    onChange={handleTitleChange}
                                     placeholder="e.j. How to Choose the Best Prop Firm"
                                     className="w-full rounded-xl border bg-background px-5 py-4 text-xl font-bold focus:ring-2 focus:ring-primary/20 outline-none transition-all border-border/50"
                                 />
@@ -178,21 +197,56 @@ export function BlogForm({ post, categories = ["Education", "Proptrading", "Stra
                                 <label className="text-[10px] font-black uppercase tracking-tighter text-muted-foreground flex items-center gap-1.5 ml-1">
                                     <FileText className="h-3 w-3" /> URL Slug
                                 </label>
-                                <input
-                                    name="slug"
-                                    value={currentSlug}
-                                    onChange={(e) => setCurrentSlug(e.target.value)}
-                                    required
-                                    placeholder="e.j. guia-trading-fondeado"
-                                    className="w-full rounded-xl border bg-muted/30 px-4 py-2.5 font-mono text-base focus:ring-2 focus:ring-primary/20 outline-none transition-all border-border/50"
-                                />
+                                <div className="flex gap-2">
+                                    <input
+                                        name="slug"
+                                        value={currentSlug}
+                                        onChange={(e) => setCurrentSlug(slugify(e.target.value, true))}
+                                        onBlur={() => setCurrentSlug(slugify(currentSlug, false))}
+                                        required
+                                        placeholder="e.j. guia-trading-fondeado"
+                                        className="flex-1 rounded-xl border bg-muted/30 px-4 py-2.5 font-mono text-base focus:ring-2 focus:ring-primary/20 outline-none transition-all border-border/50"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={syncSlug}
+                                        className="h-11 w-11 flex items-center justify-center bg-primary/10 text-primary border border-primary/20 rounded-xl hover:bg-primary/20 transition-all shrink-0"
+                                        title="Sincronizar con título"
+                                    >
+                                        <Wand2 className="h-4 w-4" />
+                                    </button>
+                                </div>
                                 <p className="text-[10px] text-muted-foreground">Esto también se usará como nombre de archivo para las imágenes.</p>
                             </div>
 
-                            <div className="space-y-2">
+                            <div className="space-y-4">
                                 <label className="text-[10px] font-black uppercase tracking-tighter text-muted-foreground flex items-center gap-1.5 ml-1">
                                     <ImageIcon className="h-3 w-3" /> Imagen de Portada
                                 </label>
+
+                                {coverImage && (
+                                    <div className="relative group rounded-2xl overflow-hidden border border-border/50 shadow-lg bg-muted aspect-video transition-all hover:shadow-primary/10">
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                                        <img
+                                            src={coverImage}
+                                            alt="Preview"
+                                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                        />
+                                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+                                            <button
+                                                type="button"
+                                                onClick={() => setCoverImage("")}
+                                                className="bg-red-500 text-white p-2 rounded-full shadow-xl hover:scale-110 active:scale-95 transition-all"
+                                                title="Eliminar Imagen"
+                                            >
+                                                <X className="h-4 w-4" />
+                                            </button>
+                                        </div>
+                                        <div className="absolute bottom-2 left-2 bg-black/60 backdrop-blur-md px-2 py-1 rounded text-[8px] font-black text-white uppercase tracking-widest">
+                                            Imagen Actual
+                                        </div>
+                                    </div>
+                                )}
 
                                 <ImageUploader
                                     slug={currentSlug}
@@ -204,8 +258,8 @@ export function BlogForm({ post, categories = ["Education", "Proptrading", "Stra
                                     value={coverImage}
                                     onChange={(e) => setCoverImage(e.target.value)}
                                     required
-                                    className="w-full rounded-xl border bg-background px-4 py-2.5 text-base focus:ring-2 focus:ring-primary/20 outline-none transition-all border-border/50 text-muted-foreground"
-                                    placeholder="Esperando subida..."
+                                    className="w-full rounded-xl border bg-muted/20 px-4 py-2 text-xs font-mono focus:ring-2 focus:ring-primary/20 outline-none transition-all border-border/50 text-muted-foreground/70"
+                                    placeholder="Esperando subida o URL..."
                                 />
                             </div>
 

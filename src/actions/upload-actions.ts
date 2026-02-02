@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { slugify } from "@/lib/utils";
 import path from "path";
 import sharp from "sharp";
 
@@ -29,7 +30,7 @@ export async function uploadImageAction(formData: FormData) {
             .toBuffer();
 
         // Clean slug and create new filename with .webp extension
-        const cleanSlug = slug.toLowerCase().replace(/[^a-z0-9-]/g, "-");
+        const cleanSlug = slugify(slug, false);
         const timestamp = Date.now();
         const filename = `${cleanSlug}-${timestamp}.webp`;
 

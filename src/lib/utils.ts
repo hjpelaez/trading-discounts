@@ -5,17 +5,25 @@ export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
 
-export function slugify(text: string) {
-    return text
+export function slugify(text: string, isDrafting = false) {
+    if (!text) return "";
+
+    let s = text
         .toString()
+        .replace(/<[^>]*>?/gm, "") // Strip HTML tags
+        .replace(/&[a-z0-9]+;/gi, "") // Strip HTML entities
         .toLowerCase()
-        .trim()
-        .normalize('NFD') // separate accents from letters
-        .replace(/[\u0300-\u036f]/g, '') // remove accents
-        .replace(/[^a-z0-9 -]/g, '') // remove invalid chars
-        .replace(/\s+/g, '-') // collapse whitespace and replace by -
-        .replace(/-+/g, '-') // collapse dashes
-        .replace(/^-+|-+$/g, ''); // trim dashes from ends
+        .normalize("NFD") // separate accents from letters
+        .replace(/[\u0300-\u036f]/g, "") // remove accents
+        .replace(/[^a-z0-9 -]/g, "") // remove invalid chars
+        .replace(/\s+/g, "-") // collapse whitespace and replace by -
+        .replace(/-+/g, "-"); // collapse dashes
+
+    if (!isDrafting) {
+        s = s.replace(/^-+|-+$/g, ""); // trim dashes from ends
+    }
+
+    return s.trim();
 }
 
 export function parseBilingual(val: any, locale: string) {

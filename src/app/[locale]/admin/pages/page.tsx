@@ -1,8 +1,9 @@
 import { getPages } from "@/lib/db";
 import { deletePageAction } from "@/actions/page-actions";
 import Link from "next/link";
-import { Edit, Trash2, Plus, FileText, ExternalLink } from "lucide-react";
+import { Pencil, Trash2, Plus, FileText, ExternalLink, PlusCircle } from "lucide-react";
 import { FadeIn } from "@/components/animations";
+import { cn } from "@/lib/utils";
 
 export default async function AdminPagesDashboard() {
     const pages = await getPages();
@@ -10,76 +11,91 @@ export default async function AdminPagesDashboard() {
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
-                <h1 className="text-3xl font-bold tracking-tight">Gestor de Páginas</h1>
+                <div>
+                    <h1 className="text-3xl font-bold tracking-tight text-white">Gestor de Páginas</h1>
+                    <p className="text-muted-foreground text-sm">Administra las páginas institucionales y legales.</p>
+                </div>
                 <Link
                     href="/admin/pages/new"
-                    className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow hover:bg-primary/90"
+                    className="inline-flex items-center gap-2 h-10 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold rounded-lg transition-all shadow-[0_0_15px_rgba(37,99,235,0.3)] hover:shadow-[0_0_25px_rgba(37,99,235,0.5)] border border-blue-400/20"
                 >
-                    <Plus className="mr-2 h-4 w-4" /> Nueva Página
+                    <PlusCircle className="h-4 w-4" /> Nueva Página
                 </Link>
             </div>
 
             <FadeIn>
-                <div className="rounded-md border bg-card">
+                <div className="rounded-xl border border-border/50 bg-card/40 backdrop-blur-sm shadow-xl overflow-hidden">
                     <table className="w-full text-sm text-left">
-                        <thead className="bg-muted/50 text-muted-foreground uppercase font-medium">
+                        <thead className="bg-muted/50 border-b border-border/50">
                             <tr>
-                                <th className="px-6 py-4">Título</th>
-                                <th className="px-6 py-4">Slug (URL)</th>
-                                <th className="px-6 py-4">Última Actualización</th>
-                                <th className="px-6 py-4 text-right">Acciones</th>
+                                <th className="h-12 px-6 text-left align-middle font-medium text-muted-foreground">Título</th>
+                                <th className="h-12 px-6 text-left align-middle font-medium text-muted-foreground">Slug (URL)</th>
+                                <th className="h-12 px-6 text-left align-middle font-medium text-muted-foreground">Actualización</th>
+                                <th className="h-12 px-6 text-right align-middle font-medium text-muted-foreground font-black">Acciones</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-border">
-                            {pages.map((page) => (
-                                <tr key={page.slug.en} className="hover:bg-muted/20 transition-colors">
-                                    <td className="px-6 py-4 font-medium">
-                                        {page.title.en}
-                                    </td>
-                                    <td className="px-6 py-4 font-mono text-muted-foreground">
-                                        <div className="flex flex-col gap-1 text-xs">
-                                            <span className="flex items-center gap-1"><span className="text-primary font-bold">EN:</span> /{page.slug.en}</span>
-                                            <span className="flex items-center gap-1"><span className="text-primary font-bold">ES:</span> /{page.slug.es}</span>
-                                        </div>
-                                    </td>
-                                    <td className="px-6 py-4">{new Date(page.lastUpdated).toLocaleDateString()}</td>
-                                    <td className="px-6 py-4 text-right">
-                                        <div className="flex items-center justify-end gap-2">
-                                            <Link
-                                                href={`/${page.slug.en}`}
-                                                target="_blank"
-                                                className="p-2 hover:bg-muted rounded-md transition-colors"
-                                                title="Ver Página Pública"
-                                            >
-                                                <ExternalLink className="h-4 w-4 text-muted-foreground" />
-                                            </Link>
-                                            <Link
-                                                href={`/admin/pages/${page.slug.en}`}
-                                                className="p-2 hover:bg-muted rounded-md transition-colors"
-                                                title="Editar"
-                                            >
-                                                <Edit className="h-4 w-4 text-muted-foreground" />
-                                            </Link>
-                                            <form action={deletePageAction.bind(null, page.slug.en)}>
-                                                <button
-                                                    type="submit"
-                                                    className="p-2 hover:bg-red-500/10 hover:text-red-500 rounded-md transition-colors"
-                                                    title="Eliminar"
-                                                >
-                                                    <Trash2 className="h-4 w-4" />
-                                                </button>
-                                            </form>
+                        <tbody className="divide-y divide-border/50">
+                            {pages.length === 0 ? (
+                                <tr>
+                                    <td colSpan={4} className="p-0">
+                                        <div className="p-20 text-center text-muted-foreground bg-muted/5">
+                                            <FileText className="h-12 w-12 mx-auto mb-4 opacity-20" />
+                                            <p className="text-lg font-bold text-white">No hay páginas creadas</p>
+                                            <p className="text-sm">Crea tus políticas legales o secciones informativas aquí.</p>
                                         </div>
                                     </td>
                                 </tr>
-                            ))}
+                            ) : (
+                                pages.map((page) => (
+                                    <tr key={page.slug.en} className="transition-colors hover:bg-muted/50 group">
+                                        <td className="px-6 py-4 align-middle">
+                                            <div className="flex flex-col">
+                                                <span className="font-bold text-white group-hover:text-primary transition-colors">{page.title.es}</span>
+                                                <span className="text-xs text-muted-foreground truncate max-w-[200px]">{page.title.en}</span>
+                                            </div>
+                                        </td>
+                                        <td className="px-6 py-4 align-middle font-mono text-muted-foreground">
+                                            <div className="flex flex-col gap-0.5 text-[10px]">
+                                                <span className="flex items-center gap-1 opacity-70"><span className="text-blue-400 font-bold w-4">EN:</span> /{page.slug.en}</span>
+                                                <span className="flex items-center gap-1"><span className="text-blue-500 font-bold w-4">ES:</span> /{page.slug.es}</span>
+                                            </div>
+                                        </td>
+                                        <td className="px-6 py-4 align-middle text-xs font-medium">
+                                            {new Date(page.lastUpdated).toLocaleDateString()}
+                                        </td>
+                                        <td className="px-6 py-4 align-middle text-right">
+                                            <div className="flex items-center justify-end gap-2">
+                                                <Link
+                                                    href={`/es/${page.slug.es}`}
+                                                    target="_blank"
+                                                    title="Ver Página Pública"
+                                                    className="p-2 text-muted-foreground border border-border/50 hover:bg-muted/80 rounded-lg transition-all shadow-sm hover:shadow-md"
+                                                >
+                                                    <ExternalLink className="h-4 w-4" />
+                                                </Link>
+                                                <Link
+                                                    href={`/admin/pages/${page.slug.en}`}
+                                                    className="p-2 text-blue-500 border border-blue-500/20 hover:bg-blue-500/10 rounded-lg transition-all shadow-sm hover:shadow-md"
+                                                    title="Editar"
+                                                >
+                                                    <Pencil className="h-4 w-4" />
+                                                </Link>
+                                                <form action={deletePageAction.bind(null, page.slug.en)}>
+                                                    <button
+                                                        type="submit"
+                                                        className="p-2 text-red-500 border border-red-500/20 hover:bg-red-500/10 rounded-lg transition-all shadow-sm hover:shadow-md"
+                                                        title="Eliminar"
+                                                    >
+                                                        <Trash2 className="h-4 w-4" />
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
                         </tbody>
                     </table>
-                    {pages.length === 0 && (
-                        <div className="p-12 text-center text-muted-foreground">
-                            No se encontraron páginas. Crea una (ej. Política de Privacidad).
-                        </div>
-                    )}
                 </div>
             </FadeIn>
         </div>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { useTranslations, useFormatter } from "next-intl";
 
 interface BlogPost {
     id: string;
@@ -25,11 +26,20 @@ interface BlogCardProps {
 }
 
 export function BlogCard({ post, locale, readMoreLabel }: BlogCardProps) {
+    const format = useFormatter();
+    const t = useTranslations('Blog');
     const [imageStatus, setImageStatus] = useState<"loading" | "success" | "error">(
         post.imageUrl ? "loading" : "error"
     );
     const title = post.title[locale as "en" | "es"];
     const excerpt = post.excerpt[locale as "en" | "es"];
+
+    // Format date safely
+    const formattedDate = post.date ? format.dateTime(new Date(post.date), {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    }) : "";
 
     return (
         <Link href={`/${locale}/blog/${post.slug}`} className="group block h-full">
@@ -64,14 +74,14 @@ export function BlogCard({ post, locale, readMoreLabel }: BlogCardProps) {
 
                     <div className="absolute top-6 left-6 z-10">
                         <span className="bg-background/95 backdrop-blur-md px-4 py-1.5 rounded-xl text-[10px] font-black text-foreground uppercase tracking-widest border border-border dark:border-border/50 shadow-md">
-                            {post.category}
+                            {t(`categories.${post.category}`) || post.category}
                         </span>
                     </div>
                 </div>
 
                 <div className="p-8 md:p-10 flex flex-col flex-1 relative z-10">
                     <div className="flex items-center gap-5 text-[10px] font-black uppercase tracking-tighter text-muted-foreground mb-6">
-                        <span className="flex items-center gap-1.5 font-bold"><Calendar className="h-3 w-3 text-primary-dark dark:text-primary" /> {post.date}</span>
+                        <span className="flex items-center gap-1.5 font-bold"><Calendar className="h-3 w-3 text-primary-dark dark:text-primary" /> {formattedDate}</span>
                         <span className="flex items-center gap-1.5 font-bold"><User className="h-3 w-3 text-primary-dark dark:text-primary" /> {post.author}</span>
                     </div>
 

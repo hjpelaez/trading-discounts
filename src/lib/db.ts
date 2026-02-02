@@ -157,9 +157,10 @@ export interface BlogPost {
     author: string;
     imageUrl: string;
     category: string;
+    isVisible?: boolean;
 }
 
-export const getBlogPosts = cache(async (): Promise<BlogPost[]> => {
+export const getBlogPosts = cache(async (options?: { admin?: boolean }): Promise<BlogPost[]> => {
     try {
         const supabase = createStaticClient();
         const { data, error } = await supabase
@@ -169,10 +170,17 @@ export const getBlogPosts = cache(async (): Promise<BlogPost[]> => {
 
         if (error) throw error;
 
-        // Map publishedAt to date for compatibility
-        return (data || []).map(post => ({
+        let posts = data || [];
+
+        // Filter out hidden posts unless admin mode is requested
+        if (!options?.admin) {
+            posts = posts.filter(p => p.isVisible !== false);
+        }
+
+        // Map publishedAt to date for compatibility (YYYY-MM-DD for form inputs)
+        return posts.map(post => ({
             ...post,
-            date: post.publishedAt
+            date: post.publishedAt ? new Date(post.publishedAt).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
         }));
     } catch (error) {
         console.error("Error fetching blog posts from DB:", error);
@@ -190,7 +198,10 @@ export async function getBlogPostById(id: string): Promise<BlogPost | undefined>
             .single();
 
         if (error) throw error;
-        return data ? { ...data, date: data.publishedAt } : undefined;
+        return data ? {
+            ...data,
+            date: data.publishedAt ? new Date(data.publishedAt).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
+        } : undefined;
     } catch (error) {
         console.error("Error fetching blog post:", error);
         return undefined;
@@ -207,7 +218,10 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | undefi
             .single();
 
         if (error) throw error;
-        return data ? { ...data, date: data.publishedAt } : undefined;
+        return data ? {
+            ...data,
+            date: data.publishedAt ? new Date(data.publishedAt).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
+        } : undefined;
     } catch (error) {
         console.error("Error fetching blog post:", error);
         return undefined;
@@ -221,7 +235,8 @@ export async function saveBlogPost(post: BlogPost) {
         .from('BlogPost')
         .upsert({
             ...postData,
-            publishedAt: post.publishedAt || post.date
+            publishedAt: post.publishedAt || post.date,
+            isVisible: post.isVisible ?? true
         });
 
     if (error) throw error;
@@ -367,9 +382,10 @@ export interface CourseDB {
     priceMax?: number;
     learningPoints: string[] | { en: string[]; es: string[] };
     curriculum?: unknown[]; // JSON
+    isVisible?: boolean;
 }
 
-export const getCourses = cache(async (filters?: { category?: string; language?: string; minPrice?: number; maxPrice?: number; page?: number; pageSize?: number }): Promise<CourseDB[]> => {
+export const getCourses = cache(async (filters?: { category?: string; language?: string; minPrice?: number; maxPrice?: number; page?: number; pageSize?: number; admin?: boolean }): Promise<CourseDB[]> => {
     try {
         const supabase = createStaticClient();
         let query = supabase
@@ -404,7 +420,15 @@ export const getCourses = cache(async (filters?: { category?: string; language?:
         const { data, error } = await query;
 
         if (error) throw error;
-        return data || [];
+
+        let courses = data || [];
+
+        // Filter out hidden courses unless admin mode is requested
+        if (!filters?.admin) {
+            courses = courses.filter(c => c.isVisible !== false);
+        }
+
+        return courses;
     } catch (error) {
         console.error("Error fetching courses from DB:", error);
         return [];
@@ -434,6 +458,7 @@ export async function saveCourse(course: CourseDB) {
         .from('Course')
         .upsert({
             ...course,
+            isVisible: course.isVisible ?? true,
             updatedAt: new Date().toISOString()
         });
 

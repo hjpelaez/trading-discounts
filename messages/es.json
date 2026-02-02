@@ -222,7 +222,13 @@
         "backToList": "Volver al listado",
         "noPosts": "No se encontraron artículos con esos criterios.",
         "relatedPostsTitle": "Artículos Relacionados",
-        "relatedPostsSubtitle": "Continúa leyendo"
+        "relatedPostsSubtitle": "Continúa leyendo",
+        "categories": {
+            "Education": "Educación",
+            "Proptrading": "Proptrading",
+            "Strategy": "Estrategia",
+            "News": "Noticias"
+        }
     },
     "Contact": {
         "title": "Ponte en <span class='text-primary'>Contacto</span>",

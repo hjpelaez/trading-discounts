@@ -1,11 +1,11 @@
 import { getBlogPosts } from "@/lib/db";
-import { PlusCircle, Pencil, Trash2, ExternalLink, Tag } from "lucide-react";
+import { PlusCircle, Pencil, Trash2, ExternalLink, Tag, Eye, EyeOff, Newspaper } from "lucide-react";
 import Link from "next/link";
-import { deleteBlogPostAction } from "@/actions/blog-actions";
+import { deleteBlogPostAction, toggleBlogPostVisibilityAction } from "@/actions/blog-actions";
 import { FadeIn } from "@/components/animations";
 
 export default async function AdminBlogPage() {
-    const posts = await getBlogPosts();
+    const posts = await getBlogPosts({ admin: true });
 
     return (
         <FadeIn>
@@ -37,7 +37,7 @@ export default async function AdminBlogPage() {
                             <tr>
                                 <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Post</th>
                                 <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Categoría</th>
-                                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Autor</th>
+                                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground w-[120px]">Visibilidad</th>
                                 <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Fecha</th>
                                 <th className="h-12 px-4 text-right align-middle font-medium text-muted-foreground">Acciones</th>
                             </tr>
@@ -45,13 +45,17 @@ export default async function AdminBlogPage() {
                         <tbody>
                             {posts.length === 0 ? (
                                 <tr>
-                                    <td colSpan={5} className="p-20 text-center text-muted-foreground">
-                                        No se encontraron posts.
+                                    <td colSpan={6} className="p-0">
+                                        <div className="p-20 text-center text-muted-foreground bg-muted/5">
+                                            <Newspaper className="h-12 w-12 mx-auto mb-4 opacity-20" />
+                                            <p className="text-lg font-bold">No se encontraron posts</p>
+                                            <p className="text-sm">Escribe tu primer artículo para empezar a publicar contenido.</p>
+                                        </div>
                                     </td>
                                 </tr>
                             ) : (
                                 posts.map((post) => (
-                                    <tr key={post.id} className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                                    <tr key={post.id} className="border-b transition-colors hover:bg-muted/50">
                                         <td className="p-4 align-middle">
                                             <div className="flex flex-col">
                                                 <span className="font-bold text-foreground">{post.title.es.replace(/<[^>]*>?/gm, '')}</span>
@@ -63,28 +67,56 @@ export default async function AdminBlogPage() {
                                                 {post.category}
                                             </span>
                                         </td>
-                                        <td className="p-4 align-middle">{post.author}</td>
+                                        <td className="p-4 align-middle">
+                                            <span className={cn(
+                                                "inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase border",
+                                                (post.isVisible ?? true)
+                                                    ? "bg-green-500/10 text-green-600 border-green-500/20"
+                                                    : "bg-red-500/10 text-red-600 border-red-500/20"
+                                            )}>
+                                                {(post.isVisible ?? true) ? (
+                                                    <><div className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" /> Público</>
+                                                ) : (
+                                                    <><div className="h-1.5 w-1.5 rounded-full bg-red-500" /> Oculto</>
+                                                )}
+                                            </span>
+                                        </td>
                                         <td className="p-4 align-middle">{post.date}</td>
                                         <td className="p-4 align-middle text-right">
                                             <div className="flex justify-end gap-2">
+                                                <form action={toggleBlogPostVisibilityAction.bind(null, post.id, post.isVisible ?? true)}>
+                                                    <button
+                                                        type="submit"
+                                                        className={cn(
+                                                            "p-2 rounded-lg transition-all border shadow-sm hover:shadow-md",
+                                                            (post.isVisible ?? true)
+                                                                ? "text-green-600 border-green-500/20 hover:bg-green-500/10"
+                                                                : "text-red-500 border-red-500/20 hover:bg-red-500/10"
+                                                        )}
+                                                        title={(post.isVisible ?? true) ? "Ocultar Post" : "Mostrar Post"}
+                                                    >
+                                                        {(post.isVisible ?? true) ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+                                                    </button>
+                                                </form>
                                                 <Link
                                                     href={`/en/blog/${post.slug}`}
                                                     target="_blank"
-                                                    className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+                                                    className="p-2 text-muted-foreground border border-border/50 hover:bg-muted rounded-lg transition-all shadow-sm hover:shadow-md"
                                                     title="Ver en Vivo"
                                                 >
                                                     <ExternalLink className="h-4 w-4" />
                                                 </Link>
                                                 <Link
                                                     href={`/admin/blog/${post.id}`}
-                                                    className="p-2 text-blue-500 hover:bg-blue-50 rounded-md transition-colors"
+                                                    className="p-2 text-blue-500 border border-blue-500/20 hover:bg-blue-500/10 rounded-lg transition-all shadow-sm hover:shadow-md"
                                                     title="Editar"
                                                 >
                                                     <Pencil className="h-4 w-4" />
                                                 </Link>
                                                 <form action={deleteBlogPostAction.bind(null, post.id)}>
                                                     <button
-                                                        className="p-2 text-red-500 hover:bg-red-50 rounded-md transition-colors"
+                                                        type="submit"
+                                                        className="p-2 text-red-500 border border-red-500/20 hover:bg-red-500/10 rounded-lg transition-all shadow-sm hover:shadow-md"
                                                         title="Eliminar"
                                                     >
                                                         <Trash2 className="h-4 w-4" />
@@ -102,3 +134,6 @@ export default async function AdminBlogPage() {
         </FadeIn>
     );
 }
+
+// Para usar 'cn' en el lado del servidor si no está importado, mejor lo importamos
+import { cn } from "@/lib/utils";

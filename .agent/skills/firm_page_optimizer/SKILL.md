@@ -23,7 +23,7 @@ description: EXPERTO NIVEL 10/10. Especialista en cerrar ventas (High-Ticket Aff
 
 ## Expert Guidelines
 - **Border & Card Definition**: 
-    - En modo claro, las cajas de cupones deben tener un borde sutil pero visible (opacidad ~40% de la marca) para resaltar contra el fondo.
+    - En modo claro, las cajas de cupones deben tener un borde visible (opacidad ~40% de la marca) para resaltar contra el fondo.
     - Las insignias (Verified, Rating) deben usar colores oscurecidos en modo claro (e.g., `text-green-700` vs `text-green-500`) para legibilidad.
 - **Fórmula P.A.S.**: Identificar el Problema (coste del challenge), Agitarlo (riesgo de perder dinero), Solucionarlo (nuestro descuento exclusivo).
 - **Authority Signals**: Incluir "TradingDiscounts Audit" (Certificado de transparencia).

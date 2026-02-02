@@ -11,6 +11,16 @@ export async function deleteBlogPostAction(id: string) {
     revalidatePath("/admin/blog");
 }
 
+export async function toggleBlogPostVisibilityAction(id: string, currentVisible: boolean) {
+    const { getBlogPostById, saveBlogPost } = await import("@/lib/db");
+    const post = await getBlogPostById(id);
+    if (post) {
+        await saveBlogPost({ ...post, isVisible: !currentVisible });
+        revalidatePath("/blog");
+        revalidatePath("/admin/blog");
+    }
+}
+
 export async function saveBlogPostAction(formData: FormData) {
     const id = formData.get("id") as string | null;
 
@@ -33,6 +43,7 @@ export async function saveBlogPostAction(formData: FormData) {
         author: formData.get("author") as string,
         imageUrl: formData.get("imageUrl") as string,
         category: formData.get("category") as string,
+        isVisible: formData.get("isVisible") === "true",
     };
 
     await saveBlogPost(post);

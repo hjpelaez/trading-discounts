@@ -121,12 +121,80 @@
     @apply bg-card/50 backdrop-blur-md border border-border/50;
   }
 
-  /* Optimized Prose for Tiptap */
+  /* Optimized Prose for Tiptap & Blog Articles */
   .prose-custom {
-    @apply prose prose-invert max-w-none;
-    --tw-prose-headings: white;
-    --tw-prose-body: theme('colors.slate.300');
-    --tw-prose-links: theme('colors.primary.DEFAULT');
+    @apply prose max-w-none;
+
+    /* Primary Variables (Light) */
+    --tw-prose-body: theme('colors.slate.700');
+    --tw-prose-headings: theme('colors.slate.900');
+    --tw-prose-lead: theme('colors.slate.600');
+    --tw-prose-links: var(--color-primary);
+    --tw-prose-bold: theme('colors.slate.900');
+    --tw-prose-counters: theme('colors.slate.500');
+    --tw-prose-bullets: theme('colors.slate.300');
+    --tw-prose-hr: theme('colors.slate.200');
+    --tw-prose-quotes: theme('colors.slate.900');
+    --tw-prose-quote-borders: theme('colors.slate.200');
+    --tw-prose-captions: theme('colors.slate.500');
+    --tw-prose-code: theme('colors.slate.900');
+    --tw-prose-pre-code: theme('colors.slate.200');
+    --tw-prose-pre-bg: theme('colors.slate.800');
+    --tw-prose-th-borders: theme('colors.slate.300');
+    --tw-prose-td-borders: theme('colors.slate.200');
+
+    &.dark,
+    .dark & {
+      /* Update the SAME variables for Dark Mode */
+      --tw-prose-body: theme('colors.slate.300');
+      --tw-prose-headings: white;
+      --tw-prose-lead: theme('colors.slate.400');
+      --tw-prose-links: var(--color-primary);
+      --tw-prose-bold: white;
+      --tw-prose-counters: theme('colors.slate.400');
+      --tw-prose-bullets: theme('colors.slate.600');
+      --tw-prose-hr: theme('colors.slate.700');
+      --tw-prose-quotes: theme('colors.slate.100');
+      --tw-prose-quote-borders: theme('colors.slate.700');
+      --tw-prose-captions: theme('colors.slate.400');
+      --tw-prose-code: white;
+      --tw-prose-pre-code: theme('colors.slate.300');
+      --tw-prose-pre-bg: rgb(0 0 0 / 50%);
+      --tw-prose-th-borders: theme('colors.slate.600');
+      --tw-prose-td-borders: theme('colors.slate.700');
+
+      /* Nuclear Force: Ensure these elements ALWAYS use our variables in Dark Mode */
+      /* This overrides any specificity issues or partial utility leaks */
+      & :is(h1, h2, h3, h4, h5, h6, strong, b, th) {
+        color: white !important;
+      }
+
+      & :is(p, li, blockquote) {
+        color: theme('colors.slate.300') !important;
+      }
+
+      & blockquote {
+        border-inline-start-color: theme('colors.slate.700') !important;
+      }
+
+      /* Invert variables for safety (Redundant but keeps standard prose-invert tools happy) */
+      --tw-prose-invert-body: theme('colors.slate.300');
+      --tw-prose-invert-headings: white;
+      --tw-prose-invert-lead: theme('colors.slate.400');
+      --tw-prose-invert-links: var(--color-primary);
+      --tw-prose-invert-bold: white;
+      --tw-prose-invert-counters: theme('colors.slate.400');
+      --tw-prose-invert-bullets: theme('colors.slate.600');
+      --tw-prose-invert-hr: theme('colors.slate.700');
+      --tw-prose-invert-quotes: theme('colors.slate.100');
+      --tw-prose-invert-quote-borders: theme('colors.slate.700');
+      --tw-prose-invert-captions: theme('colors.slate.400');
+      --tw-prose-invert-code: white;
+      --tw-prose-invert-pre-code: theme('colors.slate.300');
+      --tw-prose-invert-pre-bg: rgb(0 0 0 / 50%);
+      --tw-prose-invert-th-borders: theme('colors.slate.600');
+      --tw-prose-invert-td-borders: theme('colors.slate.700');
+    }
   }
 
   .title-spacing {

@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic';
 
 export default async function AdminDashboard() {
     const firms = await getFirms();
-    const posts = await getBlogPosts();
+    const posts = await getBlogPosts({ admin: true });
     const subscribers = await getSubscribers();
     const courses = await getCourses();
 

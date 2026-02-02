@@ -8,6 +8,7 @@ description: EXPERTO NIVEL 10/10. Habilidad de elite para la gestión de datos c
 ## Goals
 - **Gestión Amigable y Fluida**: El panel debe ser una herramienta intuitiva que facilite el trabajo, con distancias claras entre formularios y tablas.
 - **Claridad de Datos**: Visualizar la información crítica sin amontonamiento, garantizando que el administrador no cometa errores por caos visual.
+- **Idima Español**: El panel siempre será en idioma español, tanto menús como títulos e instruciones.
 
 ## Expert Capabilities
 - **Admin UX Optimization**: Diseñar interfaces internas que respeten el orden y el espaciado para una gestión masiva sin estrés.

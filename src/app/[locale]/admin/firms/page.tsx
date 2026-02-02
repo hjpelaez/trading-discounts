@@ -1,9 +1,9 @@
 import { getFirms } from "@/lib/db";
-import { deleteFirmAction } from "@/actions/firm-actions";
+import { Pencil, Trash2, PlusCircle, Building2, ExternalLink, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
-import { Pencil, Trash2, PlusCircle, Building2, ExternalLink } from "lucide-react";
 import { FadeIn } from "@/components/animations";
-import { FirmVisibilityToggle } from "@/components/firm-visibility-toggle";
+import { cn } from "@/lib/utils";
+import { toggleFirmVisibilityAction, deleteFirmAction } from "@/actions/firm-actions";
 
 export const dynamic = 'force-dynamic';
 
@@ -30,72 +30,100 @@ export default async function AdminFirmsPage() {
                     <table className="w-full text-sm text-left">
                         <thead className="bg-muted/50 border-b">
                             <tr>
-                                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Nombre</th>
-                                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Código</th>
+                                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Nombre / Código</th>
                                 <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Descuento</th>
-                                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Estado</th>
+                                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Visibilidad</th>
                                 <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Puntuación</th>
                                 <th className="h-12 px-4 text-right align-middle font-medium text-muted-foreground">Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            {firms.map((firm) => (
-                                <tr key={firm.id} className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                    <td className="p-4 align-middle font-bold">{firm.name}</td>
-                                    <td className="p-4 align-middle"><span className="bg-muted px-2 py-1 rounded font-mono text-xs text-muted-foreground">{firm.code}</span></td>
-                                    <td className="p-4 align-middle text-primary font-black">{firm.discount}</td>
-                                    <td className="p-4 align-middle">
-                                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium border ${firm.isVisible !== false ? "bg-green-500/10 text-green-600 border-green-500/20" : "bg-muted text-muted-foreground border-border"}`}>
-                                            <span className={`relative flex h-1.5 w-1.5`}>
-                                                {firm.isVisible !== false && <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>}
-                                                <span className={`relative inline-flex rounded-full h-1.5 w-1.5 ${firm.isVisible !== false ? "bg-green-500" : "bg-muted-foreground"}`}></span>
-                                            </span>
-                                            {firm.isVisible !== false ? "Visible" : "Oculto"}
-                                        </span>
-                                    </td>
-                                    <td className="p-4 align-middle">
-                                        <div className="flex items-center text-yellow-500 font-bold">★ {firm.rating}</div>
-                                    </td>
-                                    <td className="p-4 align-middle text-right">
-                                        <div className="flex items-center justify-end gap-2">
-                                            <Link
-                                                href={firm.link}
-                                                target="_blank"
-                                                title="Visitar Web"
-                                                className="p-2 text-muted-foreground hover:text-foreground transition-colors"
-                                            >
-                                                <ExternalLink className="h-4 w-4" />
-                                            </Link>
-                                            <FirmVisibilityToggle id={firm.id} isVisible={firm.isVisible !== false} />
-                                            <Link
-                                                href={`/admin/firms/${firm.id}`}
-                                                className="p-2 text-blue-500 hover:bg-blue-50 rounded-md transition-colors"
-                                                title="Editar"
-                                            >
-                                                <Pencil className="h-4 w-4" />
-                                            </Link>
-                                            <form action={deleteFirmAction.bind(null, firm.id)}>
-                                                <button
-                                                    type="submit"
-                                                    className="p-2 text-red-500 hover:bg-red-50 rounded-md transition-colors"
-                                                    title="Eliminar"
-                                                >
-                                                    <Trash2 className="h-4 w-4" />
-                                                </button>
-                                            </form>
+                        <tbody className="divide-y">
+                            {firms.length === 0 ? (
+                                <tr>
+                                    <td colSpan={6} className="p-0">
+                                        <div className="p-20 text-center text-muted-foreground bg-muted/5">
+                                            <Building2 className="h-12 w-12 mx-auto mb-4 opacity-20" />
+                                            <p className="text-lg font-bold">No se encontraron firmas</p>
+                                            <p className="text-sm">Crea tu primera oferta para empezar a atraer traders.</p>
                                         </div>
                                     </td>
                                 </tr>
-                            ))}
+                            ) : (
+                                firms.map((firm) => (
+                                    <tr key={firm.id} className="transition-colors hover:bg-muted/50">
+                                        <td className="p-4 align-middle">
+                                            <div className="flex flex-col">
+                                                <span className="font-bold">{firm.name}</span>
+                                                <span className="text-xs text-muted-foreground font-mono">{firm.code}</span>
+                                            </div>
+                                        </td>
+                                        <td className="p-4 align-middle font-mono font-bold text-primary">
+                                            {firm.discount}
+                                        </td>
+                                        <td className="p-4 align-middle">
+                                            <span className={cn(
+                                                "inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase border",
+                                                firm.isVisible !== false
+                                                    ? "bg-green-500/10 text-green-600 border-green-500/20"
+                                                    : "bg-red-500/10 text-red-600 border-red-500/20"
+                                            )}>
+                                                {firm.isVisible !== false ? (
+                                                    <><div className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" /> Público</>
+                                                ) : (
+                                                    <><div className="h-1.5 w-1.5 rounded-full bg-red-500" /> Oculto</>
+                                                )}
+                                            </span>
+                                        </td>
+                                        <td className="p-4 align-middle text-yellow-500 font-bold">
+                                            ★ {firm.rating}
+                                        </td>
+                                        <td className="p-4 align-middle text-right">
+                                            <div className="flex items-center justify-end gap-2 text-nowrap">
+                                                <form action={toggleFirmVisibilityAction.bind(null, firm.id, firm.isVisible !== false)}>
+                                                    <button
+                                                        type="submit"
+                                                        className={cn(
+                                                            "p-2 rounded-lg transition-all border shadow-sm hover:shadow-md",
+                                                            firm.isVisible !== false
+                                                                ? "text-green-600 border-green-500/20 hover:bg-green-500/10"
+                                                                : "text-red-500 border-red-500/20 hover:bg-red-500/10"
+                                                        )}
+                                                        title={firm.isVisible !== false ? "Ocultar Firma" : "Mostrar Firma"}
+                                                    >
+                                                        {firm.isVisible !== false ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+                                                    </button>
+                                                </form>
+                                                <Link
+                                                    href={firm.link}
+                                                    target="_blank"
+                                                    title="Ver en web (Externo)"
+                                                    className="p-2 text-muted-foreground border border-border/50 hover:bg-muted rounded-lg transition-all shadow-sm hover:shadow-md"
+                                                >
+                                                    <ExternalLink className="h-4 w-4" />
+                                                </Link>
+                                                <Link
+                                                    href={`/admin/firms/${firm.id}`}
+                                                    className="p-2 text-blue-500 border border-blue-500/20 hover:bg-blue-500/10 rounded-lg transition-all shadow-sm hover:shadow-md"
+                                                    title="Editar"
+                                                >
+                                                    <Pencil className="h-4 w-4" />
+                                                </Link>
+                                                <form action={deleteFirmAction.bind(null, firm.id)}>
+                                                    <button
+                                                        type="submit"
+                                                        className="p-2 text-red-500 border border-red-500/20 hover:bg-red-500/10 rounded-lg transition-all shadow-sm hover:shadow-md"
+                                                        title="Eliminar"
+                                                    >
+                                                        <Trash2 className="h-4 w-4" />
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
                         </tbody>
                     </table>
-                    {firms.length === 0 && (
-                        <div className="p-20 text-center text-muted-foreground bg-muted/5">
-                            <Building2 className="h-12 w-12 mx-auto mb-4 opacity-20" />
-                            <p className="text-lg font-bold">No se encontraron firmas</p>
-                            <p className="text-sm">Crea tu primera oferta para empezar.</p>
-                        </div>
-                    )}
                 </div>
             </FadeIn>
         </div>
